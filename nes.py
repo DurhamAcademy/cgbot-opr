@@ -47,8 +47,12 @@ while True:
     if report:
         if str(report) == dPadUp:
             pressed = "up"
+            # forward direction.
+            GPIO.output(17, GPIO.HIGH)
+            GPIO.output(27, GPIO.LOW)
+            #forward speed.
             left.ChangeDutyCycle(20)  # Changes the pulse width to 3 (so moves the servo)
-            right.ChangeDutyCycle(-20)
+            right.ChangeDutyCycle(20)
             if str(report) == neutral:
                 left.ChangeDutyCycle(0)
                 right.ChangeDutyCycle(0)
