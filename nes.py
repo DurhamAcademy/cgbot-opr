@@ -52,35 +52,40 @@ while True:
             if str(report) == neutral:
                 left.ChangeDutyCycle(0)
                 right.ChangeDutyCycle(0)
-        if str(report) == dPadDown:
+        elif str(report) == dPadDown:
             if pressed == "up":
                 konamiCount = 1
             pressed = "down"
-        if str(report) == dPadLeft:
+        elif str(report) == dPadLeft:
             if pressed == "down"  and konamiCount == 1:
                 konamiCount = 2
             elif pressed == "right" and konamiCount == 3:
                 konamiCount = 4
             pressed = "left"
-        if str(report) == dPadRight:
+        elif str(report) == dPadRight:
             if pressed == "left" and konamiCount == 2:
                 konamiCount = 3
             elif pressed == "left" and konamiCount == 4:
                 konamiCount = 5
 
             pressed = "right"
-        if str(report) == dPadA:
+        elif str(report) == dPadA:
             if pressed == "b" and konamiCount == 6:
                 konamiCount = 7
 
             pressed = "a"
-        if str(report) == dPadB:
+        elif str(report) == dPadB:
             if pressed == "right" and konamiCount == 5:
                 konamiCount = 6
 
             pressed = "b"
-        if str(report) == dPadStart:
+        elif str(report) == dPadStart:
             if pressed == "a" and konamiCount == 7:
                 print("you did it")
 
             pressed = "start"
+
+        # Nothing? Stop.
+        else:
+            left.ChangeDutyCycle(0)
+            right.ChangeDutyCycle(0)
