@@ -49,7 +49,7 @@ while True:
             pressed = "up"
             # forward direction.
             GPIO.output(17, GPIO.HIGH)
-            GPIO.output(27, GPIO.LOW)
+            GPIO.output(27, GPIO.HIGH)
             #forward speed.
             left.ChangeDutyCycle(20)  # Changes the pulse width to 3 (so moves the servo)
             right.ChangeDutyCycle(20)
