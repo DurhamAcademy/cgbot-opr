@@ -53,13 +53,18 @@ while True:
             #forward speed.
             left.ChangeDutyCycle(20)  # Changes the pulse width to 3 (so moves the servo)
             right.ChangeDutyCycle(20)
-            if str(report) == neutral:
-                left.ChangeDutyCycle(0)
-                right.ChangeDutyCycle(0)
         elif str(report) == dPadDown:
             if pressed == "up":
                 konamiCount = 1
             pressed = "down"
+
+            # forward direction.
+            GPIO.output(17, GPIO.LOW)
+            GPIO.output(27, GPIO.LOW)
+            # forward speed.
+            left.ChangeDutyCycle(20)  # Changes the pulse width to 3 (so moves the servo)
+            right.ChangeDutyCycle(20)
+
         elif str(report) == dPadLeft:
             if pressed == "down"  and konamiCount == 1:
                 konamiCount = 2
