@@ -1,6 +1,7 @@
 import hid
 import RPi.GPIO as GPIO  # Imports the standard Raspberry Pi GPIO library
 
+## All of these need to be updated.
 neutral = "[1, 127, 127, 127, 127, 15, 0, 0]"
 dPadUp = "[1, 127, 127, 127, 0, 15, 0, 0]"
 dPadDown = "[1, 127, 127, 127, 255, 15, 0, 0]"
