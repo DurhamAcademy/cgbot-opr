@@ -44,6 +44,7 @@ def get_gps_coords():
 
 def get_heading():
     MX, MY, MZ = SENSOR.magnetic
+    # veh = gps.veh_attitude()
     return MX
 
 def calculate_heading(current_position, target_coordinates):
