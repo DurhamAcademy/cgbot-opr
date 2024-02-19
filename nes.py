@@ -13,7 +13,7 @@ pressed = 0
 
 
 def input_move():
-    report = nes.read(64)
+    report = nes.read()
     if report:
         if report == neutral:
             print("N")
