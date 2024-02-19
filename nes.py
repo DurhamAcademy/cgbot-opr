@@ -31,7 +31,7 @@ def input_move():
             return "b"
 
 
-def WPM_controller(control_input):
+def wpm_controller(control_input):
     if setup_yn:
         if control_input == "neutral":
             left.ChangeDutyCycle(0)
@@ -75,7 +75,7 @@ GPIO.setmode(GPIO.BCM)
 for device in hid.enumerate():
     print(f"0x{device['vendor_id']:04x}:0x{device['product_id']:04x} {device['product_string']}")
 nes = hid.device()
-nes.open(0x0f0d, 0x00c1)
+nes.open(0x0079, 0x0126)
 wpm_set()
 while True:
-    WPM_controller(input_move())
+    wpm_controller(input_move())
