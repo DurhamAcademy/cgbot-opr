@@ -16,14 +16,19 @@ def input_move():
     report = nes.read(64)
     if report:
         if report == neutral:
+            print("N")
             return "neutral"
         if report == dPadUp:
+            print("U")
             return "up"
         if report == dPadDown:
+            print("D")
             return "down"
         if report == dPadLeft:
+            print("L")
             return "left"
         if report == dPadRight:
+            print("R")
             return "right"
         if report == dPadA:
             return "a"
@@ -31,7 +36,7 @@ def input_move():
             return "b"
 
 
-def WPM_controller(control_input):
+def wpm_controller(control_input):
     if setup_yn:
         if control_input == "neutral":
             left.ChangeDutyCycle(0)
@@ -48,8 +53,6 @@ def WPM_controller(control_input):
         if control_input == "right":
             left.ChangeDutyCycle(50)
             right.ChangeDutyCycle(-50)
-        else:
-            print("no")
     return
 
 
@@ -66,6 +69,7 @@ def wpm_set():
     right.start(0)
     GPIO.output(17, GPIO.HIGH)
     GPIO.output(27, GPIO.LOW)
+    hid.set_nonblocking(1)
     global setup_yn
     setup_yn = True
     return
@@ -75,7 +79,7 @@ GPIO.setmode(GPIO.BCM)
 for device in hid.enumerate():
     print(f"0x{device['vendor_id']:04x}:0x{device['product_id']:04x} {device['product_string']}")
 nes = hid.device()
-nes.open(0x0f0d, 0x00c1)
+nes.open(0x0079, 0x0126)
 wpm_set()
 while True:
-    WPM_controller(input_move())
+    wpm_controller(input_move())
