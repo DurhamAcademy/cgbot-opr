@@ -19,7 +19,7 @@ def rotate_to_heading(current_heading, target_heading):
         motor_driver.set_left_speed(-50 * rotation_dir)
         motor_driver.set_right_speed(50 * rotation_dir)
         # update heading and rerun loop
-        current_heading = gps.get_heading() % 360
+        current_heading = gps.get_heading()
         print("cur", current_heading)
         print("goal", target_heading - current_heading)
 
@@ -53,7 +53,9 @@ try:
         speed = input()
         motor_driver.set_right_speed(int(speed))
         motor_driver.set_left_speed(int(speed))"""
-    current_heading = gps.get_heading()
-    rotate_to_heading(current_heading, current_heading + 90)
+    # current_heading = gps.get_heading()
+    # rotate_to_heading(current_heading, current_heading + 90)
+    while True:
+        gps.get_gps_coords()
 finally:
     motor_driver.cleanup()
