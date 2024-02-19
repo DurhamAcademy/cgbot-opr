@@ -16,14 +16,19 @@ def input_move():
     report = nes.read(64)
     if report:
         if report == neutral:
+            print("N")
             return "neutral"
         if report == dPadUp:
+            print("U")
             return "up"
         if report == dPadDown:
+            print("D")
             return "down"
         if report == dPadLeft:
+            print("L")
             return "left"
         if report == dPadRight:
+            print("R")
             return "right"
         if report == dPadA:
             return "a"
