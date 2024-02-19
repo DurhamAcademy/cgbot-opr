@@ -15,6 +15,8 @@ pressed = 0
 def input_move():
     report = nes.read(64)
     if report:
+        print(report)
+        print(report.type())
         if report == None:
             print("No report")
         if report == neutral:
