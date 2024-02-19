@@ -48,8 +48,6 @@ def wpm_controller(control_input):
         if control_input == "right":
             left.ChangeDutyCycle(50)
             right.ChangeDutyCycle(-50)
-        else:
-            print("no")
     return
 
 
