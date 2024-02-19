@@ -15,7 +15,9 @@ pressed = 0
 def input_move():
     report = nes.read(64)
     if report:
-        print(report)
+       # print(report)
+        if report[4] == 0 and report[9] == 225:
+            print("up")
 
 
 def wpm_controller(control_input):
