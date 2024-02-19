@@ -69,6 +69,7 @@ def wpm_set():
     right.start(0)
     GPIO.output(17, GPIO.HIGH)
     GPIO.output(27, GPIO.LOW)
+    hid.set_nonblocking(1)
     global setup_yn
     setup_yn = True
     return
