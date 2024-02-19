@@ -35,7 +35,9 @@ def get_gps_coords():
     try:
         coords = gps.geo_coords()
         print("Coords: ", coords.lon, coords.lat)
+        print(coords.headMot)
         return coords.lon, coords.lat
+
     except (ValueError, IOError) as err:
         print(err)
 
@@ -43,7 +45,6 @@ def get_gps_coords():
 def get_heading():
     MX, MY, MZ = SENSOR.magnetic
     return MX
-
 
 def calculate_heading(current_position, target_coordinates):
     """
