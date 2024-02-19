@@ -15,6 +15,8 @@ pressed = 0
 def input_move():
     report = nes.read(64)
     if report:
+        print(report[4])
+        #print(report[9])
        # print(report)
         if report[4] == 0 and report[9] == 225:
             print("up")
@@ -41,6 +43,7 @@ def wpm_controller(control_input):
 
 
 def wpm_set():
+    GPIO.setwarnings(False)
     GPIO.setup(17, GPIO.OUT)
     GPIO.setup(12, GPIO.OUT)
     GPIO.setup(13, GPIO.OUT)
