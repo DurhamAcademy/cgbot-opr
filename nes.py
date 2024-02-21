@@ -5,7 +5,7 @@ def input_move():
     report = nes.read(64)
     if report:
         print(report[4])
-        #print(report[9])
+        print(report[9])
         print(report)
         if report[4] == 0 and report[9] == 225:
             print("up")
