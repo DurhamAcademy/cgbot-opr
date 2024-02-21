@@ -24,17 +24,17 @@ def wpm_controller(control_input):
         left_speed = 0
         right_speed = 0
     if control_input == "up":
-        left_speed = 50
-        right_speed = 50
+        left_speed = 255
+        right_speed = 255
     if control_input =="down":
-        left_speed = -50
-        right_speed = -50
+        left_speed = -255
+        right_speed = -255
     if control_input == "left":
-        left_speed = -50
-        right_speed = 50
+        left_speed = -255
+        right_speed = 255
     if control_input == "right":
-        left_speed = 50
-        right_speed = -50
+        left_speed = 255
+        right_speed = -255
     return left_speed, right_speed
 
 
