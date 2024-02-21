@@ -6,7 +6,7 @@ def input_move():
     if report:
         print(report[4])
         #print(report[9])
-       # print(report)
+        print(report)
         if report[4] == 0 and report[9] == 225:
             print("up")
 
