@@ -60,7 +60,7 @@ def wpm_set():
     right = GPIO.PWM(12, 1000)
     right.start(0)
     GPIO.output(17, GPIO.HIGH)
-    GPIO.output(27, GPIO.LOW)
+    GPIO.output(27, GPIO.HIGH)
     global setup_yn
     setup_yn = True
     return
