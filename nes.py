@@ -1,17 +1,6 @@
 import hid
 import RPi.GPIO as GPIO  # Imports the standard Raspberry Pi GPIO library
 
-neutral = "[1, 127, 127, 127, 127, 15, 0, 0]"
-dPadUp = "[1, 127, 127, 127, 0, 15, 0, 0]"
-dPadDown = "[1, 127, 127, 127, 255, 15, 0, 0]"
-dPadLeft = "[1, 127, 127, 0, 127, 15, 0, 0]"
-dPadRight = "[1, 127, 127, 255, 127, 15, 0, 0]"
-dPadA = "[1, 127, 127, 127, 127, 47, 0, 0]"
-dPadB = "[1, 127, 127, 127, 127, 79, 0, 0]"
-dPadStart = "[1, 127, 127, 127, 127, 15, 32, 0]"
-pressed = 0
-
-
 def input_move():
     report = nes.read(64)
     if report:
