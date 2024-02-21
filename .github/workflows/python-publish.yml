@@ -1,0 +1,15 @@
+name: Python Deploy
+
+on: [push]
+
+jobs:
+  build-linux:
+    runs-on: self-hosted
+    strategy:
+      max-parallel: 5
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run Main
+      run: |
+        python main.py
