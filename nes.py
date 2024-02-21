@@ -15,25 +15,11 @@ pressed = 0
 def input_move():
     report = nes.read(64)
     if report:
-        if report == neutral:
-            print("N")
-            return "neutral"
-        if report == dPadUp:
-            print("U")
-            return "up"
-        if report == dPadDown:
-            print("D")
-            return "down"
-        if report == dPadLeft:
-            print("L")
-            return "left"
-        if report == dPadRight:
-            print("R")
-            return "right"
-        if report == dPadA:
-            return "a"
-        if report == dPadB:
-            return "b"
+        print(report[4])
+        #print(report[9])
+       # print(report)
+        if report[4] == 0 and report[9] == 225:
+            print("up")
 
 
 def wpm_controller(control_input):
@@ -57,6 +43,7 @@ def wpm_controller(control_input):
 
 
 def wpm_set():
+    GPIO.setwarnings(False)
     GPIO.setup(17, GPIO.OUT)
     GPIO.setup(12, GPIO.OUT)
     GPIO.setup(13, GPIO.OUT)
@@ -69,7 +56,6 @@ def wpm_set():
     right.start(0)
     GPIO.output(17, GPIO.HIGH)
     GPIO.output(27, GPIO.LOW)
-    hid.set_nonblocking(1)
     global setup_yn
     setup_yn = True
     return
