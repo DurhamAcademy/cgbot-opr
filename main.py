@@ -21,6 +21,7 @@ def rotate_to_heading(current_heading, target_heading):
         # update heading and rerun loop
         current_heading = gps.get_heading()
         print("cur", current_heading)
+        print("tar", target_heading)
         print("goal", target_heading - current_heading)
 
     """# Set motor speeds using PWM
