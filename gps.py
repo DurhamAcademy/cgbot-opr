@@ -48,9 +48,8 @@ def get_gps_coords():
 
 def get_heading():
     MX, MY, MZ = SENSOR.magnetic
-    print(get_heading_from_magno(MX, MY))
     # veh = gps.veh_attitude()
-    return MX
+    return get_heading_from_magno(MX, MY)
 
 def calculate_heading(current_position, target_coordinates):
     """
