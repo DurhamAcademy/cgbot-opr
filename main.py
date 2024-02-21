@@ -56,6 +56,6 @@ try:
     """current_heading = gps.get_heading()
     rotate_to_heading(current_heading, current_heading + 90)"""
     while True:
-        gps.get_heading()
+        print(gps.get_heading())
 finally:
     motor_driver.cleanup()
