@@ -9,6 +9,8 @@ def snes_input():
             print("up")
         if report[4] == 255 and report[10] == 255:
             print("down")
+        if report[3] == 0 and report[8] == 255:
+            print("left")
 
 
 def wpm_controller(control_input):
