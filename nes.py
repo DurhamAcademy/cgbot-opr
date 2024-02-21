@@ -7,11 +7,11 @@ def snes_input():
     if report:
         if report[4] == 0 and report[9] == 255:
             return("up")
-        if report[4] == 255 and report[10] == 255:
+        elif report[4] == 255 and report[10] == 255:
             return("down")
-        if report[3] == 0 and report[8] == 255:
+        elif report[3] == 0 and report[8] == 255:
             return("left")
-        if report[3] == 255 and report[7] == 255:
+        elif report[3] == 255 and report[7] == 255:
             return("right")
         else:
             return("neutral")
