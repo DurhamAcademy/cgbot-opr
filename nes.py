@@ -1,14 +1,14 @@
 import hid
 import RPi.GPIO as GPIO  # Imports the standard Raspberry Pi GPIO library
 
-def input_move():
+def snes_input():
     report = nes.read(64)
     if report:
-        print(report[4])
-        print(report[9])
         print(report)
         if report[4] == 0 and report[9] == 255:
             print("up")
+        if report[4] == 255 and report[10] == 255:
+            print("down")
 
 
 def wpm_controller(control_input):
@@ -57,4 +57,4 @@ nes = hid.device()
 nes.open(0x0079, 0x0126)
 wpm_set()
 while True:
-    wpm_controller(input_move())
+    wpm_controller(snes_input())
