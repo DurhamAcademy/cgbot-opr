@@ -1,6 +1,7 @@
 import motor_driver
 import gps
 import time
+import nes
 
 # fspjksjnfdgkdsf
 def rotate_to_heading(current_heading, target_heading):
@@ -44,6 +45,11 @@ def go_to_position(target_pos: tuple):
         target_heading = gps.calculate_heading(current_pos, target_pos)
         rotate_to_heading(current_heading, target_heading)
 
+def controller_mode():
+    while True:
+        left_speed, right_speed = nes.wpm_controller(nes.snes_input())
+        motor_driver.set_right_speed(left_speed)
+        motor_driver.set_right_speed(right_speed)
 
 try:
     """while True:
@@ -56,8 +62,8 @@ try:
         speed = input()
         motor_driver.set_right_speed(int(speed))
         motor_driver.set_left_speed(int(speed))"""
-    current_heading = gps.get_heading()
-    rotate_to_heading(current_heading, (current_heading + -90) % 360)
+    """current_heading = gps.get_heading()
+    rotate_to_heading(current_heading, (current_heading + -90) % 360)"""
     """while True:
         print(gps.get_heading())"""
 finally:

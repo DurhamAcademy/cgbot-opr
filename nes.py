@@ -69,5 +69,5 @@ for device in hid.enumerate():
 nes = hid.device()
 nes.open(0x0079, 0x0126)
 wpm_set()
-while True:
-    wpm_controller(snes_input())
+"""while True:
+    wpm_controller(snes_input())"""
