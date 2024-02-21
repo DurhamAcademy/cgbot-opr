@@ -34,16 +34,16 @@ def wpm_controller(control_input):
             right.ChangeDutyCycle(50)
         if control_input =="down":
             print("down")
-            left.ChangeDutyCycle(-50)
-            right.ChangeDutyCycle(-50)
+            left.ChangeDutyCycle(0)
+            right.ChangeDutyCycle(0)
         if control_input == "left":
             print("left")
-            left.ChangeDutyCycle(-50)
+            left.ChangeDutyCycle(0)
             right.ChangeDutyCycle(50)
         if control_input == "right":
             print("right")
             left.ChangeDutyCycle(50)
-            right.ChangeDutyCycle(-50)
+            right.ChangeDutyCycle(0)
     return
 
 
