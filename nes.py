@@ -25,22 +25,21 @@ def snes_input():
 def wpm_controller(control_input):
     left_speed = 0
     right_speed = 0
-    if setup_yn:
-        if control_input == "neutral":
-            left_speed = 0
-            right_speed = 0
-        if control_input == "up":
-            left_speed = 50
-            right_speed = 50
-        if control_input =="down":
-            left_speed = -50
-            right_speed = -50
-        if control_input == "left":
-            left_speed = -50
-            right_speed = 50
-        if control_input == "right":
-            left_speed = 50
-            right_speed = -50
+    if control_input == "neutral":
+        left_speed = 0
+        right_speed = 0
+    if control_input == "up":
+        left_speed = 50
+        right_speed = 50
+    if control_input =="down":
+        left_speed = -50
+        right_speed = -50
+    if control_input == "left":
+        left_speed = -50
+        right_speed = 50
+    if control_input == "right":
+        left_speed = 50
+        right_speed = -50
     return left_speed, right_speed
 
 
@@ -68,6 +67,6 @@ for device in hid.enumerate():
     print(f"0x{device['vendor_id']:04x}:0x{device['product_id']:04x} {device['product_string']}")
 nes = hid.device()
 nes.open(0x0079, 0x0126)
-wpm_set()
+# wpm_set()
 """while True:
     wpm_controller(snes_input())"""
