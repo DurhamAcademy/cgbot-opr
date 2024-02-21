@@ -20,18 +20,23 @@ def snes_input():
 def wpm_controller(control_input):
     if setup_yn:
         if control_input == "neutral":
+            print("neutral")
             left.ChangeDutyCycle(0)
             right.ChangeDutyCycle(0)
         if control_input == "up":
+            print("up")
             left.ChangeDutyCycle(50)
             right.ChangeDutyCycle(50)
         if control_input =="down":
+            print("down")
             left.ChangeDutyCycle(-50)
             right.ChangeDutyCycle(-50)
         if control_input == "left":
+            print("left")
             left.ChangeDutyCycle(-50)
             right.ChangeDutyCycle(50)
         if control_input == "right":
+            print("right")
             left.ChangeDutyCycle(50)
             right.ChangeDutyCycle(-50)
     return
