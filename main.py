@@ -53,9 +53,9 @@ try:
         speed = input()
         motor_driver.set_right_speed(int(speed))
         motor_driver.set_left_speed(int(speed))"""
-    """current_heading = gps.get_heading()
-    rotate_to_heading(current_heading, current_heading + 90)"""
-    while True:
-        print(gps.get_heading())
+    current_heading = gps.get_heading()
+    rotate_to_heading(current_heading, current_heading + 90)
+    """while True:
+        print(gps.get_heading())"""
 finally:
     motor_driver.cleanup()
