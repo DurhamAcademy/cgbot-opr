@@ -6,14 +6,19 @@ def snes_input():
     report = nes.read(64)
     if report:
         if report[4] == 0 and report[9] == 255:
+            print("up")
             return("up")
         elif report[4] == 255 and report[10] == 255:
+            print("down")
             return("down")
         elif report[3] == 0 and report[8] == 255:
+            print("left")
             return("left")
         elif report[3] == 255 and report[7] == 255:
+            print("right")
             return("right")
         else:
+            print("neutral")
             return("neutral")
 
 
