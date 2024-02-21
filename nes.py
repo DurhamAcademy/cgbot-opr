@@ -4,7 +4,6 @@ import RPi.GPIO as GPIO  # Imports the standard Raspberry Pi GPIO library
 def snes_input():
     report = nes.read(64)
     if report:
-        print(report)
         if report[4] == 0 and report[9] == 255:
             print("up")
         if report[4] == 255 and report[10] == 255:
