@@ -16,8 +16,8 @@ def rotate_to_heading(current_heading, target_heading):
     current_heading = gps.get_heading()
     while abs(target_heading - current_heading) > 1:
         # rotate until real heading is close to target heading
-        motor_driver.set_left_speed(5 * rotation_dir)
-        motor_driver.set_right_speed(-5 * rotation_dir)
+        motor_driver.set_left_speed(25 * rotation_dir)
+        motor_driver.set_right_speed(-25 * rotation_dir)
         # update heading and rerun loop
         current_heading = gps.get_heading()
         print("cur", current_heading)
