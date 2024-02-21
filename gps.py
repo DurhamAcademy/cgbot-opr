@@ -27,6 +27,10 @@ def run():
     finally:
         port.close()
 
+def get_heading_from_magno(x, y):
+    heading_rad = math.atan2(y, x)
+    heading_deg = math.degrees(heading_rad)
+    return heading_deg
 
 def get_gps_coords():
     """
@@ -44,6 +48,7 @@ def get_gps_coords():
 
 def get_heading():
     MX, MY, MZ = SENSOR.magnetic
+    print(get_heading_from_magno(MX, MY))
     # veh = gps.veh_attitude()
     return MX
 
