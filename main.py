@@ -57,7 +57,8 @@ controller = nes.Nes()
 
 try:
     while True:
-        print(left_speed, right_speed)
+        if (isinstance(left_speed) and isinstance(right_speed)):
+            print(left_speed, right_speed)
         # If controller is returning anything other than neutral, allow if to move robot.
         if controller.snes_input() == "neutral":
             left_speed, right_speed = 0,0
