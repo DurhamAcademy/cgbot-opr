@@ -41,21 +41,26 @@ class Nes(object):
                 return("neutral")
 
     def wpm_controller(self, control_input):
-        left_speed = 0
-        right_speed = 0
-        if control_input == "neutral":
-            left_speed = 0
-            right_speed = 0
-        if control_input == "up":
-            left_speed = 50
-            right_speed = 50
-        if control_input =="down":
-            left_speed = -25
-            right_speed = -25
-        if control_input == "left":
-            left_speed = -50
-            right_speed = 50
-        if control_input == "right":
-            left_speed = 50
-            right_speed = -50
-        return left_speed, right_speed
+        try:
+            if control_input == "neutral":
+                left_speed = 0
+                right_speed = 0
+            elif control_input == "up":
+                left_speed = 50
+                right_speed = 50
+            elif control_input =="down":
+                left_speed = -50
+                right_speed = -50
+            elif control_input == "left":
+                left_speed = -50
+                right_speed = 50
+            elif control_input == "right":
+                left_speed = 50
+                right_speed = -50
+            else:
+                left_speed = 0
+                right_speed = 0
+            return left_speed, right_speed
+        except:
+            left_speed, right_speed = 0,0
+            return left_speed, right_speed
