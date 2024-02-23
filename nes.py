@@ -50,8 +50,8 @@ class Nes(object):
             left_speed = 50
             right_speed = 50
         if control_input =="down":
-            left_speed = -50
-            right_speed = -50
+            left_speed = -25
+            right_speed = -25
         if control_input == "left":
             left_speed = -50
             right_speed = 50
