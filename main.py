@@ -57,10 +57,10 @@ controller = nes.Nes()
 
 try:
     while True:
-        try:
-            print(left_speed, right_speed)
-        except:
-            print("left and right undefined")
+        #try:
+            #print(left_speed, right_speed)
+       # except:
+            #print("left and right undefined")
 
         # If controller is returning anything other than neutral, allow if to move robot.
         if controller.snes_input() != "neutral":
@@ -86,5 +86,8 @@ try:
             rotate_to_heading(current_heading, (current_heading + -90) % 360)
             print(gps.get_heading())
             """
+        elif controller.snes_input() == "neutral":
+            motor_driver.set_left_speed(0)
+            motor_driver.set_right_speed(0)
 finally:
     motor_driver.cleanup()
