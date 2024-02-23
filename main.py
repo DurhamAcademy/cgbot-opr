@@ -57,9 +57,10 @@ controller = nes.Nes()
 
 try:
     while True:
-        print(controller.gps_mode)
-        # If controller is returning anything other than netural, allow if to move robot.
-        if controller.snes_input() != "neutral":
+        # If controller is returning anything other than neutral, allow if to move robot.
+        if controller.snes_input() == "neutral":
+            left_speed, right_speed = 0,0
+        elif controller.snes_input() != "neutral":
             while controller.snes_input() != "neutral":
                 left_speed, right_speed = controller.wpm_controller(controller.snes_input())
                 motor_driver.set_left_speed(left_speed)
