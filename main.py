@@ -3,7 +3,7 @@ import gps
 import time
 import nes
 
-# fspjksjnfdgkdsf
+
 def rotate_to_heading(current_heading, target_heading):
     # Calculate difference between current and target heading
     # Adjust the following formula based on your specific robot setup
@@ -45,27 +45,40 @@ def go_to_position(target_pos: tuple):
         target_heading = gps.calculate_heading(current_pos, target_pos)
         rotate_to_heading(current_heading, target_heading)
 
+
 def controller_mode():
     while True:
         left_speed, right_speed = nes.wpm_controller(nes.snes_input())
         motor_driver.set_left_speed(left_speed)
         motor_driver.set_right_speed(right_speed)
 
+
+controller = nes.Nes()
+
 try:
-    """while True:
-        pos = gps.get_gps_coords()
-        print("Position", pos)
-        pos = gps.get_gps_coords()
-        print("Position", pos)
-        heading = gps.get_heading()
-        print("Heading", heading)
-        speed = input()
-        motor_driver.set_right_speed(int(speed))
-        motor_driver.set_left_speed(int(speed))"""
-    """current_heading = gps.get_heading()
-    rotate_to_heading(current_heading, (current_heading + -90) % 360)"""
-    """while True:
-        print(gps.get_heading())"""
-    controller_mode()
+    while True:
+        # If controller is returning anything other than netural, allow if to move robot.
+        if controller.snes_input() != "neutral":
+            left_speed, right_speed = controller.wpm_controller(controller.snes_input())
+            motor_driver.set_left_speed(left_speed)
+            motor_driver.set_right_speed(right_speed)
+        elif controller.gps_mode:
+            # Add another button on SNES controller for "start"  in nes.py to start the GPS program.
+
+            # Do GPS stuff
+            """    
+            pos = gps.get_gps_coords()
+            print("Position", pos)
+            pos = gps.get_gps_coords()
+            print("Position", pos)
+            heading = gps.get_heading()
+            print("Heading", heading)
+            speed = input()
+            motor_driver.set_right_speed(int(speed))
+            motor_driver.set_left_speed(int(speed))
+            current_heading = gps.get_heading()
+            rotate_to_heading(current_heading, (current_heading + -90) % 360)
+            print(gps.get_heading())
+            """
 finally:
     motor_driver.cleanup()
