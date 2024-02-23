@@ -20,7 +20,6 @@ class Nes(object):
     def snes_input(self):
         report = self.nes_device.read(64)
         if report:
-            #print(report)
             if report[4] == 0 and report[9] == 255:
                 self.gps_mode = False
                 return("up")
@@ -34,10 +33,9 @@ class Nes(object):
                 self.gps_mode = False
                 return("right")
             elif report[1] == 1:
-                print("select")
+                self.gps_mode = True
                 return("select")
             elif report[1] == 2:
-                print("start")
                 return("start")
             else:
                 return("neutral")
