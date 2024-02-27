@@ -14,20 +14,14 @@ def rotate_to_heading(current_heading, target_heading):
     if heading_difference >= 180:
         # rotate left if that is shorter
         rotation_dir = -1
-        print(rotation_dir)
 
     current_heading = gps.get_heading()
     while abs(target_heading - current_heading) > 5:
         # rotate until real heading is close to target heading
-        print((abs(target_heading - current_heading) % 25) + 25)
         motor_driver.set_left_speed(30 * rotation_dir)
         motor_driver.set_right_speed(30 * rotation_dir * -1)
         # update heading and rerun loop
         current_heading = gps.get_heading()
-        print("cur", current_heading)
-        print("tar", target_heading)
-        print("goal", target_heading - current_heading)
-
     # Set motor speeds using PWM
     motor_driver.set_left_speed(25)
     motor_driver.set_right_speed(25)
@@ -42,6 +36,7 @@ def go_to_position(target_pos: tuple):
     current_heading = gps.get_heading()
     while abs(gps.haversine_distance(current_pos, target_pos)) > 0.1:
         current_pos = gps.get_gps_coords()
+        print(current_pos, target_pos)
         current_heading = gps.get_heading()
         target_heading = gps.calculate_heading(current_pos, target_pos)
         rotate_to_heading(current_heading, target_heading)
