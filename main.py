@@ -3,6 +3,7 @@ import gps
 import time
 import nes
 
+controller = nes.Nes()
 
 def rotate_to_heading(current_heading, target_heading):
     # Calculate difference between current and target heading
@@ -39,29 +40,16 @@ def rotate_to_heading(current_heading, target_heading):
 def go_to_position(target_pos: tuple):
     current_pos = gps.get_gps_coords()
     current_heading = gps.get_heading()
-    while gps.haversine_distance(current_pos, target_pos) > 1:
+    while abs(gps.haversine_distance(current_pos, target_pos)) > 0.1:
         current_pos = gps.get_gps_coords()
         current_heading = gps.get_heading()
         target_heading = gps.calculate_heading(current_pos, target_pos)
         rotate_to_heading(current_heading, target_heading)
 
-
-def controller_mode():
-    while True:
-        left_speed, right_speed = nes.wpm_controller(nes.snes_input())
-        motor_driver.set_left_speed(left_speed)
-        motor_driver.set_right_speed(right_speed)
-
-
-controller = nes.Nes()
-
 try:
     while True:
-        #try:
-            #print(left_speed, right_speed)
-       # except:
-            #print("left and right undefined")
-
+        print(gps.get_gps_coords())
+    while False:
         # If controller is returning anything other than neutral, allow if to move robot.
         if controller.snes_input() != "neutral":
             while controller.snes_input() != "neutral":
