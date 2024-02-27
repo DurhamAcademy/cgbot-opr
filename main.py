@@ -28,12 +28,12 @@ def rotate_to_heading(current_heading, target_heading):
         print("tar", target_heading)
         print("goal", target_heading - current_heading)
 
-    """# Set motor speeds using PWM
+    # Set motor speeds using PWM
     motor_driver.set_left_speed(20)
     motor_driver.set_right_speed(20)
 
     # Move in a straight line for a specified duration
-    time.sleep(2)  # Adjust the duration as needed"""
+    time.sleep(1)  # Adjust the duration as needed
     print("finished")
 
 
