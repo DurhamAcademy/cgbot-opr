@@ -47,17 +47,17 @@ class Nes(object):
                 left_speed = 0
                 right_speed = 0
             elif control_input == "up":
-                left_speed = 25
-                right_speed = 25
+                left_speed = 30
+                right_speed = 30
             elif control_input =="down":
-                left_speed = -25
-                right_speed = -25
+                left_speed = -30
+                right_speed = -30
             elif control_input == "left":
-                left_speed = -25
-                right_speed = 25
+                left_speed = -35
+                right_speed = 35
             elif control_input == "right":
-                left_speed = 25
-                right_speed = -25
+                left_speed = 35
+                right_speed = -35
             else:
                 left_speed = 0
                 right_speed = 0
