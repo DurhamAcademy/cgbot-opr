@@ -48,8 +48,8 @@ def go_to_position(target_pos: tuple):
 
 try:
     # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
-    go_to_position((-78.9694332, 35.977330599999995))
-    while False:
+    # go_to_position((-78.9694332, 35.977330599999995))
+    while True:
         # If controller is returning anything other than neutral, allow if to move robot.
         if controller.snes_input() != "neutral":
             while controller.snes_input() != "neutral":
