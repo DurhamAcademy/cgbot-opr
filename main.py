@@ -45,7 +45,7 @@ def go_to_position(target_pos: tuple):
 
 try:
     # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
-    go_to_position((35.5838, -78.5809))
+    go_to_position((35.977222, -78.969176))
     """while True:
         print(gps.get_gps_coords())"""
     while False:
