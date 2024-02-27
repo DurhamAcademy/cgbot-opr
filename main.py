@@ -29,8 +29,8 @@ def rotate_to_heading(current_heading, target_heading):
         print("goal", target_heading - current_heading)
 
     # Set motor speeds using PWM
-    motor_driver.set_left_speed(20)
-    motor_driver.set_right_speed(20)
+    motor_driver.set_left_speed(25)
+    motor_driver.set_right_speed(25)
 
     # Move in a straight line for a specified duration
     time.sleep(1)  # Adjust the duration as needed
@@ -47,7 +47,8 @@ def go_to_position(target_pos: tuple):
         rotate_to_heading(current_heading, target_heading)
 
 try:
-    rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
+    # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
+    go_to_position((-78.9693672, 35.9775664))
     while False:
         # If controller is returning anything other than neutral, allow if to move robot.
         if controller.snes_input() != "neutral":
