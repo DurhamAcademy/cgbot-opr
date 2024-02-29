@@ -42,6 +42,7 @@ def go_to_position(target_pos: tuple):
     while abs(gps.haversine_distance(current_pos, target_pos)) > 0.1:
         current_pos = gps.get_gps_coords()
         print("dist", gps.haversine_distance(current_pos, target_pos))
+        print(current_pos, target_pos)
         current_heading = gps.get_heading()
         target_heading = gps.calculate_heading(current_pos, target_pos)
         rotate_to_heading(current_heading, target_heading)
