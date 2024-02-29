@@ -47,8 +47,8 @@ def go_to_position(target_pos: tuple):
 
 try:
     # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
-    # go_to_position((35.977222, -78.969176))
-    while True:
+    go_to_position((35.97772, -78.96978))
+    while False:
         left_speed, right_speed = controller.wpm_controller(controller.snes_input())
         drive.set_left_speed(left_speed)
         drive.set_right_speed(right_speed)
