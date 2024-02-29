@@ -50,12 +50,13 @@ def go_to_position(target_pos: tuple):
 
 try:
     # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
-    # go_to_position((35.977669299999995, -78.9698552)) # wrong coords?
+    # go_to_position((35.977669299999995, -78.9698552))
+    print()
     while True:
-        print(gps.get_gps_coords())
-        """left_speed, right_speed = controller.wpm_controller(controller.snes_input())
+        # print(gps.get_gps_coords())
+        left_speed, right_speed = controller.wpm_controller(controller.snes_input())
         drive.set_left_speed(left_speed)
-        drive.set_right_speed(right_speed)"""
+        drive.set_right_speed(right_speed)
         """if not controller.gps_mode:
             print("control")
             # If controller.gps_mode is False, then controller is enabled.
