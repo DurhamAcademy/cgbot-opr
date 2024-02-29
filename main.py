@@ -47,8 +47,7 @@ def go_to_position(target_pos: tuple):
 
 try:
     # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
-    go_to_position((35.977222, -78.969176))
-
+    # go_to_position((35.977222, -78.969176))
     while True:
         if not controller.gps_mode:
             # If controller.gps_mode is False, then controller is enabled.
