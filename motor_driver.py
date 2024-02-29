@@ -16,10 +16,10 @@ class Motor(object):
         GPIO.setup(config.motor_left_speed_pin, GPIO.OUT)
         GPIO.setup(config.motor_right_speed_pin, GPIO.OUT)
 
-        right_motor = GPIO.PWM(config.motor_right_speed_pin, 50)
-        right_motor.start(0)
-        left_motor = GPIO.PWM(config.motor_left_speed_pin, 50)
-        left_motor.start(0)
+        self.right_motor = GPIO.PWM(config.motor_right_speed_pin, 50)
+        self.right_motor.start(0)
+        self.left_motor = GPIO.PWM(config.motor_left_speed_pin, 50)
+        self.left_motor.start(0)
 
         GPIO.output(config.motor_left_direction_pin, GPIO.HIGH)
         GPIO.output(config.motor_right_direction_pin, GPIO.HIGH)
