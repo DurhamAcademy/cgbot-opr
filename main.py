@@ -4,6 +4,8 @@ import time
 import nes
 
 controller = nes.Nes()
+drive = motor_driver.Motor()
+
 
 def rotate_to_heading(current_heading, target_heading):
     # Calculate difference between current and target heading
@@ -18,15 +20,15 @@ def rotate_to_heading(current_heading, target_heading):
     current_heading = gps.get_heading()
     while abs(target_heading - current_heading) > 5:
         # rotate until real heading is close to target heading
-        motor_driver.set_left_speed(30 * rotation_dir)
-        motor_driver.set_right_speed(30 * rotation_dir * -1)
+        drive.set_left_speed(30 * rotation_dir)
+        drive.set_right_speed(30 * rotation_dir * -1)
         # update heading and rerun loop
         current_heading = gps.get_heading()
         print("turning")
     # Set motor speeds using PWM
     print("forward")
-    motor_driver.set_left_speed(28)
-    motor_driver.set_right_speed(28)
+    drive.set_left_speed(28)
+    drive.set_right_speed(28)
 
     # Move in a straight line for a specified duration
     time.sleep(1)  # Adjust the duration as needed
@@ -46,19 +48,15 @@ def go_to_position(target_pos: tuple):
 try:
     # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
     go_to_position((35.977222, -78.969176))
-    """while True:
-        print(gps.get_gps_coords())"""
-    while False:
-        # If controller is returning anything other than neutral, allow if to move robot.
-        if controller.snes_input() != "neutral":
-            while controller.snes_input() != "neutral":
-                left_speed, right_speed = controller.wpm_controller(controller.snes_input())
-                motor_driver.set_left_speed(left_speed)
-                motor_driver.set_right_speed(right_speed)
-        elif controller.gps_mode:
-            # Add another button on SNES controller for "start"  in nes.py to start the GPS program.
 
-            # Do GPS stuff
+    while True:
+        if not controller.gps_mode:
+            # If controller.gps_mode is False, then controller is enabled.
+            left_speed, right_speed = controller.wpm_controller(controller.snes_input())
+            drive.set_left_speed(left_speed)
+            drive.set_right_speed(right_speed)
+        elif controller.gps_mode:
+            # Else do cool GPS stuff
             """    
             pos = gps.get_gps_coords()
             print("Position", pos)
@@ -73,8 +71,5 @@ try:
             rotate_to_heading(current_heading, (current_heading + -90) % 360)
             print(gps.get_heading())
             """
-        elif controller.snes_input() == "neutral":
-            motor_driver.set_left_speed(0)
-            motor_driver.set_right_speed(0)
 finally:
-    motor_driver.cleanup()
+    drive.cleanup()

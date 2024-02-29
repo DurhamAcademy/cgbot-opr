@@ -33,8 +33,12 @@ class Nes(object):
                 self.gps_mode = False
                 return("right")
             elif report[1] == 1:
-                self.gps_mode = True
-                return("select")
+                # Allow select button to toggle between gps_mode
+                if self.gps_mode:
+                    self.gps_mode = False
+                else:
+                    self.gps_mode = True
+                return self.gps_mode
             elif report[1] == 2:
                 return("start")
             else:
