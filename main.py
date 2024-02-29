@@ -45,6 +45,7 @@ def go_to_position(target_pos: tuple):
         print(current_pos, target_pos)
         current_heading = gps.get_heading()
         target_heading = gps.calculate_heading(current_pos, target_pos)
+        print("traget", target_heading)
         rotate_to_heading(current_heading, target_heading)
 
 try:

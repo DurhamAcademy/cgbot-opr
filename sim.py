@@ -1,11 +1,11 @@
 import math
-import numpy as np
-import cv2
+# import numpy as np
+# import cv2
 import time
-import gps
+# import gps
 import folium
 
-field = np.zeros([1000, 1000, 3], dtype=np.uint8)
+# field = np.zeros([1000, 1000, 3], dtype=np.uint8)
 
 def update_map(m, current_pos, path, filename='pos_map.html'):
     # Draw a line from the previous position to the current position
@@ -124,6 +124,11 @@ position = (30.266666, -97.733330, 0)
 time_interval = 5
 robot_map = folium.Map(location=[position[0], position[1]], max_zoom=60, zoom_start=35)
 path = []  # List to store the path
+folium.Marker(
+    location=[35.977669299999995, -78.9698552],
+    popup=f'Target Position: {35.977669299999995, -78.9698552}',
+    icon=folium.Icon(color='red')
+).add_to(robot_map)
 
 def go_to_position(target_pos: tuple):
     # current_pos, current_heading = gps.get_gps_coords()
@@ -158,10 +163,10 @@ def go_to_position(target_pos: tuple):
 
 # position = (field.shape[1] / 2, field.shape[0] / 2, 0.0)
 
-cv2.circle(field, (700, 500), 10, (0, 0, 255), -1)
-go_to_position((30.2664698, -97.73384))
+# cv2.circle(field, (700, 500), 10, (0, 0, 255), -1)
+# go_to_position((30.2664698, -97.73384))
 """for i in range(30):
     position = update_position()"""
 
-cv2.imshow("Field", field)
+# cv2.imshow("Field", field)
 # cv2.waitKey(0)
