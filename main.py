@@ -51,9 +51,9 @@ try:
     # go_to_position((35.97763, -78.96948))
     while True:
         print(gps.get_gps_coords())
-        left_speed, right_speed = controller.wpm_controller(controller.snes_input())
+        """left_speed, right_speed = controller.wpm_controller(controller.snes_input())
         drive.set_left_speed(left_speed)
-        drive.set_right_speed(right_speed)
+        drive.set_right_speed(right_speed)"""
         """if not controller.gps_mode:
             print("control")
             # If controller.gps_mode is False, then controller is enabled.
