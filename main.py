@@ -56,6 +56,7 @@ try:
             drive.set_left_speed(left_speed)
             drive.set_right_speed(right_speed)
         elif controller.gps_mode:
+            print("gps")
             # Else do cool GPS stuff
             """    
             pos = gps.get_gps_coords()
