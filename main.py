@@ -24,6 +24,7 @@ def rotate_to_heading(current_heading, target_heading):
         drive.set_right_speed(30 * rotation_dir * -1)
         # update heading and rerun loop
         current_heading = gps.get_heading()
+        print(abs(target_heading - current_heading))
         print("turning")
     # Set motor speeds using PWM
     print("forward")
