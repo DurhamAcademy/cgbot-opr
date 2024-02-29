@@ -50,7 +50,8 @@ def go_to_position(target_pos: tuple):
 
 try:
     # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
-    go_to_position((35.977669299999995, -78.9698552))
+    # go_to_position((35.977669299999995, -78.9698552))
+    print(gps.calculate_heading((35.977669299999995, -78.9698552), (36.977669299999995, -78.9698552)))
     while True:
         print(gps.get_gps_coords())
         """left_speed, right_speed = controller.wpm_controller(controller.snes_input())
