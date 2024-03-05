@@ -58,7 +58,7 @@ try:
     # go_to_position((35.977669299999995, -78.9698552))
     print()
     while True:
-        heading, coords = gps.get_gps_coords()
+        heading, _, _ = gps.get_gps_coords()
         print(heading)
         # print(gps.get_heading())
         # print(coords)
