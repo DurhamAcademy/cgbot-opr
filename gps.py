@@ -38,7 +38,7 @@ def get_gps_coords():
     """
     try:
         coords = gps.geo_coords()
-        return coords.lat, coords.lon
+        return coords.lat, coords.lon, coords.headMot
 
     except (ValueError, IOError) as err:
         print(err)
