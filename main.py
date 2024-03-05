@@ -53,7 +53,7 @@ try:
     # go_to_position((35.977669299999995, -78.9698552))
     print()
     while True:
-        # coords = gps.get_gps_coords()
+        coords = gps.get_gps_coords()
         # print(coords)
         print("current", gps.get_heading())
         # print(gps.haversine_distance(gps.get_gps_coords(), (35.9776465, -78.96987879999999)))
