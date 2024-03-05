@@ -54,7 +54,6 @@ try:
     print()
     while True:
         print(gps.get_gps_coords())
-        drive.set_left_speed(50)
         """left_speed, right_speed = controller.wpm_controller(controller.snes_input())
         drive.set_left_speed(left_speed)
         drive.set_right_speed(right_speed)"""
