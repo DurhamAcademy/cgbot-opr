@@ -39,7 +39,7 @@ def rotate_to_heading(current_heading, target_heading):
 def go_to_position(target_pos: tuple):
     current_pos = gps.get_gps_coords()
     current_heading = gps.get_heading()
-    while abs(gps.haversine_distance(current_pos, target_pos)) > 0.1:
+    while abs(gps.haversine_distance(current_pos, target_pos)) > 2:
         current_pos = gps.get_gps_coords()
         print("dist", gps.haversine_distance(current_pos, target_pos))
         print(current_pos, target_pos)
@@ -53,7 +53,9 @@ try:
     # go_to_position((35.977669299999995, -78.9698552))
     print()
     while True:
+        coords = gps.get_gps_coords()
         print(gps.haversine_distance(gps.get_gps_coords(), (35.9776465, -78.96987879999999)))
+        print("head", gps.calculate_heading(coords, (35.9776465, -78.96987879999999)))
         """left_speed, right_speed = controller.wpm_controller(controller.snes_input())
         drive.set_left_speed(left_speed)
         drive.set_right_speed(right_speed)"""
