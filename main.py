@@ -56,7 +56,7 @@ try:
         coords = gps.get_gps_coords()
         print(coords)
         print(gps.haversine_distance(gps.get_gps_coords(), (35.9776465, -78.96987879999999)))
-        print("hed", gps.calculate_heading(coords, (35.9776465, -78.96987879999999)))
+        print("head", gps.calculate_heading(coords, (35.9776465, -78.96987879999999)))
         """left_speed, right_speed = controller.wpm_controller(controller.snes_input())
         drive.set_left_speed(left_speed)
         drive.set_right_speed(right_speed)"""
