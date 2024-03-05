@@ -30,7 +30,7 @@ def run():
 def get_heading_from_magno(x, y):
     heading_rad = math.atan2(y, x)
     heading_deg = math.degrees(heading_rad)
-    return ((heading_deg - 90) - 180) % 360
+    return (heading_deg - 90) % 360
 
 def get_gps_coords():
     """
@@ -39,7 +39,7 @@ def get_gps_coords():
     try:
         coords = gps.geo_coords()
         print("gps head", coords.headMot)
-        return coords.lat, coords.lon
+        return coords.headMot, coords.lat, coords.lon
 
     except (ValueError, IOError) as err:
         print(err)

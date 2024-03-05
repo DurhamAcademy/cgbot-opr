@@ -17,13 +17,15 @@ def rotate_to_heading(current_heading, target_heading):
         # rotate left if that is shorter
         rotation_dir = -1
 
-    current_heading = gps.get_heading()
+    # current_heading = gps.get_heading()
+    current_heading, _, _ = gps.get_gps_coords()
     while abs(target_heading - current_heading) > 5:
         # rotate until real heading is close to target heading
         drive.set_left_speed(25 * rotation_dir)
         drive.set_right_speed(25 * rotation_dir * -1)
         # update heading and rerun loop
-        current_heading = gps.get_heading()
+        # current_heading = gps.get_heading()
+        current_heading, _, _ = gps.get_gps_coords()
         print(abs(target_heading - current_heading))
         print("turning")
     # Set motor speeds using PWM
@@ -40,22 +42,26 @@ def go_to_position(target_pos: tuple):
     current_pos = gps.get_gps_coords()
     current_heading = gps.get_heading()
     while abs(gps.haversine_distance(current_pos, target_pos)) > 2:
-        current_pos = gps.get_gps_coords()
+        current_heading, current_pos = gps.get_gps_coords()
         print("dist", gps.haversine_distance(current_pos, target_pos))
         print(current_pos, target_pos)
-        current_heading = gps.get_heading()
+        # current_heading = gps.get_heading()
         target_heading = gps.calculate_heading(current_pos, target_pos) # function error
         print("traget", target_heading)
         rotate_to_heading(current_heading, target_heading)
+        drive.set_right_speed(20)
+        drive.set_right_speed(20)
+        time.sleep(1)
 
 try:
     # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
     # go_to_position((35.977669299999995, -78.9698552))
     print()
     while True:
-        coords = gps.get_gps_coords()
+        # heading, coords = gps.get_gps_coords()
+        print(gps.get_heading())
         # print(coords)
-        print("current", gps.get_heading())
+        # print("current", gps.get_heading())
         # print(gps.haversine_distance(gps.get_gps_coords(), (35.9776465, -78.96987879999999)))
         # print("head", gps.calculate_heading(coords, (35.9776465, -78.96987879999999)))
         """left_speed, right_speed = controller.wpm_controller(controller.snes_input())
