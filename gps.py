@@ -79,7 +79,7 @@ def calculate_heading(current_position, target_coordinates):
     heading = math.degrees(math.atan2(y, x))
 
     # Ensure the heading is in the range [0, 360)
-    heading = (heading + 360) % 360
+    heading = ((heading % 360) - 180) % 360
 
     return heading
 
