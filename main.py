@@ -2,6 +2,9 @@ import motor_driver
 import gps
 import time
 import nes
+from dotenv import load_dotenv
+
+load_dotenv()
 
 controller = nes.Nes()
 drive = motor_driver.Motor()
