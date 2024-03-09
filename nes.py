@@ -35,22 +35,22 @@ class Nes(object):
         if report:
             if report[4] == 0 and report[9] == 255:
                 self.gps_mode = False
-                return("up")
+                return ("up")
             elif report[4] == 255 and report[10] == 255:
                 self.gps_mode = False
-                return("down")
+                return ("down")
             elif report[3] == 0 and report[8] == 255:
                 self.gps_mode = False
-                return("left")
+                return ("left")
             elif report[3] == 255 and report[7] == 255:
                 self.gps_mode = False
-                return("right")
+                return ("right")
             elif report[1] == 1:
-                return("select")
+                return ("select")
             elif report[1] == 2:
-                return("start")
+                return ("start")
             else:
-                return("neutral")
+                return ("neutral")
 
     def wpm_controller(self, control_input):
         try:
@@ -61,7 +61,7 @@ class Nes(object):
             elif control_input == "up":
                 left_speed = 40
                 right_speed = 40
-            elif control_input =="down":
+            elif control_input == "down":
                 left_speed = -40
                 right_speed = -40
             elif control_input == "left":
@@ -75,5 +75,5 @@ class Nes(object):
                 right_speed = 0
             return left_speed, right_speed
         except:
-            left_speed, right_speed = 0,0
+            left_speed, right_speed = 0, 0
             return left_speed, right_speed

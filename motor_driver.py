@@ -1,10 +1,13 @@
 import RPi.GPIO as GPIO
 import config
+import time
 
 """
 Using a class for motor control
 Uses an init method to initialize motors once
 """
+
+
 class Motor(object):
     def __init__(self):
         # Sets the pin numbering system to use the physical layout
@@ -24,14 +27,27 @@ class Motor(object):
         GPIO.output(config.motor_left_direction_pin, GPIO.HIGH)
         GPIO.output(config.motor_right_direction_pin, GPIO.HIGH)
 
+        self.last_motor_command = 0.00
+
         # Turn on Safety light
         GPIO.output(config.safety_light_pin, GPIO.HIGH)
+
+    def safety_light_timeout(self):
+        if self.last_motor_command + config.safety_light_timeout < time.time():
+            # if pin is high, go low
+            if GPIO.input(config.safety_light_pin):
+                GPIO.output(config.safety_light_pin, GPIO.LOW)
+        else:
+            GPIO.output(config.safety_light_pin, GPIO.HIGH)
 
     def set_right_speed(self, speed: int):
         """
         :param speed: Speed of right motor, negative for backwards (range unknown) TODO: Find out range
         :return: null
         """
+
+        self.last_motor_command = time.time()
+
         if speed >= 0:
             GPIO.output(config.motor_right_direction_pin, GPIO.HIGH)
         else:
@@ -43,6 +59,9 @@ class Motor(object):
         :param speed: Speed of left motor, negative for backwards (range unknown) TODO: Find out range
         :return: null
         """
+
+        self.last_motor_command = time.time()
+
         if speed >= 0:
             GPIO.output(config.motor_left_direction_pin, GPIO.HIGH)
         else:

@@ -72,6 +72,16 @@ def check_perimeter():
 def main():
     try:
         while True:
+
+            """
+            Check safety light timeout
+            """
+            drive.safety_light_timeout()
+
+            """
+            Drive mode
+            """
+
             if controller.get_mode() == "controller":
                 """
                 Controller Mode
