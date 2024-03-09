@@ -44,38 +44,64 @@ def go_to_position(target_pos: tuple):
         print("dist", gps.haversine_distance(current_pos, target_pos))
         print(current_pos, target_pos)
         current_heading = gps.get_heading()
-        target_heading = gps.calculate_heading(current_pos, target_pos) # function error
-        print("traget", target_heading)
+        target_heading = gps.calculate_initial_compass_bearing(current_pos, target_pos)
+        print("target", target_heading)
         rotate_to_heading(current_heading, target_heading)
 
-try:
-    # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
-    # go_to_position((35.977669299999995, -78.9698552))
-    print()
-    while True:
-        # print(gps.get_gps_coords())
-        left_speed, right_speed = controller.wpm_controller(controller.snes_input())
-        drive.set_left_speed(left_speed)
-        drive.set_right_speed(right_speed)
-        """if not controller.gps_mode:
-            print("control")
-            # If controller.gps_mode is False, then controller is enabled.
-            
-        elif controller.gps_mode:
-            print("gps")"""
-        """    
-        pos = gps.get_gps_coords()
-        print("Position", pos)
-        pos = gps.get_gps_coords()
-        print("Position", pos)
-        heading = gps.get_heading()
-        print("Heading", heading)
-        speed = input()
-        motor_driver.set_right_speed(int(speed))
-        motor_driver.set_left_speed(int(speed))
-        current_heading = gps.get_heading()
-        rotate_to_heading(current_heading, (current_heading + -90) % 360)
-        print(gps.get_heading())
-        """
-finally:
-    drive.cleanup()
+
+def main():
+    try:
+        while True:
+            if controller.get_mode() == "controller":
+                """
+                Controller Mode
+                """
+                left_speed, right_speed = controller.wpm_controller(controller.snes_input())
+                drive.set_left_speed(left_speed)
+                drive.set_right_speed(right_speed)
+
+                if controller.snes_input() == "select":
+
+                    ## Print Coordanates
+                    try:
+                        print(gps.get_gps_coords())
+                        time.sleep(1)
+                    except Exception as e:
+                        print(e)
+
+            else:
+                """
+                GPS Mode
+                """
+                # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
+                # go_to_position((35.977669299999995, -78.9698552))
+
+                # print(gps.get_gps_coords())
+
+
+                """if not controller.gps_mode:
+                    print("control")
+                    # If controller.gps_mode is False, then controller is enabled.
+                    
+                elif controller.gps_mode:
+                    print("gps")"""
+                """    
+                pos = gps.get_gps_coords()
+                print("Position", pos)
+                pos = gps.get_gps_coords()
+                print("Position", pos)
+                heading = gps.get_heading()
+                print("Heading", heading)
+                speed = input()
+                motor_driver.set_right_speed(int(speed))
+                motor_driver.set_left_speed(int(speed))
+                current_heading = gps.get_heading()
+                rotate_to_heading(current_heading, (current_heading + -90) % 360)
+                print(gps.get_heading())
+                """
+    finally:
+        drive.cleanup()
+
+
+if __name__ == "__main__":
+    main()

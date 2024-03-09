@@ -27,10 +27,12 @@ def run():
     finally:
         port.close()
 
+
 def get_heading_from_magno(x, y):
     heading_rad = math.atan2(y, x)
     heading_deg = math.degrees(heading_rad)
     return (heading_deg - 90) % 360
+
 
 def get_gps_coords():
     """
@@ -38,8 +40,6 @@ def get_gps_coords():
     """
     try:
         coords = gps.geo_coords()
-        print("Coords: ", coords.lon, coords.lat)
-        print(coords.headMot)
         return coords.lat, coords.lon
 
     except (ValueError, IOError) as err:
@@ -51,37 +51,49 @@ def get_heading():
     # veh = gps.veh_attitude()
     return get_heading_from_magno(MX, MY)
 
-def calculate_heading(current_position, target_coordinates):
-    """
-    Calculate the heading from the current position to the target coordinates.
 
-    Parameters:
-    - current_position: Tuple of (latitude, longitude) representing the current position.
-    - target_coordinates: Tuple of (latitude, longitude) representing the target coordinates.
-
-    Returns:
-    - heading: Heading in degrees (0 to 360).
+def calculate_initial_compass_bearing(pointA, pointB):
     """
 
-    # Extract latitude and longitude values
-    lat1, lon1 = current_position
-    lat2, lon2 = target_coordinates
+    Example:
+    A = (38.898556,-77.037852)
+    B = (36.1217264,-78.8891156)
 
-    # Calculate the differences in coordinates
-    dlat = math.radians(lat2 - lat1)
-    dlon = math.radians(lon2 - lon1)
+    Calculates the bearing between two points.
+    The formulae used is the following:
+        θ = atan2(sin(Δlong).cos(lat2),
+                  cos(lat1).sin(lat2) − sin(lat1).cos(lat2).cos(Δlong))
+    :Parameters:
+      - `pointA: The tuple representing the latitude/longitude for the
+        first point. Latitude and longitude must be in decimal degrees
+      - `pointB: The tuple representing the latitude/longitude for the
+        second point. Latitude and longitude must be in decimal degrees
+    :Returns:
+      The bearing in degrees
+    :Returns Type:
+      float
+    """
+    if (type(pointA) != tuple) or (type(pointB) != tuple):
+        raise TypeError("Only tuples are supported as arguments")
 
-    # Calculate the heading using arctan2
-    y = math.sin(dlon) * math.cos(math.radians(lat2))
-    x = (math.cos(math.radians(lat1)) * math.sin(math.radians(lat2)) -
-         math.sin(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.cos(dlon))
+    lat1 = math.radians(pointA[0])
+    lat2 = math.radians(pointB[0])
 
-    heading = math.degrees(math.atan2(y, x))
+    difflong = math.radians(pointB[1] - pointA[1])
 
-    # Ensure the heading is in the range [0, 360)
-    heading = (heading + 360) % 360
+    x = math.sin(difflong) * math.cos(lat2)
+    y = math.cos(lat1) * math.sin(lat2) - (math.sin(lat1)
+            * math.cos(lat2) * math.cos(difflong))
 
-    return heading
+    initial_bearing = math.atan2(x, y)
+
+    # Now we have the initial bearing but math.atan2 return values
+    # from -180° to + 180° which is not what we want for a compass bearing
+    # The solution is to normalize the initial bearing as shown below
+    initial_bearing = math.degrees(initial_bearing)
+    compass_bearing = (initial_bearing + 360) % 360
+
+    return compass_bearing
 
 
 def haversine_distance(coord1, coord2):

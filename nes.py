@@ -1,14 +1,11 @@
 import hid
 import RPi.GPIO as GPIO
+import config
 
 
 class Nes(object):
 
     def __init__(self):
-
-        # By default let GPS mode be enabled.
-        self.gps_mode = True
-
         try:
             for device in hid.enumerate():
                 print(f"0x{device['vendor_id']:04x}:0x{device['product_id']:04x} {device['product_string']}")
@@ -16,6 +13,22 @@ class Nes(object):
             self.nes_device.open(0x0079, 0x0126)
         except AttributeError:
             print("Unable to open device")
+
+        try:
+            GPIO.setmode(GPIO.BCM)
+            GPIO.setup(config.gps_mode_switch_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        except:
+            print("Unable to setup GPIO on NES/GPS Switch")
+
+    def get_mode(self):
+        """
+        Check GPS mode or Controller Mode based on physical switch.
+        """
+        mode = GPIO.input(config.gps_mode_switch_pin)
+        if mode == 1:
+            return "gps"
+        else:
+            return "controller"
 
     def snes_input(self):
         report = self.nes_device.read(64)
@@ -33,12 +46,7 @@ class Nes(object):
                 self.gps_mode = False
                 return("right")
             elif report[1] == 1:
-                # Allow select button to toggle between gps_mode
-                if self.gps_mode:
-                    self.gps_mode = False
-                else:
-                    self.gps_mode = True
-                return self.gps_mode
+                return("select")
             elif report[1] == 2:
                 return("start")
             else:
@@ -51,17 +59,17 @@ class Nes(object):
                 left_speed = 0
                 right_speed = 0
             elif control_input == "up":
-                left_speed = 30
-                right_speed = 30
+                left_speed = 40
+                right_speed = 40
             elif control_input =="down":
-                left_speed = -30
-                right_speed = -30
+                left_speed = -40
+                right_speed = -40
             elif control_input == "left":
-                left_speed = -35
-                right_speed = 35
+                left_speed = -45
+                right_speed = 45
             elif control_input == "right":
-                left_speed = 35
-                right_speed = -35
+                left_speed = 45
+                right_speed = -45
             else:
                 left_speed = 0
                 right_speed = 0
