@@ -41,7 +41,7 @@ def go_to_position(target_pos: tuple):
     current_heading = gps.get_heading()
     while abs(gps.haversine_distance(current_pos, target_pos)) > 0.1:
         current_pos = gps.get_gps_coords()
-        print("dist", gps.haversine_distance(current_pos, target_pos))
+        print("dist", gps.haveget_headingrsine_distance(current_pos, target_pos))
         print(current_pos, target_pos)
         current_heading = gps.get_heading()
         target_heading = gps.calculate_initial_compass_bearing(current_pos, target_pos)
@@ -77,7 +77,6 @@ def main():
                 # go_to_position((35.977669299999995, -78.9698552))
 
                 # print(gps.get_gps_coords())
-
 
                 """if not controller.gps_mode:
                     print("control")

@@ -9,7 +9,8 @@ i2c = board.I2C()  # uses board.SCL and board.SDA
 # i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 SENSOR = adafruit_mlx90393.MLX90393(i2c, address=0x18, gain=adafruit_mlx90393.GAIN_1X)
 
-port = serial.Serial('/dev/serial/by-id/usb-u-blox_AG_-_www.u-blox.com_u-blox_GNSS_receiver-if00', baudrate=38400, timeout=1)
+port = serial.Serial('/dev/serial/by-id/usb-u-blox_AG_-_www.u-blox.com_u-blox_GNSS_receiver-if00', baudrate=38400,
+                     timeout=1)
 gps = UbloxGps(port)
 
 
@@ -36,7 +37,7 @@ def get_heading_from_magno(x, y):
 
 def get_gps_coords():
     """
-    :return: array: [(longitude, latitude), heading]
+    :return: array: [(longitude, latitude)]
     """
     try:
         coords = gps.geo_coords()
@@ -52,38 +53,39 @@ def get_heading():
     return get_heading_from_magno(MX, MY)
 
 
-def calculate_initial_compass_bearing(pointA, pointB):
+def calculate_initial_compass_bearing(point_a, point_b):
     """
 
     Example:
     A = (38.898556,-77.037852)
     B = (36.1217264,-78.8891156)
+    result is 208.44000059760523
 
     Calculates the bearing between two points.
     The formulae used is the following:
         θ = atan2(sin(Δlong).cos(lat2),
                   cos(lat1).sin(lat2) − sin(lat1).cos(lat2).cos(Δlong))
     :Parameters:
-      - `pointA: The tuple representing the latitude/longitude for the
+      - `point_a: The tuple representing the latitude/longitude for the
         first point. Latitude and longitude must be in decimal degrees
-      - `pointB: The tuple representing the latitude/longitude for the
+      - `point_b: The tuple representing the latitude/longitude for the
         second point. Latitude and longitude must be in decimal degrees
     :Returns:
       The bearing in degrees
     :Returns Type:
       float
     """
-    if (type(pointA) != tuple) or (type(pointB) != tuple):
+    if (type(point_a) != tuple) or (type(point_b) != tuple):
         raise TypeError("Only tuples are supported as arguments")
 
-    lat1 = math.radians(pointA[0])
-    lat2 = math.radians(pointB[0])
+    lat1 = math.radians(point_a[0])
+    lat2 = math.radians(point_b[0])
 
-    difflong = math.radians(pointB[1] - pointA[1])
+    difflong = math.radians(point_b[1] - point_a[1])
 
     x = math.sin(difflong) * math.cos(lat2)
     y = math.cos(lat1) * math.sin(lat2) - (math.sin(lat1)
-            * math.cos(lat2) * math.cos(difflong))
+                                           * math.cos(lat2) * math.cos(difflong))
 
     initial_bearing = math.atan2(x, y)
 
@@ -128,4 +130,3 @@ def haversine_distance(coord1, coord2):
     distance = earth_radius * c
 
     return distance
-
