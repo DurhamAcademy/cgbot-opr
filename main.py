@@ -49,6 +49,26 @@ def go_to_position(target_pos: tuple):
         rotate_to_heading(current_heading, target_heading)
 
 
+def check_stuck():
+    """
+    Need a function to check that the robot is not stuck.
+    Something like has motors run and GPS coordinates are
+    not changing.
+    :return: Bool
+    """
+    return False
+
+
+def check_perimeter():
+    """
+    Need a function to check that all ultrasonics are clear
+    and nothing is around the robot.
+    Return a side that is blocked
+    :return: none, left, right, front, back
+    """
+    return "none"
+
+
 def main():
     try:
         while True:
@@ -60,9 +80,10 @@ def main():
                 drive.set_left_speed(left_speed)
                 drive.set_right_speed(right_speed)
 
+                """
+                If select button is pressed, print coordinates
+                """
                 if controller.snes_input() == "select":
-
-                    ## Print Coordanates
                     try:
                         print(gps.get_gps_coords())
                         time.sleep(1)
