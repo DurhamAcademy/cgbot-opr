@@ -3,11 +3,34 @@ import gps
 import time
 import nes
 from dotenv import load_dotenv
+import logging
+import datetime
+import os
+import json
 
+# Import env file
 load_dotenv()
 
 controller = nes.Nes()
 drive = motor_driver.Motor()
+
+"""
+Logging
+TODO: Setup logrotate on this directory.
+"""
+if not os.path.isdir("/var/log/cgbot-opr"):
+    os.makedirs("/var/log/cgbot")
+
+logfile = "/var/log/cgbot-opr/log_" + str(datetime.date.today()) + ".txt"
+logging.basicConfig(filename=logfile)
+logging.basicConfig(level=logging.DEBUG)
+
+"""
+Route
+"""
+with open("route.json") as route_file:
+    route = json.load(route_file)
+route_file.close()
 
 
 def rotate_to_heading(current_heading, target_heading):
@@ -41,7 +64,11 @@ def rotate_to_heading(current_heading, target_heading):
 
 def go_to_position(target_pos: tuple):
     current_pos = gps.get_gps_coords()
+    logging.debug("go_to_position: current coordinates" + current_pos)
+
     current_heading = gps.get_heading()
+    logging.debug("go_to_position: current heading" + current_heading)
+
     while abs(gps.haversine_distance(current_pos, target_pos)) > 0.1:
         current_pos = gps.get_gps_coords()
         print("dist", gps.haveget_headingrsine_distance(current_pos, target_pos))
@@ -133,8 +160,10 @@ def main():
                 print(gps.get_heading())
                 """
     finally:
+        logging.debug("Main loop complete.")
         drive.cleanup()
 
 
 if __name__ == "__main__":
+    logging.debug("Start of program")
     main()
