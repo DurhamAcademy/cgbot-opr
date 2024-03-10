@@ -26,6 +26,7 @@ def run():
                 print(err)
 
     finally:
+        print("Closing GPS")
         #port.close()
 
 
