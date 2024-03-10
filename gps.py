@@ -4,10 +4,25 @@ import math
 import adafruit_mlx90393
 import board
 import time
+from adafruit_bno08x import (
+    BNO_REPORT_ACCELEROMETER,
+    BNO_REPORT_GYROSCOPE,
+    BNO_REPORT_MAGNETOMETER,
+    BNO_REPORT_ROTATION_VECTOR,
+)
+from adafruit_bno08x.i2c import BNO08X_I2C
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
 # i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
+
+# AdaFruit MLX90393
 SENSOR = adafruit_mlx90393.MLX90393(i2c, address=0x18, gain=adafruit_mlx90393.GAIN_1X)
+# AdaFruit BNO085
+SENSOR2 = BNO08X_I2C(i2c)
+SENSOR2.enable_feature(BNO_REPORT_ACCELEROMETER)
+SENSOR2.enable_feature(BNO_REPORT_GYROSCOPE)
+SENSOR2.enable_feature(BNO_REPORT_MAGNETOMETER)
+SENSOR2.enable_feature(BNO_REPORT_ROTATION_VECTOR)
 
 port = serial.Serial('/dev/serial/by-id/usb-u-blox_AG_-_www.u-blox.com_u-blox_GNSS_receiver-if00', baudrate=38400,
                      timeout=1)
@@ -33,7 +48,7 @@ def run():
 def gps_heading():
     try:
         coords = gps.geo_coords()
-        return coords
+        return coords.headMot
     except (ValueError, IOError) as err:
         print(err)
 
@@ -58,6 +73,12 @@ def get_gps_coords():
 
 def get_heading():
     MX, MY, MZ = SENSOR.magnetic
+    # veh = gps.veh_attitude()
+    return get_heading_from_magno(MX, MY)
+
+
+def get_heading2():
+    MX, MY, MZ = SENSOR2.magnetic
     # veh = gps.veh_attitude()
     return get_heading_from_magno(MX, MY)
 
