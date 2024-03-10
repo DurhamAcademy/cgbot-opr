@@ -56,7 +56,7 @@ def gps_heading():
 def get_heading_from_magno(x, y):
     heading_rad = math.atan2(y, x)
     heading_deg = math.degrees(heading_rad)
-    return (heading_deg - 90) % 360
+    return (heading_deg)
 
 
 def get_gps_coords():
@@ -81,6 +81,7 @@ def get_heading2():
     MX, MY, MZ = SENSOR2.magnetic
     # veh = gps.veh_attitude()
     return get_heading_from_magno(MX, MY)
+
 
 def calculate_initial_compass_bearing(point_a, point_b):
     """
