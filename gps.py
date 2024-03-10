@@ -28,6 +28,17 @@ def run():
     finally:
         port.close()
 
+def gps_heading():
+    try:
+        print("Listenting for UBX Messages.")
+        try:
+            coords = gps.geo_coords()
+            return coords
+        except (ValueError, IOError) as err:
+            print(err)
+    finally:
+        port.close()
+
 
 def get_heading_from_magno(x, y):
     heading_rad = math.atan2(y, x)
