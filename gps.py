@@ -26,7 +26,7 @@ def run():
                 print(err)
 
     finally:
-        port.close()
+        #port.close()
 
 
 def gps_heading():
