@@ -31,11 +31,10 @@ def run():
 
 def gps_heading():
     try:
-        try:
-            coords = gps.geo_coords()
-            return coords
-        except (ValueError, IOError) as err:
-            print(err)
+        coords = gps.geo_coords()
+        return coords
+    except (ValueError, IOError) as err:
+        print(err)
 
 
 def get_heading_from_magno(x, y):
