@@ -72,11 +72,13 @@ def go_to_position(target_pos: tuple):
     while abs(gps.haversine_distance(current_pos, target_pos)) > 0.1:
         current_pos = gps.get_gps_coords()
         current_mag_heading = gps.get_heading()
+        current_gps_heading = gps.gps_heading()
 
         print("distance to target in meters:", gps.haversine_distance(current_pos, target_pos))
         print("current position: " + str(current_pos))
         print("target position: " + str(target_pos))
-        print("magnetic heading: " str(current_mag_heading))
+        print("magnetic heading: " + str(current_mag_heading))
+        print("gps heading: " + str(current_gps_heading))
 
 
         target_heading = gps.calculate_initial_compass_bearing(current_pos, target_pos)
