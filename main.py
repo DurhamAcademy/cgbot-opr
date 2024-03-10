@@ -64,10 +64,10 @@ def rotate_to_heading(current_heading, target_heading):
 
 def go_to_position(target_pos: tuple):
     current_pos = gps.get_gps_coords()
-    logging.debug("go_to_position: current coordinates" + current_pos)
+    logging.debug("go_to_position: current coordinates" + str(current_pos))
 
     current_heading = gps.get_heading()
-    logging.debug("go_to_position: current heading" + current_heading)
+    logging.debug("go_to_position: current heading" + str(current_heading))
 
     while abs(gps.haversine_distance(current_pos, target_pos)) > 0.1:
         current_pos = gps.get_gps_coords()
