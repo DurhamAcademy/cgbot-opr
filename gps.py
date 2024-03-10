@@ -45,7 +45,7 @@ def get_heading_from_magno(x, y):
 
 def get_gps_coords():
     """
-    :return: array: [(longitude, latitude)]
+    :return: array: [(latitude, longitude )]
     """
     try:
         coords = gps.geo_coords()
