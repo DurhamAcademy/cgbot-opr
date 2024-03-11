@@ -13,7 +13,6 @@ from adafruit_bno08x import (
 from adafruit_bno08x.i2c import BNO08X_I2C
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
-# i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 
 # AdaFruit MLX90393
 SENSOR = adafruit_mlx90393.MLX90393(i2c, address=0x18, gain=adafruit_mlx90393.GAIN_1X)
@@ -59,8 +58,8 @@ def gps_heading():
 def get_heading_from_magno(x, y):
     """
     convert heading from radians to degrees.
-    :param x:
-    :param y:
+    :param x: magno x
+    :param y: magno y
     :return: heading in degrees
     """
     heading_rad = math.atan2(y, x)

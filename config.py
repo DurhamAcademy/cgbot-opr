@@ -7,4 +7,5 @@ motor_right_speed_pin = 12
 safety_light_pin = 22
 safety_light_timeout = 20
 gps_mode_switch_pin = 24
+mag_gps_degree_offset = 0
 

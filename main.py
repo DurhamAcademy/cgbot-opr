@@ -80,11 +80,10 @@ def go_to_position(target_pos: tuple):
         print("magnetic heading: " + str(current_mag_heading))
         print("gps heading: " + str(current_gps_heading))
 
-
         target_heading = gps.calculate_initial_compass_bearing(current_pos, target_pos)
 
         print("target heading: ", str(target_heading))
-        #rotate_to_heading(current_mag_heading, target_heading)
+        # rotate_to_heading(current_mag_heading, target_heading)
 
 
 def check_stuck():
@@ -138,12 +137,16 @@ def main():
                     except Exception as e:
                         print(e)
 
+                print("Sensor 2 Heading " + str(gps.get_heading_sensor2()))
+                print("Sensor 1 Heading " + str(gps.get_heading()))
+                print("GPS Heading " + str(gps.gps_heading()))
+
             else:
                 """
                 GPS Mode
                 """
                 # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
-                go_to_position((36.182629,-78.897478))
+                go_to_position((36.182629, -78.897478))
 
                 # print(gps.get_gps_coords())
 
