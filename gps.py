@@ -67,7 +67,7 @@ def get_heading_from_magno(x, y):
     heading_rad = math.atan2(y, x)
     heading_deg = math.degrees(heading_rad)
     heading_true = (heading_deg - 90) % 360
-    return (heading_true - config.mag2gps_degree_offset) % 360
+    return heading_true
 
 
 def get_gps_coords():
