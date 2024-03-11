@@ -137,7 +137,6 @@ def main():
                     except Exception as e:
                         print(e)
 
-                print("Sensor 2 Heading " + str(gps.get_heading_sensor2()))
                 print("Sensor 1 Heading " + str(gps.get_heading()))
                 print("GPS Heading " + str(gps.gps_heading()))
 
