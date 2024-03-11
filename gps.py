@@ -42,10 +42,13 @@ def run():
 
     finally:
         print("Closing GPS")
-        #port.close()
 
 
 def gps_heading():
+    """
+    gps heading
+    :return: gps heading degrees
+    """
     try:
         coords = gps.geo_coords()
         return coords.headMot
@@ -54,33 +57,51 @@ def gps_heading():
 
 
 def get_heading_from_magno(x, y):
+    """
+    convert heading from radians to degrees.
+    :param x:
+    :param y:
+    :return: heading in degrees
+    """
     heading_rad = math.atan2(y, x)
     heading_deg = math.degrees(heading_rad)
-    return (heading_deg)
+    return (heading_deg - 90) % 360
 
 
 def get_gps_coords():
     """
+    get GPS coordinates from ublox gps interface
     :return: array: [(latitude, longitude )]
     """
     try:
         coords = gps.geo_coords()
         return coords.lat, coords.lon
-
     except (ValueError, IOError) as err:
         print(err)
 
 
 def get_heading():
-    MX, MY, MZ = SENSOR.magnetic
-    # veh = gps.veh_attitude()
-    return get_heading_from_magno(MX, MY)
+    """
+    get heading from mlx90393 sensor
+    :return: heading in degrees
+    """
+    try:
+        MX, MY, MZ = SENSOR.magnetic
+        return get_heading_from_magno(MX, MY)
+    except:
+        return "unknown"
 
 
-def get_heading2():
-    MX, MY, MZ = SENSOR2.magnetic
-    # veh = gps.veh_attitude()
-    return get_heading_from_magno(MX, MY)
+def get_heading_sensor2():
+    """
+    get heading from bmo085
+    :return: heading in degrees
+    """
+    try:
+        MX, MY, MZ = SENSOR2.magnetic
+        return get_heading_from_magno(MX, MY)
+    except:
+        return "unknown"
 
 
 def calculate_initial_compass_bearing(point_a, point_b):
