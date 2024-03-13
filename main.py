@@ -25,12 +25,15 @@ logfile = "/var/log/cgbot-opr/log_" + str(datetime.date.today()) + ".txt"
 logging.basicConfig(filename=logfile)
 logging.basicConfig(level=logging.DEBUG)
 
-"""
-Route
-"""
-with open("route.json") as route_file:
-    route = json.load(route_file)
-route_file.close()
+
+def get_routes():
+    """
+    Load routes from json
+    :return: routes
+    """
+    with open("route.json") as route_file:
+        route = json.load(route_file)
+    return route
 
 
 def rotate_to_heading(current_heading, target_heading):
@@ -43,13 +46,13 @@ def rotate_to_heading(current_heading, target_heading):
         # rotate left if that is shorter
         rotation_dir = -1
 
-    current_heading = gps.get_heading()
+    current_heading = gps.gps_heading()
     while abs(target_heading - current_heading) > 5:
         # rotate until real heading is close to target heading
         drive.set_left_speed(25 * rotation_dir)
         drive.set_right_speed(25 * rotation_dir * -1)
         # update heading and rerun loop
-        current_heading = gps.get_heading()
+        current_heading = gps.gps_heading()
         print(abs(target_heading - current_heading))
         print("turning")
     # Set motor speeds using PWM
@@ -66,24 +69,22 @@ def go_to_position(target_pos: tuple):
     current_pos = gps.get_gps_coords()
     logging.debug("go_to_position: current coordinates" + str(current_pos))
 
-    current_heading = gps.get_heading()
+    current_heading = gps.gps_heading()
     logging.debug("go_to_position: current heading" + str(current_heading))
 
-    while abs(gps.haversine_distance(current_pos, target_pos)) > 0.1:
+    while abs(gps.haversine_distance(current_pos, target_pos)) > 1:
         current_pos = gps.get_gps_coords()
-        current_mag_heading = gps.get_heading()
         current_gps_heading = gps.gps_heading()
 
         print("distance to target in meters:", gps.haversine_distance(current_pos, target_pos))
         print("current position: " + str(current_pos))
         print("target position: " + str(target_pos))
-        print("magnetic heading: " + str(current_mag_heading))
         print("gps heading: " + str(current_gps_heading))
 
         target_heading = gps.calculate_initial_compass_bearing(current_pos, target_pos)
 
         print("target heading: ", str(target_heading))
-        # rotate_to_heading(current_mag_heading, target_heading)
+        rotate_to_heading(current_gps_heading, target_heading)
 
 
 def check_stuck():
@@ -137,15 +138,22 @@ def main():
                     except Exception as e:
                         print(e)
 
-                print("Sensor 1 Heading " + str(gps.get_heading()))
-                print("GPS Heading " + str(gps.gps_heading()))
-
             else:
                 """
                 GPS Mode
                 """
+
+                route = get_routes()
+                for i in route['coordinates']:
+                    # convert to tuple
+                    i = eval(i)
+                    go_to_position(i)
+                    time.sleep(5)
+
+
                 # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
-                go_to_position((36.182629, -78.897478))
+                # go_to_position((36.182629, -78.897478))
+
 
                 # print(gps.get_gps_coords())
 
