@@ -19,11 +19,11 @@ i2c = board.I2C()  # uses board.SCL and board.SDA
 # AdaFruit MLX90393
 SENSOR = adafruit_mlx90393.MLX90393(i2c, address=0x18, gain=adafruit_mlx90393.GAIN_1X)
 # # AdaFruit BNO085
-# SENSOR2 = BNO08X_I2C(i2c)
-# SENSOR2.enable_feature(BNO_REPORT_ACCELEROMETER)
-# SENSOR2.enable_feature(BNO_REPORT_GYROSCOPE)
-# SENSOR2.enable_feature(BNO_REPORT_MAGNETOMETER)
-# SENSOR2.enable_feature(BNO_REPORT_ROTATION_VECTOR)
+SENSOR2 = BNO08X_I2C(i2c)
+SENSOR2.enable_feature(BNO_REPORT_ACCELEROMETER)
+SENSOR2.enable_feature(BNO_REPORT_GYROSCOPE)
+SENSOR2.enable_feature(BNO_REPORT_MAGNETOMETER)
+SENSOR2.enable_feature(BNO_REPORT_ROTATION_VECTOR)
 
 port = serial.Serial('/dev/serial/by-id/usb-u-blox_AG_-_www.u-blox.com_u-blox_GNSS_receiver-if00', baudrate=38400,
                      timeout=1)
