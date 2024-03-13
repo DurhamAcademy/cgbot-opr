@@ -66,6 +66,11 @@ def rotate_to_heading(current_heading, target_heading):
 
 
 def go_to_position(target_pos: tuple):
+
+    # forward for 1 second.
+    drive.set_left_speed(35)
+    drive.set_right_speed(-35)
+
     current_pos = gps.get_gps_coords()
     logging.debug("go_to_position: current coordinates" + str(current_pos))
 

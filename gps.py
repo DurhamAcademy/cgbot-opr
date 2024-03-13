@@ -9,7 +9,6 @@ from adafruit_bno08x import (
     BNO_REPORT_GYROSCOPE,
     BNO_REPORT_MAGNETOMETER,
     BNO_REPORT_ROTATION_VECTOR,
-    BNO_REPORT_GYRO_INTEGRATED_ROTATION_VECTOR
 )
 from adafruit_bno08x.i2c import BNO08X_I2C
 
@@ -25,7 +24,6 @@ SENSOR2.enable_feature(BNO_REPORT_ACCELEROMETER)
 SENSOR2.enable_feature(BNO_REPORT_GYROSCOPE)
 SENSOR2.enable_feature(BNO_REPORT_MAGNETOMETER)
 SENSOR2.enable_feature(BNO_REPORT_ROTATION_VECTOR)
-SENSOR2.enable_feature(BNO_REPORT_GYRO_INTEGRATED_ROTATION_VECTOR)
 
 port = serial.Serial('/dev/serial/by-id/usb-u-blox_AG_-_www.u-blox.com_u-blox_GNSS_receiver-if00', baudrate=38400,
                      timeout=1)
@@ -102,6 +100,7 @@ def get_heading_sensor2():
     :return: heading in degrees
     """
     try:
+        SEN
         MX, MY, MZ = SENSOR2.magnetic
         return get_heading_from_magno(MX, MY)
     except:
