@@ -60,10 +60,11 @@ def rotate_to_heading(current_heading, target_heading):
         print("turning")
     # Set motor speeds using PWM
     print("forward")
+    drive.drive_stop()
     drive.drive_forward()
 
     # Move in a straight line for a specified duration
-    time.sleep(1)  # Adjust the duration as needed
+    time.sleep(5)  # Adjust the duration as needed
     print("finished")
 
 
