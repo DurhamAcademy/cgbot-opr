@@ -68,8 +68,13 @@ class Motor(object):
             GPIO.output(config.motor_left_direction_pin, GPIO.LOW)
         self.left_motor.ChangeDutyCycle(abs(speed))
 
-    def turn_left(self, speed: int):
+    def drive_forward(self):
         self.set_left_speed(20)
+        self.set_right_speed(20)
+        return
+
+    def drive_turn_left(self):
+        self.set_left_speed(-20)
         self.set_right_speed(20)
         return
 
