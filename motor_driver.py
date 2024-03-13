@@ -79,13 +79,13 @@ class Motor(object):
         return
 
     def drive_turn_left(self):
-        self.set_left_speed(-30)
-        self.set_right_speed(30)
+        self.set_left_speed(-35)
+        self.set_right_speed(35)
         return
 
     def drive_turn_right(self):
-        self.set_left_speed(30)
-        self.set_right_speed(-30)
+        self.set_left_speed(35)
+        self.set_right_speed(-35)
         return
 
     def drive_reverse(self):
