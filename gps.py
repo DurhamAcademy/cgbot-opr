@@ -35,9 +35,10 @@ def run():
         print("Listenting for UBX Messages.")
         while True:
             try:
-                coords = gps.geo_coords()
-                print("Coords: ", coords.lon, coords.lat)
-                print("Heading: ", coords.headMot)
+                #coords = gps.geo_coords()
+                #print("Coords: ", coords.lon, coords.lat)
+                #print("Heading: ", coords.headMot)
+                print(SENSOR.get_heading())
             except (ValueError, IOError) as err:
                 print(err)
 
