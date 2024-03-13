@@ -41,24 +41,26 @@ def rotate_to_heading(current_heading, target_heading):
     # Adjust the following formula based on your specific robot setup
     heading_difference = (target_heading - current_heading + 360) % 360
     # rotate right by default
-    rotation_dir = 1
+    rotation_dir = "left"
     if heading_difference >= 180:
         # rotate left if that is shorter
-        rotation_dir = -1
+        rotation_dir = "right"
 
     current_heading = gps.gps_heading()
     while abs(target_heading - current_heading) > 5:
         # rotate until real heading is close to target heading
-        drive.set_left_speed(35 * rotation_dir)
-        drive.set_right_speed(35 * rotation_dir * -1)
+        if rotation_dir == "left":
+            drive.drive_turn_left()
+        else:
+            drive.drive_turn_right()
+
         # update heading and rerun loop
         current_heading = gps.gps_heading()
         print(abs(target_heading - current_heading))
         print("turning")
     # Set motor speeds using PWM
     print("forward")
-    drive.set_left_speed(38)
-    drive.set_right_speed(38)
+    drive.drive_forward()
 
     # Move in a straight line for a specified duration
     time.sleep(1)  # Adjust the duration as needed
@@ -68,8 +70,10 @@ def rotate_to_heading(current_heading, target_heading):
 def go_to_position(target_pos: tuple):
 
     # forward for 1 second.
-    drive.set_left_speed(35)
-    drive.set_right_speed(-35)
+    drive.drive_forward()
+    time.sleep(1)
+    drive.drive_stop()
+    time.sleep(3)
 
     current_pos = gps.get_gps_coords()
     logging.debug("go_to_position: current coordinates" + str(current_pos))
