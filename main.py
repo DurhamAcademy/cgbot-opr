@@ -47,7 +47,7 @@ def rotate_to_heading(current_heading, target_heading):
         rotation_dir = "right"
 
     current_heading = gps.gps_heading()
-    while abs(target_heading - current_heading) > 5:
+    while abs(target_heading - current_heading) > 10:
         # rotate until real heading is close to target heading
         if rotation_dir == "left":
             drive.drive_turn_left()
