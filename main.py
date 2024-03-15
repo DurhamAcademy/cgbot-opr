@@ -65,15 +65,17 @@ def rotate_to_heading(current_heading, target_heading):
 
         # rotate until real heading is close to target heading
         if rotation_dir[0] == "left":
-            drive.drive_turn_left()
+            #drive.drive_turn_left()
+            print("wanna go left")
         else:
-            drive.drive_turn_right()
+            print("wanna go right")
+            #drive.drive_turn_right()
 
         # update heading and rerun loop
         rotation_dir = fastest_direction(gps.gps_heading(), target_heading)
 
     print("stop")
-    drive.drive_stop()
+    #drive.drive_stop()
 
     # Move in a straight line for a specified duration
     time.sleep(2)  # Adjust the duration as needed
