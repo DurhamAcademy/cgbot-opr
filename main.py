@@ -94,7 +94,7 @@ def go_to_position(target_pos: tuple):
 
         rotate_to_heading(current_heading, target_heading)
         drive.drive_forward()
-        time.sleep(3)
+        time.sleep(2)
 
 
 def check_stuck():
