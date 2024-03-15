@@ -61,7 +61,7 @@ def rotate_to_heading(current_heading, target_heading):
     # Calculate difference between current and target heading
 
     rotation_dir = fastest_direction(current_heading, target_heading)
-    while rotation_dir[1] > 20:
+    while rotation_dir[1] > 5:
 
         # rotate until real heading is close to target heading
         if rotation_dir[0] == "left":
@@ -107,6 +107,7 @@ def go_to_position(target_pos: tuple):
 
         print("target heading: ", str(target_heading))
         rotate_to_heading(current_gps_heading, target_heading)
+
 
 
 def check_stuck():
