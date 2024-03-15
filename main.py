@@ -58,61 +58,43 @@ def fastest_direction(start_degree, end_degree):
 
 
 def rotate_to_heading(current_heading, target_heading):
-    # Calculate difference between current and target heading
+    """
+    Rotate robot to face the correct heading.
+    Appears to work.
+    :param current_heading:
+    :param target_heading:
+    :return:
+    """
 
     rotation_dir = fastest_direction(current_heading, target_heading)
-    while rotation_dir[1] > 5:
+    while rotation_dir[1] > 10:
 
         # rotate until real heading is close to target heading
         if rotation_dir[0] == "left":
-            #drive.drive_turn_left()
-            print("wanna go left")
+            drive.drive_turn_left()
         else:
-            print("wanna go right")
-            #drive.drive_turn_right()
+            drive.drive_turn_right()
 
         # update heading and rerun loop
-        print(gps.gps_heading())
 
         rotation_dir = fastest_direction(gps.gps_heading(), target_heading)
-        print(rotation_dir)
 
-    print("stop")
-    #drive.drive_stop()
-
-    # Move in a straight line for a specified duration
-    time.sleep(2)  # Adjust the duration as needed
-    print("finished")
+    drive.drive_stop()
 
 
 def go_to_position(target_pos: tuple):
 
-    # forward for 1 second.
-    drive.drive_forward()
-    time.sleep(1)
-    drive.drive_stop()
-    time.sleep(3)
-
     current_pos = gps.get_gps_coords()
-    logging.debug("go_to_position: current coordinates" + str(current_pos))
-
-    current_heading = gps.gps_heading()
-    logging.debug("go_to_position: current heading" + str(current_heading))
 
     while abs(gps.haversine_distance(current_pos, target_pos)) > 1:
         current_pos = gps.get_gps_coords()
-        current_gps_heading = gps.gps_heading()
-
-        print("distance to target in meters:", gps.haversine_distance(current_pos, target_pos))
-        print("current position: " + str(current_pos))
-        print("target position: " + str(target_pos))
-        print("gps heading: " + str(current_gps_heading))
+        current_heading = gps.gps_heading()
 
         target_heading = gps.calculate_initial_compass_bearing(current_pos, target_pos)
 
-        print("target heading: ", str(target_heading))
-        rotate_to_heading(current_gps_heading, target_heading)
-
+        rotate_to_heading(current_heading, target_heading)
+        drive.drive_forward()
+        time.sleep(3)
 
 
 def check_stuck():
