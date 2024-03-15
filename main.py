@@ -36,32 +36,44 @@ def get_routes():
     return route
 
 
+def fastest_direction(start_degree, end_degree):
+    """
+    Determines the fastest direction (left or right) from one degree to another
+    on a 360-degree circle.
+
+    Args:
+        start_degree (float): Starting degree (0 to 359).
+        end_degree (float): Ending degree (0 to 359).
+
+    Returns:
+        str: "left" if the fastest direction is to the left, "right" if to the right.
+    """
+    clockwise_distance = (end_degree - start_degree) % 360
+    counterclockwise_distance = (start_degree - end_degree) % 360
+
+    if clockwise_distance <= counterclockwise_distance:
+        return ["right", clockwise_distance]
+    else:
+        return ["left", counterclockwise_distance]
+
+
 def rotate_to_heading(current_heading, target_heading):
     # Calculate difference between current and target heading
-    # Adjust the following formula based on your specific robot setup
-    heading_difference = (target_heading - current_heading + 360) % 360
-    # rotate right by default
-    rotation_dir = "left"
-    if heading_difference >= 180:
-        # rotate left if that is shorter
-        rotation_dir = "right"
 
-    current_heading = gps.gps_heading()
-    while abs(target_heading - current_heading) > 10:
+    rotation_dir = fastest_direction(current_heading, target_heading)
+    while rotation_dir[1] > 20:
+
         # rotate until real heading is close to target heading
-        if rotation_dir == "left":
+        if rotation_dir[0] == "left":
             drive.drive_turn_left()
         else:
             drive.drive_turn_right()
 
         # update heading and rerun loop
-        current_heading = gps.gps_heading()
-        print(abs(target_heading - current_heading))
-        print("Turning, Current Heading: " + str(current_heading))
-    # Set motor speeds using PWM
-    print("forward")
+        rotation_dir = fastest_direction(gps.gps_heading(), target_heading)
+
+    print("stop")
     drive.drive_stop()
-    drive.drive_forward()
 
     # Move in a straight line for a specified duration
     time.sleep(2)  # Adjust the duration as needed
