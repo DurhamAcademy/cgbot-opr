@@ -57,14 +57,14 @@ def rotate_to_heading(current_heading, target_heading):
         # update heading and rerun loop
         current_heading = gps.gps_heading()
         print(abs(target_heading - current_heading))
-        print("turning")
+        print("Turning, Current Heading: " + str(current_heading))
     # Set motor speeds using PWM
     print("forward")
     drive.drive_stop()
     drive.drive_forward()
 
     # Move in a straight line for a specified duration
-    time.sleep(5)  # Adjust the duration as needed
+    time.sleep(2)  # Adjust the duration as needed
     print("finished")
 
 
