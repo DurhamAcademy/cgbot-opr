@@ -1,29 +1,16 @@
 from ublox_gps import UbloxGps
 import serial
 import math
-import adafruit_mlx90393
+#import adafruit_mlx90393
 import board
 import time
-from adafruit_bno08x import (
-    BNO_REPORT_ACCELEROMETER,
-    BNO_REPORT_GYROSCOPE,
-    BNO_REPORT_MAGNETOMETER,
-    BNO_REPORT_ROTATION_VECTOR,
-)
-from adafruit_bno08x.i2c import BNO08X_I2C
 
 import config
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
 
 # AdaFruit MLX90393
-SENSOR = adafruit_mlx90393.MLX90393(i2c, address=0x18, gain=adafruit_mlx90393.GAIN_1X)
-# # AdaFruit BNO085
-SENSOR2 = BNO08X_I2C(i2c)
-SENSOR2.enable_feature(BNO_REPORT_ACCELEROMETER)
-SENSOR2.enable_feature(BNO_REPORT_GYROSCOPE)
-SENSOR2.enable_feature(BNO_REPORT_MAGNETOMETER)
-SENSOR2.enable_feature(BNO_REPORT_ROTATION_VECTOR)
+#SENSOR = adafruit_mlx90393.MLX90393(i2c, address=0x18, gain=adafruit_mlx90393.GAIN_1X)
 
 port = serial.Serial('/dev/serial/by-id/usb-u-blox_AG_-_www.u-blox.com_u-blox_GNSS_receiver-if00', baudrate=38400,
                      timeout=1)
@@ -83,29 +70,16 @@ def get_gps_coords():
         print(err)
 
 
-def get_heading():
-    """
-    get heading from mlx90393 sensor
-    :return: heading in degrees
-    """
-    try:
-        MX, MY, MZ = SENSOR.magnetic
-        return get_heading_from_magno(MX, MY)
-    except:
-        return "unknown"
-
-
-def get_heading_sensor2():
-    """
-    get heading from bmo085
-    :return: heading in degrees
-    """
-    try:
-        SEN
-        MX, MY, MZ = SENSOR2.magnetic
-        return get_heading_from_magno(MX, MY)
-    except:
-        return "unknown"
+# def get_heading():
+#     """
+#     get heading from mlx90393 sensor
+#     :return: heading in degrees
+#     """
+#     try:
+#         MX, MY, MZ = SENSOR.magnetic
+#         return get_heading_from_magno(MX, MY)
+#     except:
+#         return "unknown"
 
 
 def calculate_initial_compass_bearing(point_a, point_b):
