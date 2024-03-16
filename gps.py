@@ -10,6 +10,9 @@ import config
 i2c = board.I2C()  # uses board.SCL and board.SDA
 
 # AdaFruit MLX90393
+# Check that sensor is properly oriented to X
+# https://github.com/adafruit/Adafruit-MLX90393-PCB/issues/1
+
 mag_sensor = adafruit_mlx90393.MLX90393(i2c, address=0x18, gain=adafruit_mlx90393.GAIN_1X)
 
 # durham magnetic declination
@@ -25,9 +28,6 @@ def run():
         print("Listenting for UBX Messages.")
         while True:
             try:
-                #coords = gps.geo_coords()
-                #print("Coords: ", coords.lon, coords.lat)
-                #print("Heading: ", coords.headMot)
                 print(get_heading())
             except (ValueError, IOError) as err:
                 print(err)
@@ -55,10 +55,15 @@ def get_heading_from_magno(x, y):
     :param y: magno y
     :return: heading in degrees
     """
+    # microteslas to radians
     heading_rad = math.atan2(y, x)
+    # radians to degrees
     heading_deg = math.degrees(heading_rad)
+    # return val on 360 mod
     heading_true = (heading_deg - 90) % 360
-    return heading_true + declination
+    # compensate for true north
+    heading = heading_true + declination
+    return heading_true
 
 
 def get_gps_coords():
