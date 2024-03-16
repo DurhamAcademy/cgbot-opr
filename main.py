@@ -82,31 +82,34 @@ def rotate_to_heading(current_heading, target_heading):
     """
 
     rotation_dir = fastest_direction(current_heading, target_heading)
-    while rotation_dir[1] > 10:
+    # only turn is more than 10 degrees off.
+    if current_heading - target_heading % 360 >= 10
+        while rotation_dir[1] > 10:
 
-        # rotate until real heading is close to target heading
-        speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
-        print(speed)
-        if rotation_dir[0] == "left":
-            drive.drive_turn_left(speed)
-        else:
-            drive.drive_turn_right(speed)
-        # update heading and rerun loop
-        rotation_dir = fastest_direction(gps.gps_heading(), target_heading)
+            # rotate until real heading is close to target heading
+            speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
+            print(speed)
+            if rotation_dir[0] == "left":
+                drive.drive_turn_left(speed)
+            else:
+                drive.drive_turn_right(speed)
+            # update heading and rerun loop
+            rotation_dir = fastest_direction(gps.gps_heading(), target_heading)
 
-    drive.drive_stop()
-
+        drive.drive_stop()
+    else:
+        print("rotation not needed.")
 
 def go_to_position(target_pos: tuple):
 
     current_pos = gps.get_gps_coords()
 
-    while abs(gps.haversine_distance(current_pos, target_pos)) > 1:
+    while abs(gps.haversine_distance(current_pos, target_pos)) > 2:
         current_pos = gps.get_gps_coords()
         current_heading = gps.gps_heading()
 
         target_heading = gps.calculate_initial_compass_bearing(current_pos, target_pos)
-
+        print("target heading: " + str(target_heading))
         rotate_to_heading(current_heading, target_heading)
         drive.drive_forward()
         time.sleep(1)
