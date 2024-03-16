@@ -158,7 +158,7 @@ def check_light_timeout():
 def main():
     try:
         while True:
-
+            log("main")
             """
             Check safety light timeout
             TODO: Enable mutilthreading and move this into its own thread.
@@ -243,16 +243,11 @@ def main():
 if __name__ == "__main__":
     threads = list()
 
-    log("Safety light timeout checking thread.")
     safety_light_thread = threading.Thread(target=check_light_timeout())
     threads.append(safety_light_thread)
     safety_light_thread.start()
 
-
-    log("Main program thread.")
     main_thread = threading.Thread(target=main())
     threads.append(main_thread)
     main_thread.start()
 
-    safety_light_thread.join()
-    main_thread.join()
