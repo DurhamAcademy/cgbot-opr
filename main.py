@@ -178,7 +178,7 @@ def main():
                     # convert to tuple
                     i = eval(i)
                     go_to_position(i)
-                    print("destination reached.!")
+                    print("destination reached.!!")
                     time.sleep(5)
 
 
