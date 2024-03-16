@@ -30,12 +30,25 @@ def run():
             try:
                 print("gps " + str(gps_heading()))
                 print("mag " + str(get_heading()))
+                print("fusionMode " + str(check_fusion()))
                 time.sleep(1)
             except (ValueError, IOError) as err:
                 print(err)
 
     finally:
         print("Closing GPS")
+
+
+def check_fusion():
+    """
+    return fusionMode status of GPS.
+    :return:
+    """
+    a = gps.gps.esf_status()
+    a = str(a)
+    for i in a.split(","):
+        if "fusionMode" in i:
+            return i
 
 
 def gps_heading():
