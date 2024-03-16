@@ -29,6 +29,9 @@ def run():
         while True:
             try:
                 print(get_heading())
+                print("gps " + str(gps_heading()))
+                print("mag " + str(get_heading()))
+
             except (ValueError, IOError) as err:
                 print(err)
 
