@@ -74,9 +74,9 @@ def rotate_to_heading(current_heading, target_heading):
             drive.drive_turn_left()
         else:
             drive.drive_turn_right()
-
+        time.sleep(1)
+        drive.drive_stop()
         # update heading and rerun loop
-
         rotation_dir = fastest_direction(gps.gps_heading(), target_heading)
 
     drive.drive_stop()
