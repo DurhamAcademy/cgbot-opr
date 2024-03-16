@@ -100,6 +100,7 @@ def rotate_to_heading(current_heading, target_heading):
     else:
         print("rotation not needed.")
 
+
 def go_to_position(target_pos: tuple):
 
     current_pos = gps.get_gps_coords()
@@ -177,6 +178,7 @@ def main():
                     # convert to tuple
                     i = eval(i)
                     go_to_position(i)
+                    print("destination reached.")
                     time.sleep(5)
 
 
