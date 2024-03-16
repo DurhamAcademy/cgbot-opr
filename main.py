@@ -254,3 +254,5 @@ if __name__ == "__main__":
     threads.append(main_thread)
     main_thread.start()
 
+    safety_light_thread.join()
+    main_thread.join()
