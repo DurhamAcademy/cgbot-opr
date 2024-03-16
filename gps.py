@@ -65,7 +65,9 @@ def get_heading_from_magno(x, y):
     heading_true = heading_deg % 360
     # compensate for true north
     heading = heading_true + declination
-    return heading_true
+    # calibrate difference between mag and gps
+    heading = heading + config.mag2gps_degree_offset
+    return heading
 
 
 def get_heading():
