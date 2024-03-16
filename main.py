@@ -26,6 +26,20 @@ logging.basicConfig(filename=logfile)
 logging.basicConfig(level=logging.DEBUG)
 
 
+def num_to_range(num, inMin, inMax, outMin, outMax):
+    """
+    Map values from one range to the next.
+    :param num: value to find 
+    :param inMin: input range min
+    :param inMax: input range max
+    :param outMin: output range min
+    :param outMax: output range max
+    :return: result
+    """""
+    return outMin + (float(num - inMin) / float(inMax - inMin) * (outMax
+                  - outMin))
+
+
 def get_routes():
     """
     Load routes from json
@@ -45,8 +59,9 @@ def fastest_direction(start_degree, end_degree):
         start_degree (float): Starting degree (0 to 359).
         end_degree (float): Ending degree (0 to 359).
 
-    Returns:
-        str: "left" if the fastest direction is to the left, "right" if to the right.
+    Returns: list
+        [0] str: "left" if the fastest direction is to the left, "right" if to the right.
+        [1] float: difference in degrees.
     """
     clockwise_distance = (end_degree - start_degree) % 360
     counterclockwise_distance = (start_degree - end_degree) % 360
@@ -70,12 +85,11 @@ def rotate_to_heading(current_heading, target_heading):
     while rotation_dir[1] > 10:
 
         # rotate until real heading is close to target heading
+        speed = num_to_range(rotation_dir[1], 0, 360, 15, 45)
         if rotation_dir[0] == "left":
-            drive.drive_turn_left()
+            drive.drive_turn_left(speed)
         else:
-            drive.drive_turn_right()
-        time.sleep(1)
-        drive.drive_stop()
+            drive.drive_turn_right(speed)
         # update heading and rerun loop
         rotation_dir = fastest_direction(gps.gps_heading(), target_heading)
 
