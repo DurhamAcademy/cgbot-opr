@@ -66,18 +66,6 @@ def get_heading_from_magno(x, y):
     return heading_true
 
 
-def get_gps_coords():
-    """
-    get GPS coordinates from ublox gps interface
-    :return: array: [(latitude, longitude )]
-    """
-    try:
-        coords = gps.geo_coords()
-        return coords.lat, coords.lon
-    except (ValueError, IOError) as err:
-        print(err)
-
-
 def get_heading():
     """
     get heading from mlx90393 sensor
@@ -88,6 +76,18 @@ def get_heading():
         return get_heading_from_magno(MX, MY)
     except:
         return "unknown"
+
+
+def get_gps_coords():
+    """
+    get GPS coordinates from ublox gps interface
+    :return: array: [(latitude, longitude )]
+    """
+    try:
+        coords = gps.geo_coords()
+        return coords.lat, coords.lon
+    except (ValueError, IOError) as err:
+        print(err)
 
 
 def calculate_initial_compass_bearing(point_a, point_b):
