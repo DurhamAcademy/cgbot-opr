@@ -240,10 +240,16 @@ def main():
 
 
 if __name__ == "__main__":
+    threads = list()
 
     log("Safety light timeout checking thread.")
     safety_light_thread = threading.Thread(target=check_light_timeout())
+    threads.append(safety_light_thread)
     safety_light_thread.start()
 
-    log("Start of program.")
-    main()
+
+    log("Main program thread.")
+    main_thread = threading.Thread(target=main())
+    threads.append(main_thread)
+    main_thread.start()
+
