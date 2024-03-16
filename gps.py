@@ -7,7 +7,7 @@ import time
 
 import config
 
-i2c = board.I2C()  # uses board.SCL and board.SDA
+i2c = board.I2C()
 
 # AdaFruit MLX90393
 # Check that sensor is properly oriented to X
