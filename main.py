@@ -8,6 +8,7 @@ import datetime
 import os
 import json
 import config
+import threading
 
 # Import env file
 load_dotenv()
@@ -47,8 +48,7 @@ def num_to_range(num, inMin, inMax, outMin, outMax):
     :param outMax: output range max
     :return: result
     """""
-    return outMin + (float(num - inMin) / float(inMax - inMin) * (outMax
-                  - outMin))
+    return outMin + (float(num - inMin) / float(inMax - inMin) * (outMax - outMin))
 
 
 def get_routes():
@@ -148,6 +148,12 @@ def check_perimeter():
     return "none"
 
 
+def check_light_timeout():
+    while True:
+        drive.safety_light_timeout()
+        time.sleep(1)
+
+
 def main():
     try:
         while True:
@@ -156,7 +162,7 @@ def main():
             Check safety light timeout
             TODO: Enable mutilthreading and move this into its own thread.
             """
-            drive.safety_light_timeout()
+            #drive.safety_light_timeout()
 
             """
             Drive mode
@@ -234,5 +240,10 @@ def main():
 
 
 if __name__ == "__main__":
-    log("Start of program")
+
+    log("Safety light timeout checking thread.")
+    safety_light_thread = threading.Thread(target=check_light_timeout())
+    safety_light_thread.start()
+
+    log("Start of program.")
     main()
