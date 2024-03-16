@@ -4,7 +4,6 @@ import math
 import adafruit_mlx90393
 import board
 import time
-
 import config
 
 i2c = board.I2C()

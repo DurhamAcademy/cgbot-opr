@@ -7,6 +7,7 @@ import logging
 import datetime
 import os
 import json
+import config
 
 # Import env file
 load_dotenv()
@@ -24,6 +25,16 @@ if not os.path.isdir("/var/log/cgbot-opr"):
 logfile = "/var/log/cgbot-opr/log_" + str(datetime.date.today()) + ".txt"
 logging.basicConfig(filename=logfile)
 logging.basicConfig(level=logging.DEBUG)
+
+
+def log(text):
+    """
+    Write to logfile and console.
+    :param text:
+    :return: none
+    """
+    logging.debug(text)
+    print(text)
 
 
 def num_to_range(num, inMin, inMax, outMin, outMax):
@@ -83,8 +94,8 @@ def rotate_to_heading(current_heading, target_heading):
 
     rotation_dir = fastest_direction(current_heading, target_heading)
     # only turn is more than 10 degrees off.
-    if (current_heading - target_heading % 360) >= 10:
-        while rotation_dir[1] > 10:
+    if (current_heading - target_heading % 360) >= config.turning_degree_accuracy:
+        while rotation_dir[1] > config.turning_degree_accuracy:
 
             # rotate until real heading is close to target heading
             speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
@@ -143,13 +154,13 @@ def main():
 
             """
             Check safety light timeout
+            TODO: Enable mutilthreading and move this into its own thread.
             """
             drive.safety_light_timeout()
 
             """
             Drive mode
             """
-
             if controller.get_mode() == "controller":
                 """
                 Controller Mode
@@ -172,14 +183,23 @@ def main():
                 """
                 GPS Mode
                 """
-
                 route = get_routes()
                 for i in route['coordinates']:
+                    log("Going to location: {}.".format(i['label']))
+                    log("Coordinates: {}.".format(i['coordinates']))
+
                     # convert to tuple
-                    i = eval(i)
-                    go_to_position(i)
-                    print("destination reached.!!")
-                    time.sleep(5)
+                    coordinates = eval(i['coordinates'])
+
+                    # go to the spot
+                    go_to_position(coordinates)
+                    log("Destination reached.!!")
+
+                    log("Rotate to final heading {}.".format(i['final_heading']))
+                    rotate_to_heading(i['final_heading'])
+
+                    log("Waiting here for {} seconds.".format(str(i['duration'])))
+                    time.sleep(i['duration'])
 
 
                 # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
@@ -209,10 +229,10 @@ def main():
                 print(gps.get_heading())
                 """
     finally:
-        logging.debug("Main loop complete.")
+        log("Main loop complete.")
         drive.cleanup()
 
 
 if __name__ == "__main__":
-    logging.debug("Start of program")
+    log("Start of program")
     main()
