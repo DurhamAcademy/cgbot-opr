@@ -151,6 +151,7 @@ def check_perimeter():
 def check_light_timeout():
     while True:
         drive.safety_light_timeout()
+        log("checking light")
         time.sleep(1)
 
 
