@@ -44,7 +44,7 @@ def check_fusion():
     return fusionMode status of GPS.
     :return:
     """
-    a = gps.gps.esf_status()
+    a = gps.esf_status()
     a = str(a)
     for i in a.split(","):
         if "fusionMode" in i:
