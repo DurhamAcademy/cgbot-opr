@@ -12,6 +12,8 @@ i2c = board.I2C()  # uses board.SCL and board.SDA
 # AdaFruit MLX90393
 SENSOR = adafruit_mlx90393.MLX90393(i2c, address=0x18, gain=adafruit_mlx90393.GAIN_1X)
 
+declination = -12.83
+
 port = serial.Serial('/dev/serial/by-id/usb-u-blox_AG_-_www.u-blox.com_u-blox_GNSS_receiver-if00', baudrate=38400,
                      timeout=1)
 gps = UbloxGps(port)
@@ -55,7 +57,7 @@ def get_heading_from_magno(x, y):
     heading_rad = math.atan2(y, x)
     heading_deg = math.degrees(heading_rad)
     heading_true = (heading_deg - 90) % 360
-    return heading_true
+    return heading_true + declination
 
 
 def get_gps_coords():
