@@ -83,7 +83,7 @@ def rotate_to_heading(current_heading, target_heading):
 
     rotation_dir = fastest_direction(current_heading, target_heading)
     # only turn is more than 10 degrees off.
-    if current_heading - target_heading % 360 >= 10
+    if (current_heading - target_heading % 360) >= 10:
         while rotation_dir[1] > 10:
 
             # rotate until real heading is close to target heading
