@@ -28,7 +28,6 @@ def run():
         print("Listenting for UBX Messages.")
         while True:
             try:
-                print(get_heading())
                 print("gps " + str(gps_heading()))
                 print("mag " + str(get_heading()))
                 time.sleep(1)
@@ -63,7 +62,7 @@ def get_heading_from_magno(x, y):
     # radians to degrees
     heading_deg = math.degrees(heading_rad)
     # return val on 360 mod
-    heading_true = (heading_deg - 90) % 360
+    heading_true = heading_deg % 360
     # compensate for true north
     heading = heading_true + declination
     return heading_true
