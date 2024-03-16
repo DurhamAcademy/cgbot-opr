@@ -8,7 +8,7 @@ import datetime
 import os
 import json
 import config
-import threading
+import _thread
 
 # Import env file
 load_dotenv()
@@ -241,13 +241,8 @@ def main():
 
 
 if __name__ == "__main__":
-    threads = list()
 
-    safety_light_thread = threading.Thread(target=check_light_timeout())
-    threads.append(safety_light_thread)
-    safety_light_thread.start()
+    _thread.start_new_thread(check_light_timeout())
 
-    main_thread = threading.Thread(target=main())
-    threads.append(main_thread)
-    main_thread.start()
+    _thread.start_new_thread(main())
 
