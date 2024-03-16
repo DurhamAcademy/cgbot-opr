@@ -10,7 +10,7 @@ import config
 i2c = board.I2C()  # uses board.SCL and board.SDA
 
 # AdaFruit MLX90393
-SENSOR = adafruit_mlx90393.MLX90393(i2c, address=0x18, gain=adafruit_mlx90393.GAIN_1X)
+mag_sensor = adafruit_mlx90393.MLX90393(i2c, address=0x18, gain=adafruit_mlx90393.GAIN_1X)
 
 # durham magnetic declination
 declination = -12.83
@@ -79,7 +79,7 @@ def get_heading():
     :return: heading in degrees
     """
     try:
-        MX, MY, MZ = SENSOR.magnetic
+        MX, MY, MZ = mag_sensor.magnetic
         return get_heading_from_magno(MX, MY)
     except:
         return "unknown"
