@@ -31,7 +31,7 @@ def run():
                 print(get_heading())
                 print("gps " + str(gps_heading()))
                 print("mag " + str(get_heading()))
-
+                time.sleep(1)
             except (ValueError, IOError) as err:
                 print(err)
 
