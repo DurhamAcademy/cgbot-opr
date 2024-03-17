@@ -8,7 +8,7 @@ import datetime
 import os
 import json
 import config
-import multiprocessing
+from threading import Thread
 
 # Import env file
 load_dotenv()
@@ -240,36 +240,16 @@ def main():
         drive.cleanup()
 
 
-class SafetyLightThread:
-    def __init__(self):
-        self._running = True
-
-    def terminate(self):
-        self._running = False
-
-    def run(self):
-        while self._running:
-            check_light_timeout()
-
-
-class MainThread:
-    def __init__(self):
-        self._running = True
-
-    def terminate(self):
-        self._running = False
-
-    def run(self):
-        while self._running:
-            main()
-
-
 if __name__ == "__main__":
+    threads = list
 
-    safety_light = SafetyLightThread()
-    safety_light_thread = multiprocessing.Process(target=safety_light.run())
-    safety_light_thread.start()
+    t1 = Thread(target=check_light_timeout())
+    threads.append(t1)
+    t2 = Thread(target=main())
+    threads.append(t2)
 
-    main = MainThread()
-    main_thread = multiprocessing.Process(target=main.run())
-    main_thread.start()
+    t1.start()
+    t2.start()
+
+    for tloop in threads:
+        tloop.join()
