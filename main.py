@@ -242,8 +242,6 @@ def main():
 if __name__ == "__main__":
     threads = list
 
-    t1 = Thread(target=check_light_timeout())
-    threads.append(t1)
     t2 = Thread(target=main())
     threads.append(t2)
 
