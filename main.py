@@ -8,7 +8,7 @@ import datetime
 import os
 import json
 import config
-import _thread
+from threading import Thread
 
 # Import env file
 load_dotenv()
@@ -240,9 +240,34 @@ def main():
         drive.cleanup()
 
 
+class SafetyLightThread:
+    def __init__(self):
+        self._running = True
+
+    def terminate(self):
+        self._running = False
+
+    def run(self):
+        while self._running:
+            check_light_timeout()
+
+
+class MainThread:
+    def __init__(self):
+        self._running = True
+
+    def terminate(self):
+        self._running = False
+
+    def run(self):
+        while self._running:
+            main()
+
+
 if __name__ == "__main__":
 
-    _thread.start_new_thread(check_light_timeout())
+    safety_light = SafetyLightThread()
+    safety_light_thread = Thread(target=safety_light.run())
 
-    _thread.start_new_thread(main())
-
+    main = MainThread()
+    main_thread = Thread(target=main.run())
