@@ -248,6 +248,3 @@ if __name__ == "__main__":
     threads.append(t2)
 
     t2.start()
-
-    for tloop in threads:
-        tloop.join()
