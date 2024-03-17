@@ -99,7 +99,7 @@ def rotate_to_heading(current_heading, target_heading):
 
             # rotate until real heading is close to target heading
             speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
-            print(speed)
+            print("speed " + str(speed))
             if rotation_dir[0] == "left":
                 drive.drive_turn_left(speed)
             else:
