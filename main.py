@@ -179,7 +179,7 @@ def main():
                 print GPS head every second
                 """
 
-                if last_print > time.time() + 1:
+                if last_print < time.time() + 1:
                     print(str(gps.gps_heading()) + " degrees")
                     last_print = time.time()
 
