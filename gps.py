@@ -28,8 +28,6 @@ def run():
         while True:
             try:
                 print("gps " + str(gps_heading()))
-                print("mag " + str(get_heading()))
-                print("fusionMode " + str(check_fusion()))
                 time.sleep(1)
             except (ValueError, IOError) as err:
                 print(err)

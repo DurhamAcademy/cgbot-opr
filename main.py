@@ -96,7 +96,6 @@ def rotate_to_heading(current_heading, target_heading):
     # only turn is more than 10 degrees off.
     if (current_heading - target_heading % 360) >= config.turning_degree_accuracy:
         while rotation_dir[1] > config.turning_degree_accuracy:
-            print("heading-- " + str(gps.gps_heading()))
             # rotate until real heading is close to target heading
             speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
             print("speed " + str(speed))
