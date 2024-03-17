@@ -155,7 +155,7 @@ def check_light_timeout():
 
 def main():
     try:
-        last_print = 0
+        # last_print = 0
 
         while True:
             """
@@ -179,9 +179,9 @@ def main():
                 print GPS head every second
                 """
 
-                if last_print < time.time() + 1:
-                    print(str(gps.gps_heading()) + " degrees")
-                    last_print = time.time()
+                # if last_print < time.time() + 1:
+                #     print(str(gps.gps_heading()) + " degrees")
+                #     last_print = time.time()
 
                 """
                 If select button is pressed, print coordinates
