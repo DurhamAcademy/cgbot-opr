@@ -181,6 +181,7 @@ def main():
 
                 if last_print > time.time() + 1:
                     print(str(gps.gps_heading()) + " degrees")
+                    last_print = time.time()
 
                 """
                 If select button is pressed, print coordinates
