@@ -155,6 +155,8 @@ def check_light_timeout():
 
 def main():
     try:
+        last_print = 0
+
         while True:
             """
             Check safety light timeout
@@ -172,6 +174,13 @@ def main():
                 left_speed, right_speed = controller.wpm_controller(controller.snes_input())
                 drive.set_left_speed(left_speed)
                 drive.set_right_speed(right_speed)
+
+                """
+                print GPS head every second
+                """
+
+                if last_print > time.time() + 1:
+                    print(str(gps.gps_heading()) + " degrees")
 
                 """
                 If select button is pressed, print coordinates
