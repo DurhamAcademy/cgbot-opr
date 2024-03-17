@@ -8,7 +8,7 @@ import datetime
 import os
 import json
 import config
-from threading import Thread
+import multiprocessing
 
 # Import env file
 load_dotenv()
@@ -267,9 +267,9 @@ class MainThread:
 if __name__ == "__main__":
 
     safety_light = SafetyLightThread()
-    safety_light_thread = Thread(target=safety_light.run())
+    safety_light_thread = multiprocessing.Process(target=safety_light.run())
     safety_light_thread.start()
 
     main = MainThread()
-    main_thread = Thread(target=main.run())
+    main_thread = multiprocessing.Process(target=main.run())
     main_thread.start()
