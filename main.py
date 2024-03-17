@@ -247,7 +247,6 @@ if __name__ == "__main__":
     t2 = Thread(target=main())
     threads.append(t2)
 
-    t1.start()
     t2.start()
 
     for tloop in threads:
