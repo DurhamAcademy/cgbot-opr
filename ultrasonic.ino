@@ -22,7 +22,7 @@ void setup(void)
 
 void loop(void)
 {
-  String message = "";
+  String message = "{";
   for (int i = 0; i < sizeof sensors/sizeof sensors[0]; i++) {
       int echo = sensors[i][0];
       int trig = sensors[i][1];
@@ -41,11 +41,15 @@ void loop(void)
       distance= distance/58;
 
       if (distance < 50 && distance > 0) {
-        message += String(i) + " trigger, ";
+        message += String(i) + ': 1';
       } else {
-        message += String(i) + " clear, ";
+        message += String(i) + ": 0";
+      }
+      if (i < sizeof sensors/sizeof sensors[0] - 1) {
+        message += ", "
       }
   }
+  message += "}";
   Serial.println(message);
 
   // Wait 50mS before next ranging
