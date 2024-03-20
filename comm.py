@@ -1,6 +1,6 @@
 import serial
 
-ser = serial.Serial('dev/tty/ACM0', 9600, timeout=1)
+ser = serial.Serial('/dev/tty/ACM0', 9600, timeout=1)
 
 while True:
 
