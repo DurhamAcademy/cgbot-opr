@@ -8,7 +8,7 @@ import datetime
 import os
 import json
 import config
-import serial
+import comm
 
 from threading import Thread
 
