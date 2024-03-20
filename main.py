@@ -8,6 +8,8 @@ import datetime
 import os
 import json
 import config
+import serial
+
 from threading import Thread
 
 # Import env file
