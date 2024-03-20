@@ -7,4 +7,3 @@ while True:
     input = ser.read()
 
     print (input.decode("utf-8"))
-    print("check")
