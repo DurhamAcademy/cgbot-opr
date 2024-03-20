@@ -1,5 +1,5 @@
 from ublox_gps import UbloxGps
-import comm
+import serial
 import math
 import adafruit_mlx90393
 import board
