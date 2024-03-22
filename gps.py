@@ -47,7 +47,6 @@ def check_fusion():
         if "fusionMode" in i:
             return i
 
-
 def gps_heading():
     """
     gps heading
@@ -79,7 +78,7 @@ def get_heading_from_magno(x, y):
     # heading = heading + config.mag2gps_degree_offset
     return heading_true
 
-
+# Remove? (Bad naming, not used I don't think?)
 def get_heading():
     """
     get heading from mlx90393 sensor
