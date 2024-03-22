@@ -115,6 +115,8 @@ def rotate_to_heading(current_heading, target_heading):
         # What is current reading from compass?
         current_compass = compass.get_heading()
 
+        # Could consolidate with no ifs if you use negatives instead of left or right (-1 for left, 1 for right)
+        # Would need to modify turn function to take in -35 to turn left
         if rotation_dir[0] == "left":
             # What is the destination degrees on the compass in relation to target_heading? / subtract for left turn
             dest_compass = (current_compass - rotation_dir[1]) % 360
