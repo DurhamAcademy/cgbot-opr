@@ -1,4 +1,3 @@
-import time
 from math import atan2, degrees
 import board
 import qmc5883l as qmc5883
@@ -16,12 +15,6 @@ def vector_2_degrees(x, y):
     return angle
 
 
-def get_heading(sensor):
-    mag_x, mag_y, _ = sensor.magnetic
+def get_heading():
+    mag_x, mag_y, _ = qmc.magnetic
     return vector_2_degrees(mag_x, mag_y)
-
-
-while True:
-    print(f"heading: {get_heading(qmc.magnetic):.2f} degrees")
-    print()
-    time.sleep(0.2)

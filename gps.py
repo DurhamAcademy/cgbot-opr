@@ -1,18 +1,13 @@
 from ublox_gps import UbloxGps
 import serial
 import math
-import adafruit_mlx90393
 import board
 import time
 import config
+import qmc5883l as qmc5883
 
 i2c = board.I2C()
-
-# AdaFruit MLX90393
-# Check that sensor is properly oriented to X
-# https://github.com/adafruit/Adafruit-MLX90393-PCB/issues/1
-
-mag_sensor = adafruit_mlx90393.MLX90393(i2c, address=0x18, gain=adafruit_mlx90393.GAIN_1X)
+qmc = qmc5883.QMC5883L(i2c)
 
 # durham magnetic declination
 declination = -12.83
@@ -60,36 +55,16 @@ def gps_heading():
         print(err)
 
 
-def get_heading_from_magno(x, y):
-    """
-    convert heading from radians to degrees.
-    :param x: magno x
-    :param y: magno y
-    :return: heading in degrees
-    """
-    # microteslas to radians
-    heading_rad = math.atan2(y, x)
-    # radians to degrees
-    heading_deg = math.degrees(heading_rad)
-    # return val on 360 mod
-    heading_true = heading_deg
-    # compensate for true north
-    # heading = heading_true + declination
-    # calibrate difference between mag and gps
-    # heading = heading + config.mag2gps_degree_offset
-    return heading_true
+def vector_2_degrees(x, y):
+    angle = math.degrees(math.atan2(y, x))
+    if angle < 0:
+        angle = angle + 360
+    return angle
 
 
 def get_heading():
-    """
-    get heading from mlx90393 sensor
-    :return: heading in degrees
-    """
-    try:
-        MX, MY, MZ = mag_sensor.magnetic
-        return get_heading_from_magno(MX, MY)
-    except:
-        return "unknown"
+    mag_x, mag_y, _ = qmc.magnetic
+    return vector_2_degrees(mag_x, mag_y)
 
 
 def get_gps_coords():

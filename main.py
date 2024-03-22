@@ -8,16 +8,12 @@ import datetime
 import os
 import json
 import config
-import mag
-
-from threading import Thread
 
 # Import env file
 load_dotenv()
 
 controller = nes.Nes()
 drive = motor_driver.Motor()
-compass = mag.Mag()
 
 """
 Logging
@@ -113,7 +109,7 @@ def rotate_to_heading(current_heading, target_heading):
     # only turn is more than ## degrees off.
     if rotation_dir[1] > config.turning_degree_accuracy:
         # What is current reading from compass?
-        current_compass = compass.get_heading()
+        current_compass = gps.get_heading()
 
         if rotation_dir[0] == "left":
             # What is the destination degrees on the compass in relation to target_heading? / subtract for left turn
@@ -121,14 +117,14 @@ def rotate_to_heading(current_heading, target_heading):
             # speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
             while not within_range_degrees(current_compass, dest_compass):
                 drive.drive_turn_left(35)
-                current_compass = compass.get_heading()
+                current_compass = gps.get_heading()
         else:
             # What is the destination degrees on the compass in relation to target_heading? / add for right turn
             dest_compass = (current_compass + rotation_dir[1]) % 360
             # speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
             while not within_range_degrees(current_compass, dest_compass):
                 drive.drive_turn_right(35)
-                current_compass = compass.get_heading()
+                current_compass = gps.get_heading()
         # Stop the rotation and return.
         drive.drive_stop()
     else:
