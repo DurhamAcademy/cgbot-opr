@@ -54,6 +54,17 @@ def num_to_range(num, inMin, inMax, outMin, outMax):
     return outMin + (float(num - inMin) / float(inMax - inMin) * (outMax - outMin))
 
 
+def within_range_degrees(number, target, tolerance=config.turning_degree_accuracy):
+    """"
+    Check if a degree is withing a certian range
+    """
+    # Normalize numbers to be within the range of [0, 360)
+    number = (number + 360) % 360
+    target = (target + 360) % 360
+    # Check if the absolute difference is within the tolerance range
+    return abs(target - number) <= tolerance or abs(target - number + 360) <= tolerance
+
+
 def get_routes():
     """
     Load routes from json
@@ -96,20 +107,29 @@ def rotate_to_heading(current_heading, target_heading):
     """
 
     rotation_dir = fastest_direction(current_heading, target_heading)
-    # only turn is more than 10 degrees off.
-    if (current_heading - target_heading % 360) >= config.turning_degree_accuracy:
-        # second element in rotation_dir is difference of degrees that we are off by.
-        while rotation_dir[1] > config.turning_degree_accuracy:
-            # rotate until real heading is close to target heading
-            speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
-            print("speed " + str(speed))
-            if rotation_dir[0] == "left":
-                drive.drive_turn_left(speed)
-            else:
-                drive.drive_turn_right(speed)
-            # update heading and rerun loop
-            rotation_dir = fastest_direction(gps.gps_heading(), target_heading)
+    # rotation_dir[0] = the direction left/right
+    # rotation_dir[1] = the amount of degrees the robot needs to move to get back on track.
 
+    # only turn is more than ## degrees off.
+    if rotation_dir[1] > config.turning_degree_accuracy:
+        # What is current reading from compass?
+        current_compass = compass.get_heading()
+
+        if rotation_dir[0] == "left":
+            # What is the destination degrees on the compass in relation to target_heading? / subtract for left turn
+            dest_compass = (current_compass - rotation_dir[1]) % 360
+            # speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
+            while not within_range_degrees(current_compass, dest_compass):
+                drive.drive_turn_left(35)
+                current_compass = compass.get_heading()
+        else:
+            # What is the destination degrees on the compass in relation to target_heading? / add for right turn
+            dest_compass = (current_compass + rotation_dir[1]) % 360
+            # speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
+            while not within_range_degrees(current_compass, dest_compass):
+                drive.drive_turn_right(35)
+                current_compass = compass.get_heading()
+        # Stop the rotation and return.
         drive.drive_stop()
     else:
         print("rotation not needed.")
