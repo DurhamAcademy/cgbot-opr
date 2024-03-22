@@ -42,7 +42,6 @@ def check_fusion():
         if "fusionMode" in i:
             return i
 
-
 def gps_heading():
     """
     gps heading
@@ -61,7 +60,7 @@ def vector_2_degrees(x, y):
         angle = angle + 360
     return angle
 
-
+# Remove? (Bad naming, not used I don't think?)
 def get_heading():
     mag_x, mag_y, _ = qmc.magnetic
     return vector_2_degrees(mag_x, mag_y)
