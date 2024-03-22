@@ -200,7 +200,7 @@ def main():
                 print(gps.get_gps_coords())
 
                 """
-                print GPS head every second
+                print GPS heading every second
                 """
 
                 # if last_print < time.time() + 1:
