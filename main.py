@@ -8,7 +8,7 @@ import datetime
 import os
 import json
 import config
-
+import mag
 
 from threading import Thread
 
@@ -17,6 +17,7 @@ load_dotenv()
 
 controller = nes.Nes()
 drive = motor_driver.Motor()
+compass = mag.Mag()
 
 """
 Logging
@@ -97,6 +98,7 @@ def rotate_to_heading(current_heading, target_heading):
     rotation_dir = fastest_direction(current_heading, target_heading)
     # only turn is more than 10 degrees off.
     if (current_heading - target_heading % 360) >= config.turning_degree_accuracy:
+        # second element in rotation_dir is difference of degrees that we are off by.
         while rotation_dir[1] > config.turning_degree_accuracy:
             # rotate until real heading is close to target heading
             speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
@@ -120,7 +122,7 @@ def go_to_position(target_pos: tuple):
     while abs(gps.haversine_distance(current_pos, target_pos)) > 2:
         current_pos = gps.get_gps_coords()
         current_heading = gps.gps_heading()
-
+        # Use heading from GPS to determine a target_heading to destination coordinates
         target_heading = gps.calculate_initial_compass_bearing(current_pos, target_pos)
         print("target heading: " + str(target_heading))
         rotate_to_heading(current_heading, target_heading)
