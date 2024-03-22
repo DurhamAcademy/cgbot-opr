@@ -72,12 +72,12 @@ def get_heading_from_magno(x, y):
     # radians to degrees
     heading_deg = math.degrees(heading_rad)
     # return val on 360 mod
-    heading_true = heading_deg % 360
+    heading_true = heading_deg
     # compensate for true north
-    heading = heading_true + declination
+    # heading = heading_true + declination
     # calibrate difference between mag and gps
-    heading = heading + config.mag2gps_degree_offset
-    return heading
+    # heading = heading + config.mag2gps_degree_offset
+    return heading_true
 
 
 def get_heading():
