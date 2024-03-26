@@ -149,7 +149,9 @@ def go_to_position(target_pos: tuple):
         print("targetheading: " + str(target_heading))
         rotate_to_heading(current_heading, target_heading)
         drive.drive_forward()
+        print("start forward")
         time.sleep(1)
+        print("stop forward")
     drive.drive_stop()
 
 
