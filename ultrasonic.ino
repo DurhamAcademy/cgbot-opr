@@ -1,7 +1,15 @@
+void setup() {
+  Serial.begin(9600);
+}
+void loop() {
+  Serial.println("Hello World");
+  delay(1000);
+}
+
 /*
   RB-Dfr-720 :: Weatherproof Ultrasonic Sensor w/ Separate Probe
   http://www.robotshop.com/en/weatherproof-ultrasonic-sensor-separate-probe.html
-*/
+
 
 //#define ECHOPIN 22 // Pin to receive echo pulse
 //#define TRIGPIN 2 // Pin to send trigger pulse
@@ -55,4 +63,4 @@ void loop(void)
   // Wait 50mS before next ranging
   delay(50);
 }
-
+*/
