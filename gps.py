@@ -8,7 +8,7 @@ import qmc5883l as qmc5883
 
 i2c = board.I2C()
 qmc = qmc5883.QMC5883L(i2c)
-
+# 35.9773445, -78.9693281
 # durham magnetic declination
 declination = -12.83
 

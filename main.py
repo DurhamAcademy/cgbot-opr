@@ -237,9 +237,9 @@ def main():
                     # go to the spot
                     go_to_position(coordinates)
                     log("Destination reached.!!")
-
+                    current_heading = gps.gps_heading()
                     log("Rotate to final heading {}.".format(i['final_heading']))
-                    rotate_to_heading(i['final_heading'])
+                    rotate_to_heading(current_heading, i['final_heading'])
 
                     log("Waiting here for {} seconds.".format(str(i['duration'])))
                     time.sleep(i['duration'])
