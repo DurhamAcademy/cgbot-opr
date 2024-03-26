@@ -6,4 +6,4 @@ while True:
 
     input = ser.read()
 
-    print (input.decode("ascii"))
+    print (input.decode("utf-8"))
