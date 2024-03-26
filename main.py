@@ -109,7 +109,7 @@ def rotate_to_heading(current_heading, target_heading):
     # only turn is more than ## degrees off.
     if rotation_dir[1] > config.turning_degree_accuracy:
         # What is current reading from compass?
-        current_compass = gps.get_heading()
+        current_compass = (gps.get_heading() - 180) % 360
         print("start", current_compass)
 
         # Could consolidate with no ifs if you use negatives instead of left or right (-1 for left, 1 for right)
@@ -120,7 +120,7 @@ def rotate_to_heading(current_heading, target_heading):
             # speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
             while not within_range_degrees(current_compass, dest_compass):
                 drive.drive_turn_left(35)
-                current_compass = gps.get_heading()
+                current_compass = (gps.get_heading() - 180) % 360
                 print("current: ", current_compass)
         else:
             # What is the destination degrees on the compass in relation to target_heading? / add for right turn
