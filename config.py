@@ -13,5 +13,9 @@ gps_mode_switch_pin = 24
 mag2gps_degree_offset = -20
 # how many degrees in the heading are close enough to be accurate
 turning_degree_accuracy = 10
+# witmotion device path
+witmotion_imu_path = "/dev/tty.usbserial-210"
+# witmotion baud rate
+witmotion_imu_baud_rate = 115200
 
 

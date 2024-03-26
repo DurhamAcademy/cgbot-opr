@@ -9,9 +9,6 @@ import os
 import json
 import config
 
-
-from threading import Thread
-
 # Import env file
 load_dotenv()
 
@@ -51,6 +48,17 @@ def num_to_range(num, inMin, inMax, outMin, outMax):
     :return: result
     """""
     return outMin + (float(num - inMin) / float(inMax - inMin) * (outMax - outMin))
+
+
+def within_range_degrees(number, target, tolerance=config.turning_degree_accuracy):
+    """"
+    Check if a degree is withing a certian range
+    """
+    # Normalize numbers to be within the range of [0, 360)
+    number = (number + 360) % 360
+    target = (target + 360) % 360
+    # Check if the absolute difference is within the tolerance range
+    return abs(target - number) <= tolerance or abs(target - number + 360) <= tolerance
 
 
 def get_routes():
@@ -95,19 +103,35 @@ def rotate_to_heading(current_heading, target_heading):
     """
 
     rotation_dir = fastest_direction(current_heading, target_heading)
-    # only turn is more than 10 degrees off.
-    if (current_heading - target_heading % 360) >= config.turning_degree_accuracy:
-        while rotation_dir[1] > config.turning_degree_accuracy:
-            # rotate until real heading is close to target heading
-            speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
-            print("speed " + str(speed))
-            if rotation_dir[0] == "left":
-                drive.drive_turn_left(speed)
-            else:
-                drive.drive_turn_right(speed)
-            # update heading and rerun loop
-            rotation_dir = fastest_direction(gps.gps_heading(), target_heading)
+    # rotation_dir[0] = the direction left/right
+    # rotation_dir[1] = the amount of degrees the robot needs to move to get back on track.
 
+    # only turn is more than ## degrees off.
+    if rotation_dir[1] > config.turning_degree_accuracy:
+        # What is current reading from compass?
+        current_compass = gps.get_heading()
+        print("start", current_compass)
+
+        # Could consolidate with no ifs if you use negatives instead of left or right (-1 for left, 1 for right)
+        # Would need to modify turn function to take in -35 to turn left
+        if rotation_dir[0] == "left":
+            # What is the destination degrees on the compass in relation to target_heading? / subtract for left turn
+            dest_compass = (current_compass - rotation_dir[1]) % 360
+            # speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
+            while not within_range_degrees(current_compass, dest_compass):
+                drive.drive_turn_left(35)
+                current_compass = gps.get_heading()
+                print("current: ", current_compass)
+        else:
+            # What is the destination degrees on the compass in relation to target_heading? / add for right turn
+            dest_compass = (current_compass + rotation_dir[1]) % 360
+            print("dest", dest_compass)
+            # speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
+            while not within_range_degrees(current_compass, dest_compass):
+                drive.drive_turn_right(35)
+                current_compass = gps.get_heading()
+                print("current: ", current_compass)
+        # Stop the rotation and return.
         drive.drive_stop()
     else:
         print("rotation not needed.")
@@ -120,7 +144,7 @@ def go_to_position(target_pos: tuple):
     while abs(gps.haversine_distance(current_pos, target_pos)) > 2:
         current_pos = gps.get_gps_coords()
         current_heading = gps.gps_heading()
-
+        # Use heading from GPS to determine a target_heading to destination coordinates
         target_heading = gps.calculate_initial_compass_bearing(current_pos, target_pos)
         print("target heading: " + str(target_heading))
         rotate_to_heading(current_heading, target_heading)
@@ -176,9 +200,10 @@ def main():
                 left_speed, right_speed = controller.wpm_controller(controller.snes_input())
                 drive.set_left_speed(left_speed)
                 drive.set_right_speed(right_speed)
+                # print(gps.get_gps_coords())
 
                 """
-                print GPS head every second
+                print GPS heading every second
                 """
 
                 # if last_print < time.time() + 1:
