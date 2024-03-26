@@ -145,7 +145,7 @@ def go_to_position(target_pos: tuple):
         current_pos = gps.get_gps_coords()
         current_heading = gps.gps_heading()
         # Use heading from GPS to determine a target_heading to destination coordinates
-        target_heading = gps.calculate_initial_compass_bearing(current_pos, target_pos)
+        target_heading = (180 - gps.calculate_initial_compass_bearing(current_pos, target_pos)) % 360
         print("target heading: " + str(target_heading))
         rotate_to_heading(current_heading, target_heading)
         drive.drive_forward()
