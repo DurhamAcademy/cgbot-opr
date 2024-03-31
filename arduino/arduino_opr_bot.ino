@@ -14,7 +14,7 @@ ULTRASONIC SENSORS:
        @                        @
        @                        @
        @                        @
-   8   @                        @    4
+  8    @                        @    4
        @                        @
        @                        @
        @                        @

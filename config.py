@@ -13,9 +13,10 @@ gps_mode_switch_pin = 24
 mag2gps_degree_offset = -20
 # how many degrees in the heading are close enough to be accurate
 turning_degree_accuracy = 10
-# witmotion device path
-witmotion_imu_path = "/dev/tty.usbserial-210"
-# witmotion baud rate
-witmotion_imu_baud_rate = 115200
+# what is considered to low in battery voltage to continue functioning?
+voltage_min_threshold = 9
+# how often to read the ultrasonic sensors
+ultrasonic_check_interval = 3
+
 
 
