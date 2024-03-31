@@ -119,7 +119,7 @@ void loop(void)
             float t = sht31.readTemperature();
             Serial.println(t);
         case 3:
-            // Return humidity on low/cool side
+            // Return humidity on top/high/hot side
             float h = sht31.readHumidity();
             Serial.println(h);
         case 4:
