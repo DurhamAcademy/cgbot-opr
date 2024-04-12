@@ -1,5 +1,6 @@
 import motor_driver
 import gps
+import arduino
 import time
 import nes
 from dotenv import load_dotenv
@@ -14,6 +15,7 @@ load_dotenv()
 
 controller = nes.Nes()
 drive = motor_driver.Motor()
+mc = arduino.Arduino()
 
 """
 Logging
@@ -191,6 +193,23 @@ def main():
             TODO: Enable mutilthreading and move this into its own thread.
             """
             #drive.safety_light_timeout()
+
+            """
+            Check Battery Level
+            """
+            if mc.get_voltage() <= config.voltage_min_threshold:
+                log("Battery Level Below Threshold at " + str(config.voltage_min_threshold))
+
+            """
+            Check Humidity Level
+            """
+
+            """
+            Check Ultrasonic every xx seconds
+            """
+            if mc.ultrasonic_last_check + config.ultrasonic_check_interval < time.time():
+                log("Ultrasonic: " + str(mc.get_ultrasonic()))
+                # What to do about Ultrasonic readings?
 
             """
             Drive mode
