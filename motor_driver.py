@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 import config
 import time
 
+
 """
 Using a class for motor control
 Uses an init method to initialize motors once

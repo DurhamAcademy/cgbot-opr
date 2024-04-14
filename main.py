@@ -9,6 +9,7 @@ import datetime
 import os
 import json
 import config
+import threading
 
 # Import env file
 load_dotenv()
@@ -37,6 +38,11 @@ def log(text):
     """
     logging.debug(text)
     print(text)
+
+
+def check_light_timeout():
+    threading.Timer(5.0, check_light_timeout).start()
+    drive.safety_light_timeout()
 
 
 def num_to_range(num, inMin, inMax, outMin, outMax):
@@ -184,6 +190,11 @@ def check_light_timeout():
 
 
 def main():
+    # Save location to file ever x seconds
+    gps.store_location()
+    # Turn light off if not moving after x seconds.
+    check_light_timeout()
+
     try:
         # last_print = 0
 

@@ -5,6 +5,7 @@ import board
 import time
 import config
 import qmc5883l as qmc5883
+import threading
 
 i2c = board.I2C()
 qmc = qmc5883.QMC5883L(i2c)
@@ -42,6 +43,7 @@ def check_fusion():
         if "fusionMode" in i:
             return i
 
+
 def gps_heading():
     """
     gps heading
@@ -59,6 +61,7 @@ def vector_2_degrees(x, y):
     if angle < 0:
         angle = angle + 360
     return angle
+
 
 # Remove? (Bad naming, not used I don't think?)
 def get_heading():
@@ -155,3 +158,11 @@ def haversine_distance(coord1, coord2):
     distance = earth_radius * c
 
     return distance
+
+
+# Store current location every X seconds.
+def store_location():
+    threading.Timer(5.0, store_location).start()
+    with open('gps_location.txt', 'w') as f:
+        f.write(str(get_gps_coords()))
+    f.close()
