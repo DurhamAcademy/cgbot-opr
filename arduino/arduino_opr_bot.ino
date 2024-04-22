@@ -5,7 +5,7 @@ Arduino Mega Devices and Pins:
 
 ULTRASONIC SENSORS:
 * In a top down view. Robot front at the top.
-    1               2               3
+    1                              2
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
        @                        @
        @                        @
@@ -14,7 +14,7 @@ ULTRASONIC SENSORS:
        @                        @
        @                        @
        @                        @
-  8    @                        @    4
+       @                        @
        @                        @
        @                        @
        @                        @
@@ -23,7 +23,7 @@ ULTRASONIC SENSORS:
        @                        @
        @                        @
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    7              6              5
+    4                            3
 
 trigger, echo
 1: 48,46
