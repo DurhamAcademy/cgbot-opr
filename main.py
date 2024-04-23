@@ -191,9 +191,9 @@ def check_light_timeout():
 
 def main():
     # Save location to file ever x seconds
-    gps.store_location()
+    # gps.store_location()
     # Turn light off if not moving after x seconds.
-    check_light_timeout()
+    # check_light_timeout()
 
     try:
         # last_print = 0
