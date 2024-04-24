@@ -127,7 +127,7 @@ def rotate_to_heading(current_heading, target_heading):
             dest_compass = ((current_compass - rotation_dir[1])) % 360
             # speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
             while not within_range_degrees(current_compass, dest_compass):
-                drive.drive_turn_left(35)
+                drive.drive_turn_left(60)
                 current_compass = (gps.get_heading()) % 360
                 print("current: ", current_compass)
         else:
@@ -136,7 +136,7 @@ def rotate_to_heading(current_heading, target_heading):
             print("dest", dest_compass)
             # speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
             while not within_range_degrees(current_compass, dest_compass):
-                drive.drive_turn_right(35)
+                drive.drive_turn_right(60)
                 current_compass = (gps.get_heading()) % 360
                 print("current: ", current_compass)
         # Stop the rotation and return.

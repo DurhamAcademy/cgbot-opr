@@ -76,8 +76,8 @@ class Motor(object):
 
     def drive_forward(self):
         self.last_motor_command = time.time()
-        self.set_left_speed(-30)
-        self.set_right_speed(-30)
+        self.set_left_speed(-80)
+        self.set_right_speed(-80)
         return
 
     def drive_turn_right(self, speed):
