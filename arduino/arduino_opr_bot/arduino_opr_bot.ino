@@ -5,7 +5,7 @@ Arduino Mega Devices and Pins:
 
 ULTRASONIC SENSORS:
 * In a top down view. Robot front at the top.
-    1               2               3
+    1                              2
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
        @                        @
        @                        @
@@ -14,7 +14,7 @@ ULTRASONIC SENSORS:
        @                        @
        @                        @
        @                        @
-  8    @                        @    4
+       @                        @
        @                        @
        @                        @
        @                        @
@@ -23,17 +23,13 @@ ULTRASONIC SENSORS:
        @                        @
        @                        @
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    7              6              5
+    4                            3
 
-echo, trigger
-1: 22,2
-2: 23,3
-3: 24,4
-4: 25,5
-5: 26,6
-6: 27,7
-7: 28,8
-8: 29,9
+trigger, echo
+1: 48,46
+2: 44,42
+3: 34,36
+4: 40,38
 
 // Temperature Sensor
 i2C
@@ -49,7 +45,7 @@ A0
 
 // Ultrasonics
 // [ [echo, trigger] ]
-int sensors[][2] = { {22, 2}, {23, 3}, {24, 4}, {25, 5}, {26, 6}, {27, 7}, {28, 8}, {29,9} };
+int sensors[][2] = { {48, 46}, {44, 42}, {34, 36}, {40, 38} };
 
 // Temperature SHT30-D
 Adafruit_SHT31 sht31 = Adafruit_SHT31();
