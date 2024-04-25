@@ -78,7 +78,7 @@ void loop(void)
 {
     int serialSelect = Serial.parseInt();
 
-    switch (menuChoice) {
+    switch (serialSelect) {
         case 1:
             // Print Ultrasonic results when receiving a 1 on the serial port
             String message = "{";
