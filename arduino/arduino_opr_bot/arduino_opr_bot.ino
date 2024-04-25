@@ -105,7 +105,7 @@ void loop(void)
                 message += String(i) + ": 0";
               }
               if (i < sizeof sensors/sizeof sensors[0] - 1) {
-                message += ", "
+                message += ", ";
               }
             }
             message += "}";
