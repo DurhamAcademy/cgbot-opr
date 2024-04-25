@@ -9,13 +9,13 @@ class Arduino:
         self.ultrasonic_last_check = 0.00
 
     def send_command(self, command):
-        if command is "temp":
+        if command == "temp":
             self.ser.write("2".encode())
-        elif command is "humidity":
+        elif command == "humidity":
             self.ser.write("3".encode())
-        elif command is "voltage":
+        elif command == "voltage":
             self.ser.write("4".encode())
-        elif command is "ultrasonic":
+        elif command == "ultrasonic":
             self.ser.write("1".encode())
 
     def get_temperature(self):
