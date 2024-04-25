@@ -5,7 +5,7 @@ import time
 class Arduino:
 
     def __init__(self):
-        self.ser = serial.Serial('/dev/usb-Arduino__www.arduino.cc__0042_851393033313512102C2-if00', 9600, timeout=1)
+        self.ser = serial.Serial('/dev/serial/by-id/usb-Arduino__www.arduino.cc__0042_851393033313512102C2-if00', 9600, timeout=1)
         self.ultrasonic_last_check = 0.00
 
     def send_command(self, command):
