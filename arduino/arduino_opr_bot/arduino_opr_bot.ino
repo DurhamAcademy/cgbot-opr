@@ -1,6 +1,8 @@
 /*
 Arduino Mega Controller for CGBOT-OPR
 
+** Use the flash_arduino.sh script to flash the Arduino attached.
+
 Arduino Mega Devices and Pins:
 
 ULTRASONIC SENSORS:
