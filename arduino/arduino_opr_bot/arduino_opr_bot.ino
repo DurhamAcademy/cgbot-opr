@@ -1,6 +1,8 @@
 /*
 Arduino Mega Controller for CGBOT-OPR
 
+** Use the flash_arduino.sh script to flash the Arduino attached.
+
 Arduino Mega Devices and Pins:
 
 ULTRASONIC SENSORS:
@@ -37,6 +39,9 @@ i2C
 // Voltage Sensor
 A0
 
+Returns:
+US1|US2|US3|US4|TEMP|HUMIDITY|VOLTAGE
+
 */
 
 #include <Arduino.h>
@@ -45,7 +50,8 @@ A0
 
 // Ultrasonics
 // [ [echo, trigger] ]
-int sensors[][2] = { {48, 46}, {44, 42}, {34, 36}, {40, 38} };
+int sensors[][2] = { {46, 48}, {42, 44}, {36, 34}, {38, 40} };
+// int sensors[][2] = { {6, 7} };
 
 // Temperature SHT30-D
 Adafruit_SHT31 sht31 = Adafruit_SHT31();
@@ -54,7 +60,7 @@ bool enableHeater = false;
 // Voltage Sensors
 float voltage;
 
-void setup(void)
+void setup()
 {
   Serial.begin(9600);
 
@@ -65,66 +71,48 @@ void setup(void)
     digitalWrite(sensors[i][0], HIGH);
   }
 
-  // wait for serial to connect - is this needed?
-  //while (Serial.available() == 0) {
-  //}
+  sht31.begin(0x44);
 
   // Voltage Sensor
   analogReference(DEFAULT);
 
 }
 
-void loop(void)
+void loop()
 {
-    int serialSelect = Serial.parseInt();
+      String message = "$";
 
-    switch (menuChoice) {
-        case 1:
-            // Print Ultrasonic results when receiving a 1 on the serial port
-            String message = "{";
-            for (int i = 0; i < sizeof sensors/sizeof sensors[0]; i++) {
-              int echo = sensors[i][0];
-              int trig = sensors[i][1];
-              digitalWrite(trig, LOW);
-              delayMicroseconds(2);
+      for (int i = 0; i < sizeof sensors/sizeof sensors[0]; i++) {
+        int echo = sensors[i][0];
+        int trig = sensors[i][1];
+        digitalWrite(trig, LOW);
+        delayMicroseconds(2);
 
-              // Send a 10uS high to trigger ranging
-              digitalWrite(trig, HIGH);
-              delayMicroseconds(10);
+        // Send a 10uS high to trigger ranging
+        digitalWrite(trig, HIGH);
+        delayMicroseconds(10);
 
-              // Send pin low again
-              digitalWrite(trig, LOW);
+        // Send pin low again
+        digitalWrite(trig, LOW);
 
-              // Read in times pulse
-              int distance = pulseIn(echo, HIGH,26000);
-              distance= distance/58;
+        // Read in times pulse
+        int distance = pulseIn(echo, HIGH,26000);
+        distance= distance/58;
 
-              if (distance < 50 && distance > 0) {
-                message += String(i) + ': 1';
-              } else {
-                message += String(i) + ": 0";
-              }
-              if (i < sizeof sensors/sizeof sensors[0] - 1) {
-                message += ", "
-              }
-            }
-            message += "}";
-            Serial.println(message);
-        case 2:
-            // Return Temperature on top/high/hot side
-            float t = sht31.readTemperature();
-            Serial.println(t);
-        case 3:
-            // Return humidity on top/high/hot side
-            float h = sht31.readHumidity();
-            Serial.println(h);
-        case 4:
-            // Return voltage reading from battery
-            voltage = analogRead(A1) * 0.01627 ;
-            Serial.println(voltage);
-        default:
-            Serial.println("invalid");
-    }
+        message += String(distance) + "|";
 
+      }
+
+      // Return Temperature on top/high/hot side
+      float t = sht31.readTemperature();
+      message += String(t) + "|";
+      // Return humidity on top/high/hot side
+      float h = sht31.readHumidity();
+      message += String(h) + "|";
+      // Return voltage reading from battery
+      voltage = analogRead(A1) * 0.01627 ;
+      message += String(voltage) + "|";
+
+      Serial.println(message);
 }
 
