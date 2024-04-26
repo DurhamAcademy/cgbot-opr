@@ -19,9 +19,9 @@ class Arduino:
             data = self.ser.readline()
             d = data.decode()
             if d[0] == "$":
-                d.split("|")
+                dd = d.split("|")
                 if val == "ultrasonic":
-                    return [d[0], d[1], d[2], d[3]]
+                    return [dd[0], dd[1], dd[2], dd[3]]
                 else:
                     return d[int(val)]
             else:
