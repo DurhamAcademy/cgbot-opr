@@ -13,14 +13,21 @@ class Arduino:
         self.ultrasonic_last_check = 0.00
 
     def read_data(self, val):
-        self.ser.reset_input_buffer()
-        data = self.ser.readline()
-        d = data.decode()
-        d.split("|")
-        if val == "ultrasonic":
-            return [d[0], d[1], d[2], d[3]]
-        else:
-            return d[int(val)]
+        # don't try more than 3 times
+        for i in range(0, 2, 1):
+            self.ser.reset_input_buffer()
+            data = self.ser.readline()
+            d = data.decode()
+            if d[0] == "$":
+                d.split("|")
+                if val == "ultrasonic":
+                    return [d[0], d[1], d[2], d[3]]
+                else:
+                    return d[int(val)]
+            else:
+                # not a new line from arduino, try again
+                continue
+        return "error"
 
     def get_temperature(self):
         """

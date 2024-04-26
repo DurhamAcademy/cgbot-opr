@@ -80,7 +80,7 @@ void setup()
 
 void loop()
 {
-      String message = "";
+      String message = "$";
 
       for (int i = 0; i < sizeof sensors/sizeof sensors[0]; i++) {
         int echo = sensors[i][0];
