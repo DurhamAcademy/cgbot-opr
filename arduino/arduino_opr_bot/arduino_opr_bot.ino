@@ -39,6 +39,9 @@ i2C
 // Voltage Sensor
 A0
 
+Returns:
+US1|US2|US3|US4|TEMP|HUMIDITY|VOLTAGE
+
 */
 
 #include <Arduino.h>
