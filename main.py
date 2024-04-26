@@ -204,7 +204,7 @@ def main():
         # last_print = 0
         while True:
             control = arduino.Arduino()
-            control.get_ultrasonic()
+            print(control.get_ultrasonic())
         while False:
             """
             Check safety light timeout
