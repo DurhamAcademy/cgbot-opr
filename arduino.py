@@ -18,7 +18,7 @@ class Arduino:
         d = data.decode()
         d.split("|")
         if val == "ultrasonic":
-            return d[0:3]
+            return [d[0], d[1], d[2], d[3]]
         else:
             return d[int(val)]
 
