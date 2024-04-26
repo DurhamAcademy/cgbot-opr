@@ -14,7 +14,9 @@ class Arduino:
         :return: float degrees
         """
         data = self.ser.readline()
-        return float(data.decode())
+        d = data.decode()
+        d.split("|")
+        return float(d[4])
 
     def get_humidity(self):
         """
@@ -22,7 +24,9 @@ class Arduino:
         :return: float humidity
         """
         data = self.ser.readline()
-        return float(data.decode())
+        d = data.decode()
+        d.split("|")
+        return float(d[5])
 
     def get_voltage(self):
         """
@@ -40,5 +44,7 @@ class Arduino:
         :return: dictionary
         """
         data = self.ser.readline()
+        d = data.decode()
+        d.split("|")
         self.ultrasonic_last_check = time.time()
-        return data.decode() # is this correct?
+        return d[0:3]
