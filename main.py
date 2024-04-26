@@ -202,8 +202,10 @@ def main():
 
     try:
         # last_print = 0
-
         while True:
+            control = arduino.Arduino()
+            control.get_ultrasonic()
+        while False:
             """
             Check safety light timeout
             TODO: Enable mutilthreading and move this into its own thread.
