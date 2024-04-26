@@ -19,11 +19,12 @@ class Arduino:
             data = self.ser.readline()
             d = data.decode()
             if d[0] == "$":
+                d = d[1:]
                 dd = d.split("|")
                 if val == "ultrasonic":
                     return [dd[0], dd[1], dd[2], dd[3]]
                 else:
-                    return d[int(val)]
+                    return dd[int(val)]
             else:
                 # not a new line from arduino, try again
                 continue
@@ -55,4 +56,5 @@ class Arduino:
         Reads the ultrasonic sensors from the Arduino. Returns the ultrasonic as
         :return: list
         """
+        self.ultrasonic_last_check = time.time()
         return self.read_data("ultrasonic")
