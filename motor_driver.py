@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import config
 import time
+import asyncio
 
 
 """
@@ -41,7 +42,7 @@ class Motor(object):
         else:
             GPIO.output(config.safety_light_pin, GPIO.HIGH)
 
-    def set_right_speed(self, speed: int):
+    async def set_right_speed(self, speed: int):
         """
         :param speed: Speed of right motor, negative for backwards (range unknown) TODO: Find out range
         :return: null
@@ -53,9 +54,12 @@ class Motor(object):
             GPIO.output(config.motor_right_direction_pin, GPIO.HIGH)
         else:
             GPIO.output(config.motor_right_direction_pin, GPIO.LOW)
+        # How can we ramp the speed here? We can use a for loop with a range(), however this function will not run
+        # asynchronous. So it will ramp one side before the other.
+
         self.right_motor.ChangeDutyCycle(abs(speed))
 
-    def set_left_speed(self, speed: int):
+    async def set_left_speed(self, speed: int):
         """
         :param speed: Speed of left motor, negative for backwards (range unknown) TODO: Find out range
         :return: null
@@ -74,28 +78,24 @@ class Motor(object):
         self.set_right_speed(0)
         return
 
-    def drive_forward(self):
-        self.last_motor_command = time.time()
-        self.set_left_speed(-80)
-        self.set_right_speed(-80)
+    async def drive_forward(self, speed):
+        left = asyncio.create_task(self.set_left_speed(-speed))
+        right = asyncio.create_task(self.set_right_speed(-speed))
+        await left
+        await right
         return
 
     def drive_turn_right(self, speed):
-        self.last_motor_command = time.time()
-        # self.set_left_speed(0)
         self.set_right_speed(-1 * speed)
         self.set_left_speed(speed)
         return
 
     def drive_turn_left(self, speed):
-        self.last_motor_command = time.time()
         self.set_right_speed(speed)
-        # self.set_right_speed(0)
         self.set_left_speed(-1 * speed)
         return
 
     def drive_reverse(self):
-        self.last_motor_command = time.time()
         self.set_left_speed(30)
         self.set_right_speed(30)
         return
