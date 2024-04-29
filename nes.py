@@ -53,7 +53,6 @@ class Nes(object):
                 return ("neutral")
 
     def wpm_controller(self, control_input):
-        speed =
         try:
             if control_input == "neutral":
                 left_speed = 0

@@ -192,10 +192,10 @@ def check_light_timeout():
 def main():
 
     # Save location to file ever x seconds
-    # gps.store_location()
+    # Threading has it running on a schedule. Do not put in loop.
+    gps.store_location()
 
-    # Turn light off if not moving after x seconds.
-    # check_light_timeout()
+
     """
     Check Battery Level
     """
@@ -210,15 +210,10 @@ def main():
             Check safety light timeout
             TODO: Enable mutilthreading and move this into its own thread.
             """
-            #drive.safety_light_timeout()
+            drive.safety_light_timeout()
 
             """
-            Save location to file ever x seconds TODO: Check this works.
-            """
-            gps.store_location()
-
-            """
-            Check Humidity Level
+            Check Humidity and Temperature Level
             """
 
             """
@@ -238,15 +233,6 @@ def main():
                 left_speed, right_speed = controller.wpm_controller(controller.snes_input())
                 drive.set_left_speed(left_speed)
                 drive.set_right_speed(right_speed)
-                # print(gps.get_gps_coords())
-
-                """
-                print GPS heading every second
-                """
-
-                # if last_print < time.time() + 1:
-                #     print(str(gps.gps_heading()) + " degrees")
-                #     last_print = time.time()
 
                 """
                 If select button is pressed, print coordinates
@@ -280,33 +266,6 @@ def main():
                     log("Waiting here for {} seconds.".format(str(i['duration'])))
                     time.sleep(i['duration'])
 
-
-                # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
-                # go_to_position((36.182629, -78.897478))
-
-
-                # print(gps.get_gps_coords())
-
-                """if not controller.gps_mode:
-                    print("control")
-                    # If controller.gps_mode is False, then controller is enabled.
-                    
-                elif controller.gps_mode:
-                    print("gps")"""
-                """    
-                pos = gps.get_gps_coords()
-                print("Position", pos)
-                pos = gps.get_gps_coords()
-                print("Position", pos)
-                heading = gps.get_heading()
-                print("Heading", heading)
-                speed = input()
-                motor_driver.set_right_speed(int(speed))
-                motor_driver.set_left_speed(int(speed))
-                current_heading = gps.get_heading()
-                rotate_to_heading(current_heading, (current_heading + -90) % 360)
-                print(gps.get_heading())
-                """
     finally:
         log("Main loop complete.")
         drive.cleanup()

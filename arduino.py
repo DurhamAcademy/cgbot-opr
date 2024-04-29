@@ -1,6 +1,14 @@
 import serial
 import time
 
+"""
+Example data from Arduino:
+$ = Begin of line
+\r\n = EOL
+$34|23|12|34|30.0|50.0|12.1\r\n
+$Ultrasonic1|Ultrasonic2|Ultrasonic3|Ultrasonic4|Temp|Hunid|Voltage\r\n
+"""
+
 
 class Arduino:
 
