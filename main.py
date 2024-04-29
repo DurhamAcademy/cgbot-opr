@@ -127,7 +127,7 @@ def rotate_to_heading(current_heading, target_heading):
             dest_compass = ((current_compass - rotation_dir[1])) % 360
             # speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
             while not within_range_degrees(current_compass, dest_compass):
-                drive.drive_turn_left(35)
+                drive.drive_turn_left(config.drive_speed_turning)
                 current_compass = (gps.get_heading()) % 360
                 print("current: ", current_compass)
         else:
@@ -136,7 +136,7 @@ def rotate_to_heading(current_heading, target_heading):
             print("dest", dest_compass)
             # speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
             while not within_range_degrees(current_compass, dest_compass):
-                drive.drive_turn_right(35)
+                drive.drive_turn_right(config.drive_speed_turning)
                 current_compass = (gps.get_heading()) % 360
                 print("current: ", current_compass)
         # Stop the rotation and return.
@@ -156,7 +156,7 @@ def go_to_position(target_pos: tuple):
         target_heading = gps.calculate_initial_compass_bearing(current_pos, target_pos)
         print("targetheading: " + str(target_heading))
         rotate_to_heading(current_heading, target_heading)
-        drive.drive_forward()
+        drive.drive_forward(config.drive_speed)
         print("start forward")
         time.sleep(1)
         print("stop forward")
@@ -190,8 +190,10 @@ def check_light_timeout():
 
 
 def main():
+
     # Save location to file ever x seconds
     # gps.store_location()
+
     # Turn light off if not moving after x seconds.
     # check_light_timeout()
     """
@@ -202,17 +204,18 @@ def main():
 
     try:
         # last_print = 0
+
         while True:
-            control = arduino.Arduino()
-            print(control.get_ultrasonic())
-        while False:
             """
             Check safety light timeout
             TODO: Enable mutilthreading and move this into its own thread.
             """
             #drive.safety_light_timeout()
 
-
+            """
+            Save location to file ever x seconds TODO: Check this works.
+            """
+            gps.store_location()
 
             """
             Check Humidity Level
