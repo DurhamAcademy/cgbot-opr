@@ -48,6 +48,7 @@ class Motor(object):
         """
 
         self.last_motor_command = time.time()
+        self.safety_light_timeout()
 
         if speed >= 0:
             GPIO.output(config.motor_right_direction_pin, GPIO.HIGH)
@@ -62,6 +63,7 @@ class Motor(object):
         """
 
         self.last_motor_command = time.time()
+        self.safety_light_timeout()
 
         if speed >= 0:
             GPIO.output(config.motor_left_direction_pin, GPIO.HIGH)
