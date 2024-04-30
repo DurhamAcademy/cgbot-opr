@@ -156,7 +156,7 @@ def go_to_position(target_pos: tuple):
         target_heading = gps.calculate_initial_compass_bearing(current_pos, target_pos)
         print("targetheading: " + str(target_heading))
         rotate_to_heading(current_heading, target_heading)
-        drive.drive_forward(config.drive_speed)
+        drive.drive_forward()
         print("start forward")
         time.sleep(1)
         print("stop forward")
