@@ -1,5 +1,7 @@
 import serial
 import time
+import threading
+import config
 
 """
 Example data from Arduino:

@@ -195,7 +195,6 @@ def main():
     # Threading has it running on a schedule. Do not put in loop.
     gps.store_location()
 
-
     """
     Check Battery Level
     """

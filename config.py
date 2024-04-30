@@ -21,6 +21,8 @@ turning_degree_accuracy = 10
 voltage_min_threshold = 9
 # how often to read the ultrasonic sensors
 ultrasonic_check_interval = 3
+# how often to save gps coords, temp, and humidity to text files for frontend.
+frontend_store_data_interval = 8
 
 
 

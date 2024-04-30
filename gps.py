@@ -162,7 +162,7 @@ def haversine_distance(coord1, coord2):
 
 # Store current location every X seconds.
 def store_location():
-    threading.Timer(5.0, store_location).start()
+    threading.Timer(config.frontend_store_data_interval, store_location).start()
     with open('gps_location.txt', 'w') as f:
         f.write(str(get_gps_coords()))
     f.close()
