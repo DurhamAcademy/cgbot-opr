@@ -76,7 +76,7 @@ def get_gps_coords():
     """
     try:
         coords = gps.geo_coords()
-        prev_positions[time.time()] = (coords.lat, coords.long)
+        prev_positions[time.time()] = (coords.lat, coords.lon)
         return coords.lat, coords.lon
     except (ValueError, IOError) as err:
         print(err)
