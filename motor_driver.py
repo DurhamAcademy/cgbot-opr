@@ -48,7 +48,6 @@ class Motor(object):
         """
 
         self.last_motor_command = time.time()
-        self.safety_light_timeout()
 
         if speed >= 0:
             GPIO.output(config.motor_right_direction_pin, GPIO.HIGH)
@@ -63,7 +62,6 @@ class Motor(object):
         """
 
         self.last_motor_command = time.time()
-        self.safety_light_timeout()
 
         if speed >= 0:
             GPIO.output(config.motor_left_direction_pin, GPIO.HIGH)
@@ -76,22 +74,28 @@ class Motor(object):
         self.set_right_speed(0)
         return
 
-    def drive_forward(self, speed):
-        self.set_left_speed(-speed)
-        self.set_right_speed(-speed)
+    def drive_forward(self):
+        self.last_motor_command = time.time()
+        self.set_left_speed(-80)
+        self.set_right_speed(-80)
         return
 
     def drive_turn_right(self, speed):
+        self.last_motor_command = time.time()
+        # self.set_left_speed(0)
         self.set_right_speed(-1 * speed)
         self.set_left_speed(speed)
         return
 
     def drive_turn_left(self, speed):
+        self.last_motor_command = time.time()
         self.set_right_speed(speed)
+        # self.set_right_speed(0)
         self.set_left_speed(-1 * speed)
         return
 
     def drive_reverse(self):
+        self.last_motor_command = time.time()
         self.set_left_speed(30)
         self.set_right_speed(30)
         return

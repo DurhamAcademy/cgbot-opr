@@ -96,9 +96,9 @@ def fastest_direction(start_degree, end_degree):
     counterclockwise_distance = (start_degree - end_degree) % 360
 
     if clockwise_distance <= counterclockwise_distance:
-        return ["right", clockwise_distance]
-    else:
         return ["left", counterclockwise_distance]
+    else:
+        return ["right", clockwise_distance]
 
 
 def rotate_to_heading(current_heading, target_heading):

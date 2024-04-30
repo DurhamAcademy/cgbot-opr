@@ -16,7 +16,7 @@ declination = -12.83
 port = serial.Serial('/dev/serial/by-id/usb-u-blox_AG_-_www.u-blox.com_u-blox_GNSS_receiver-if00', baudrate=38400,
                      timeout=1)
 gps = UbloxGps(port)
-
+prev_positions = {}
 
 def run():
     try:
@@ -76,6 +76,7 @@ def get_gps_coords():
     """
     try:
         coords = gps.geo_coords()
+        prev_positions[time.time()] = (coords.lat, coords.long)
         return coords.lat, coords.lon
     except (ValueError, IOError) as err:
         print(err)
