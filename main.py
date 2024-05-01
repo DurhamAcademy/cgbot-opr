@@ -192,7 +192,7 @@ def store_internal_enviro():
     """
     threading.Timer(config.frontend_store_data_interval, store_internal_enviro).start()
     with open('internal_temp_humidity.txt', 'w') as f:
-        f.write(str(ar.get_temperature() + "|" + ar.get_humidity() + "|" + ar.get_voltage()))
+        f.write(str(str(ar.get_temperature()) + "|" + str(ar.get_humidity()) + "|" + str(ar.get_voltage())))
     f.close()
 
 
