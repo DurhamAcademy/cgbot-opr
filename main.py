@@ -190,7 +190,7 @@ def store_internal_enviro():
 
     :return:
     """
-    threading.Timer(config.frontend_store_data_interval, store_internal_enviro()).start()
+    threading.Timer(config.frontend_store_data_interval, store_internal_enviro).start()
     with open('internal_temp_humidity.txt', 'w') as f:
         f.write(str(ar.get_temperature() + "|" + ar.get_humidity() + "|" + ar.get_voltage()))
     f.close()
