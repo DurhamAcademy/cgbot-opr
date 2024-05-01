@@ -16,7 +16,7 @@ load_dotenv()
 
 controller = nes.Nes()
 drive = motor_driver.Motor()
-mc = arduino.Arduino()
+ar = arduino.Arduino()
 
 """
 Logging
@@ -38,11 +38,6 @@ def log(text):
     """
     logging.debug(text)
     print(text)
-
-
-def check_light_timeout():
-    threading.Timer(5.0, check_light_timeout).start()
-    drive.safety_light_timeout()
 
 
 def num_to_range(num, inMin, inMax, outMin, outMax):
@@ -189,18 +184,49 @@ def check_light_timeout():
         log("checking light")
 
 
+def store_internal_enviro():
+    """
+    Store information about control box envirmoent in text file for frontend to read.
+
+    :return:
+    """
+    threading.Timer(config.frontend_store_data_interval, store_internal_enviro()).start()
+    with open('internal_temp_humidity.txt', 'w') as f:
+        f.write(str(ar.get_temperature() + "|" + ar.get_humidity() + "|" + ar.get_voltage()))
+    f.close()
+
+
+def store_location():
+    """
+    Store current location to a text file for frontend.
+    Since main.py owns the serial port there is no  better way to have this info shared.
+    :return:
+    """
+    threading.Timer(config.frontend_store_data_interval, store_location).start()
+    with open('gps_location.txt', 'w') as f:
+        f.write(str(gps.get_gps_coords()))
+    f.close()
+
+
 def main():
 
     # Save location to file ever x seconds
     # Threading has it running on a schedule. Do not put in loop.
-    gps.store_location()
+    store_location()
+
+    # Save info about control box enviroment.
+    # Threading has it running on a schedule. Do not put in loop.
+    store_internal_enviro()
 
     """
     Check Battery Level
     """
-    #if mc.get_voltage() <= config.voltage_min_threshold:
+    #if ar.get_voltage() <= config.voltage_min_threshold:
     #    log("Battery Level Below Threshold at " + str(config.voltage_min_threshold))
 
+    """ 
+    
+    """
     try:
         # last_print = 0
 
@@ -218,8 +244,8 @@ def main():
             """
             Check Ultrasonic every xx seconds
             """
-            if mc.ultrasonic_last_check + config.ultrasonic_check_interval < time.time():
-                log("Ultrasonic: " + str(mc.get_ultrasonic()))
+            if ar.ultrasonic_last_check + config.ultrasonic_check_interval < time.time():
+                log("Ultrasonic: " + str(ar.get_ultrasonic()))
                 # What to do about Ultrasonic readings?
 
             """

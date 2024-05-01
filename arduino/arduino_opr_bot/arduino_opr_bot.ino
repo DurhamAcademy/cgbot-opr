@@ -110,7 +110,7 @@ void loop()
       float h = sht31.readHumidity();
       message += String(h) + "|";
       // Return voltage reading from battery
-      voltage = analogRead(A1) * 0.01627 ;
+      voltage = analogRead(A1) * 0.0252427 ;
       message += String(voltage) + "|";
 
       Serial.println(message);
