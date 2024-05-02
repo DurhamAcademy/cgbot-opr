@@ -11,6 +11,8 @@ drive_speed_turning = 30
 safety_light_pin = 22
 # how long after the last movement before we turn the light off?
 safety_light_timeout = 20
+# camera enable IO pin - Alarm1 input on camera
+camera_io_alarm_pin = 6
 # what pin is the physical switch that enters gps/controller mode on?
 gps_mode_switch_pin = 24
 # when using the mag how many degrees offset from the gps is it?

@@ -10,6 +10,7 @@ import os
 import json
 import config
 import threading
+import camera
 
 # Import env file
 load_dotenv()
@@ -281,13 +282,22 @@ def main():
                     # convert to tuple
                     coordinates = eval(i['coordinates'])
 
+                    # disable recording on camera
+                    camera.disable_camera()
+
                     # go to the spot
                     go_to_position(coordinates)
                     log("Destination reached.!!!")
+
+                    # rotate to heading for recording
                     current_heading = gps.gps_heading()
                     log("Rotate to final heading {}.".format(i['final_heading']))
                     rotate_to_heading(current_heading, i['final_heading'])
 
+                    # enable camera for recording
+                    camera.enable_camera()
+
+                    # wait for the duration specified
                     log("Waiting here for {} seconds.".format(str(i['duration'])))
                     time.sleep(i['duration'])
 
