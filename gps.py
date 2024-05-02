@@ -5,17 +5,18 @@ import board
 import time
 import config
 import qmc5883l as qmc5883
+import threading
 
 i2c = board.I2C()
 qmc = qmc5883.QMC5883L(i2c)
-
+# 35.9773445, -78.9693281
 # durham magnetic declination
 declination = -12.83
 
 port = serial.Serial('/dev/serial/by-id/usb-u-blox_AG_-_www.u-blox.com_u-blox_GNSS_receiver-if00', baudrate=38400,
                      timeout=1)
 gps = UbloxGps(port)
-
+prev_positions = {}
 
 def run():
     try:
@@ -42,6 +43,7 @@ def check_fusion():
         if "fusionMode" in i:
             return i
 
+
 def gps_heading():
     """
     gps heading
@@ -60,6 +62,7 @@ def vector_2_degrees(x, y):
         angle = angle + 360
     return angle
 
+
 # Remove? (Bad naming, not used I don't think?)
 def get_heading():
     mag_x, mag_y, _ = qmc.magnetic
@@ -73,6 +76,7 @@ def get_gps_coords():
     """
     try:
         coords = gps.geo_coords()
+        prev_positions[time.time()] = (coords.lat, coords.lon)
         return coords.lat, coords.lon
     except (ValueError, IOError) as err:
         print(err)

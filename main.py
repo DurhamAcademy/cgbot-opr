@@ -1,5 +1,6 @@
 import motor_driver
 import gps
+import arduino
 import time
 import nes
 from dotenv import load_dotenv
@@ -8,12 +9,15 @@ import datetime
 import os
 import json
 import config
+import threading
+import camera
 
 # Import env file
 load_dotenv()
 
 controller = nes.Nes()
 drive = motor_driver.Motor()
+ar = arduino.Arduino()
 
 """
 Logging
@@ -88,9 +92,9 @@ def fastest_direction(start_degree, end_degree):
     counterclockwise_distance = (start_degree - end_degree) % 360
 
     if clockwise_distance <= counterclockwise_distance:
-        return ["right", clockwise_distance]
-    else:
         return ["left", counterclockwise_distance]
+    else:
+        return ["right", clockwise_distance]
 
 
 def rotate_to_heading(current_heading, target_heading):
@@ -109,18 +113,18 @@ def rotate_to_heading(current_heading, target_heading):
     # only turn is more than ## degrees off.
     if rotation_dir[1] > config.turning_degree_accuracy:
         # What is current reading from compass?
-        current_compass = gps.get_heading()
+        current_compass = (gps.get_heading()) % 360
         print("start", current_compass)
 
         # Could consolidate with no ifs if you use negatives instead of left or right (-1 for left, 1 for right)
         # Would need to modify turn function to take in -35 to turn left
         if rotation_dir[0] == "left":
             # What is the destination degrees on the compass in relation to target_heading? / subtract for left turn
-            dest_compass = (current_compass - rotation_dir[1]) % 360
+            dest_compass = ((current_compass - rotation_dir[1])) % 360
             # speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
             while not within_range_degrees(current_compass, dest_compass):
-                drive.drive_turn_left(35)
-                current_compass = gps.get_heading()
+                drive.drive_turn_left(config.drive_speed_turning)
+                current_compass = (gps.get_heading()) % 360
                 print("current: ", current_compass)
         else:
             # What is the destination degrees on the compass in relation to target_heading? / add for right turn
@@ -128,8 +132,8 @@ def rotate_to_heading(current_heading, target_heading):
             print("dest", dest_compass)
             # speed = num_to_range(rotation_dir[1], 0, 360, 30, 50)
             while not within_range_degrees(current_compass, dest_compass):
-                drive.drive_turn_right(35)
-                current_compass = gps.get_heading()
+                drive.drive_turn_right(config.drive_speed_turning)
+                current_compass = (gps.get_heading()) % 360
                 print("current: ", current_compass)
         # Stop the rotation and return.
         drive.drive_stop()
@@ -146,10 +150,12 @@ def go_to_position(target_pos: tuple):
         current_heading = gps.gps_heading()
         # Use heading from GPS to determine a target_heading to destination coordinates
         target_heading = gps.calculate_initial_compass_bearing(current_pos, target_pos)
-        print("target heading: " + str(target_heading))
+        print("targetheading: " + str(target_heading))
         rotate_to_heading(current_heading, target_heading)
         drive.drive_forward()
+        print("start forward")
         time.sleep(1)
+        print("stop forward")
     drive.drive_stop()
 
 
@@ -179,7 +185,49 @@ def check_light_timeout():
         log("checking light")
 
 
+def store_internal_enviro():
+    """
+    Store information about control box envirmoent in text file for frontend to read.
+
+    :return:
+    """
+    threading.Timer(config.frontend_store_data_interval, store_internal_enviro).start()
+    with open('internal_temp_humidity.txt', 'w') as f:
+        f.write(str(str(ar.get_temperature()) + "|" + str(ar.get_humidity()) + "|" + str(ar.get_voltage())))
+    f.close()
+
+
+def store_location():
+    """
+    Store current location to a text file for frontend.
+    Since main.py owns the serial port there is no  better way to have this info shared.
+    :return:
+    """
+    threading.Timer(config.frontend_store_data_interval, store_location).start()
+    with open('gps_location.txt', 'w') as f:
+        f.write(str(gps.get_gps_coords()))
+    f.close()
+
+
 def main():
+
+    # Save location to file ever x seconds
+    # Threading has it running on a schedule. Do not put in loop.
+    store_location()
+
+    # Save info about control box enviroment.
+    # Threading has it running on a schedule. Do not put in loop.
+    store_internal_enviro()
+
+    """
+    Check Battery Level
+    """
+    #if ar.get_voltage() <= config.voltage_min_threshold:
+    #    log("Battery Level Below Threshold at " + str(config.voltage_min_threshold))
+
+    """ 
+    
+    """
     try:
         # last_print = 0
 
@@ -188,7 +236,18 @@ def main():
             Check safety light timeout
             TODO: Enable mutilthreading and move this into its own thread.
             """
-            #drive.safety_light_timeout()
+            drive.safety_light_timeout()
+
+            """
+            Check Humidity and Temperature Level
+            """
+
+            """
+            Check Ultrasonic every xx seconds
+            """
+            if ar.ultrasonic_last_check + config.ultrasonic_check_interval < time.time():
+                log("Ultrasonic: " + str(ar.get_ultrasonic()))
+                # What to do about Ultrasonic readings?
 
             """
             Drive mode
@@ -200,15 +259,6 @@ def main():
                 left_speed, right_speed = controller.wpm_controller(controller.snes_input())
                 drive.set_left_speed(left_speed)
                 drive.set_right_speed(right_speed)
-                # print(gps.get_gps_coords())
-
-                """
-                print GPS heading every second
-                """
-
-                # if last_print < time.time() + 1:
-                #     print(str(gps.gps_heading()) + " degrees")
-                #     last_print = time.time()
 
                 """
                 If select button is pressed, print coordinates
@@ -232,43 +282,25 @@ def main():
                     # convert to tuple
                     coordinates = eval(i['coordinates'])
 
+                    # disable recording on camera
+                    camera.disable_camera()
+
                     # go to the spot
                     go_to_position(coordinates)
-                    log("Destination reached.!!")
+                    log("Destination reached.!!!")
 
+                    # rotate to heading for recording
+                    current_heading = gps.gps_heading()
                     log("Rotate to final heading {}.".format(i['final_heading']))
-                    rotate_to_heading(i['final_heading'])
+                    rotate_to_heading(current_heading, i['final_heading'])
 
+                    # enable camera for recording
+                    camera.enable_camera()
+
+                    # wait for the duration specified
                     log("Waiting here for {} seconds.".format(str(i['duration'])))
                     time.sleep(i['duration'])
 
-
-                # rotate_to_heading(gps.get_heading(), gps.get_heading() + 90)
-                # go_to_position((36.182629, -78.897478))
-
-
-                # print(gps.get_gps_coords())
-
-                """if not controller.gps_mode:
-                    print("control")
-                    # If controller.gps_mode is False, then controller is enabled.
-                    
-                elif controller.gps_mode:
-                    print("gps")"""
-                """    
-                pos = gps.get_gps_coords()
-                print("Position", pos)
-                pos = gps.get_gps_coords()
-                print("Position", pos)
-                heading = gps.get_heading()
-                print("Heading", heading)
-                speed = input()
-                motor_driver.set_right_speed(int(speed))
-                motor_driver.set_left_speed(int(speed))
-                current_heading = gps.get_heading()
-                rotate_to_heading(current_heading, (current_heading + -90) % 360)
-                print(gps.get_heading())
-                """
     finally:
         log("Main loop complete.")
         drive.cleanup()
