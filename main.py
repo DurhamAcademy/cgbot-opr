@@ -190,6 +190,23 @@ def check_stuck():
     """
     return False
 
+def reroute(trigger, distance):
+    closer = "right"  # pos will make it turn right, neg will make it turn left
+    if trigger[0] < trigger[1]:
+        closer = "left"
+    # reverse for distance
+    if closer == "left":
+        drive.set_left_speed(-30)
+        drive.set_right_speed(-40)
+    else:
+        drive.set_left_speed(-40)
+        drive.set_right_speed(-30)
+    checkUltra = ar.get_ultrasonic()
+    if checkUltra[:1] == 0:
+        drive.drive_forward()
+    elif checkUltra[2:] == 0:
+        drive.drive_reverse()
+    else:
 
 def check_perimeter():
     """
@@ -244,7 +261,7 @@ def main():
     """
     Check Battery Level
     """
-    #if ar.get_voltage() <= config.voltage_min_threshold:
+    # if ar.get_voltage() <= config.voltage_min_threshold:
     #    log("Battery Level Below Threshold at " + str(config.voltage_min_threshold))
 
     """ 
@@ -263,13 +280,6 @@ def main():
             """
             Check Humidity and Temperature Level
             """
-
-            """
-            Check Ultrasonic every xx seconds
-            """
-            if ar.ultrasonic_last_check + config.ultrasonic_check_interval < time.time():
-                log("Ultrasonic: " + str(ar.get_ultrasonic()))
-                # What to do about Ultrasonic readings?
 
             """
             Drive mode
