@@ -25,6 +25,6 @@ voltage_min_threshold = 9
 ultrasonic_check_interval = 3
 # how often to save gps coords, temp, and humidity to text files for frontend.
 frontend_store_data_interval = 8
-
-
+#
+ultra_alert_distance = 20
 

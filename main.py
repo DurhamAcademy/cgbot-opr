@@ -141,6 +141,28 @@ def rotate_to_heading(current_heading, target_heading):
         print("rotation not needed.")
 
 
+def simple_check(ultra):
+    directions = [1, -1]
+    turn_dir = directions[ultra.index(max(ultra))]
+    orig_angle = gps.get_heading()
+    for i in range(2):
+        for j in range(2):
+            # check two times if you can get around obstacle
+            rotate_to_heading(orig_angle, (orig_angle + (90 * turn_dir)) % 360)  # turn in chosen direction
+            drive.drive_forward()
+            time.sleep(1)
+            angle = gps.get_heading()
+            rotate_to_heading(angle, orig_angle)  # turn back to check ultras
+            check = ar.get_ultrasonic()
+            if min(check[:1]) > config.ultra_alert_distance or min(check[:1]) == 0:
+                return True  # check ultrasonics, return true if they are clear
+        turn_dir *= -1  # try the other direction, currently are facing towards obstacle
+        angle = gps.get_heading()
+        rotate_to_heading(angle, (orig_angle + (90 * turn_dir)) % 360)  # turn in new chosen direction
+        drive.drive_forward()
+        time.sleep(2)  # drive back to where you started and repeat loop
+
+
 def go_to_position(target_pos: tuple):
 
     current_pos = gps.get_gps_coords()
@@ -171,7 +193,7 @@ def check_stuck():
 
 def check_perimeter():
     """
-    Need a function to check that all ultrasonics are clear
+    Need a function to check that all onics are clear
     and nothing is around the robot.
     Return a side that is blocked
     :return: none, left, right, front, back
