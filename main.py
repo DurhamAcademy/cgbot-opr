@@ -142,8 +142,8 @@ def rotate_to_heading(current_heading, target_heading):
 
 
 def simple_check(ultra):
-    directions = [1, -1]
-    turn_dir = directions[ultra.index(max(ultra))]
+    directions = [1, -1] #  1 is right, -1 is left
+    turn_dir = directions[ultra.index(max(ultra))] # pick left direction if left ultra is greater, vice versa
     orig_angle = gps.get_heading()
     for i in range(2):
         for j in range(2):
@@ -158,7 +158,7 @@ def simple_check(ultra):
                 return True  # check ultrasonics, return true if they are clear
         turn_dir *= -1  # try the other direction, currently are facing towards obstacle
         angle = gps.get_heading()
-        rotate_to_heading(angle, (orig_angle + (90 * turn_dir)) % 360)  # turn in new chosen direction
+        rotate_to_heading(angle, (orig_angle + (90 * turn_dir)) % 360)  # turn in new chosen direction in order to move back
         drive.drive_forward()
         time.sleep(2)  # drive back to where you started and repeat loop
 
