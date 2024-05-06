@@ -150,7 +150,7 @@ def simple_check(ultra):
     for i in range(2):
         for j in range(2):
             # check two times if you can get around obstacle
-            rotate_to_heading(orig_angle, (orig_angle + (80 * turn_dir)) % 360)  # turn in chosen direction
+            rotate_to_heading(orig_angle, (orig_angle + (100 * turn_dir)) % 360)  # turn in chosen direction
             drive.drive_forward()
             time.sleep(forward_time)
             angle = gps.get_heading()
