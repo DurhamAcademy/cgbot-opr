@@ -142,8 +142,8 @@ def rotate_to_heading(current_heading, target_heading):
 
 
 def simple_check(ultra):
-    directions = [1, -1] #  1 is right, -1 is left
-    turn_dir = directions[ultra.index(max(ultra))] # pick left direction if left ultra is greater, vice versa
+    directions = [1, -1]  # 1 is right, -1 is left
+    turn_dir = directions[ultra.index(max(ultra))]  # pick left direction if left ultra is greater, vice versa
     orig_angle = gps.get_heading()
     for i in range(2):
         for j in range(2):
@@ -273,8 +273,9 @@ def main():
     """
     try:
         # last_print = 0
-
-        while True:
+        ultras = ar.get_ultrasonic()
+        simple_check(ultras)
+        while False:
             """
             Check safety light timeout
             TODO: Enable mutilthreading and move this into its own thread.
