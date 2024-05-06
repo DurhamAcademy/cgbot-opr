@@ -194,6 +194,9 @@ def check_stuck():
 
 
 def reroute(trigger, distance):
+    """
+    Complex ultrasonic reroutes, unfinished
+    """
     closer = "right"  # pos will make it turn right, neg will make it turn left
     if trigger[0] < trigger[1]:
         closer = "left"
