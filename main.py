@@ -166,9 +166,7 @@ def simple_check(ultra):
 
 
 def go_to_position(target_pos: tuple):
-
     current_pos = gps.get_gps_coords()
-
     while abs(gps.haversine_distance(current_pos, target_pos)) > config.point_radius_meters:
         current_pos = gps.get_gps_coords()
         current_heading = gps.gps_heading()
@@ -278,8 +276,8 @@ def main():
     try:
         # last_print = 0
         ultras = ar.get_ultrasonic()
-        simple_check(ultras)
-        while False:
+        # simple_check(ultras)
+        while True:
             """
             Check safety light timeout
             TODO: Enable mutilthreading and move this into its own thread.

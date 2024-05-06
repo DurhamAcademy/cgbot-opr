@@ -67,4 +67,5 @@ class Arduino:
         :return: list
         """
         self.ultrasonic_last_check = time.time()
-        return self.read_data("ultrasonic")
+        ints = numbers = [ int(x) for x in self.read_data("ultrasonic") ]
+        return ints
