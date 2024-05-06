@@ -156,6 +156,7 @@ def simple_check(ultra):
             angle = gps.get_heading()
             rotate_to_heading(angle, orig_angle)  # turn back to check ultras
             check = ar.get_ultrasonic()
+            print(check)
             if min(check[:1]) > config.ultra_alert_distance or min(check[:1]) == 0:
                 return True  # check ultrasonics, return true if they are clear
         turn_dir *= -1  # try the other direction, currently are facing towards obstacle
