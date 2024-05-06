@@ -26,7 +26,7 @@ ultrasonic_check_interval = 3
 # how often to save gps coords, temp, and humidity to text files for frontend.
 frontend_store_data_interval = 8
 # how close the ultrasonics can read without triggering
-ultra_alert_distance = 20
+ultra_alert_distance = 30
 # accepted distance from desired point
 point_radius_meters = 3.5
 

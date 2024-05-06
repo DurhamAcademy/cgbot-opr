@@ -161,7 +161,7 @@ def simple_check(ultra):
                 return True  # check ultrasonics, return true if they are clear
         turn_dir *= -1  # try the other direction, currently are facing towards obstacle
         angle = gps.get_heading()
-        rotate_to_heading(angle, (orig_angle + (80 * turn_dir)) % 360)  # turn in new chosen direction in order to move back
+        rotate_to_heading(angle, (orig_angle + (100 * turn_dir)) % 360)  # turn in new chosen direction in order to move back
         drive.drive_forward()
         time.sleep(forward_time * 2)  # drive back to where you started and repeat loop
     return False # return false if you can't get unstuck, give up
