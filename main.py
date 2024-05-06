@@ -169,7 +169,7 @@ def go_to_position(target_pos: tuple):
 
     current_pos = gps.get_gps_coords()
 
-    while abs(gps.haversine_distance(current_pos, target_pos)) > 2:
+    while abs(gps.haversine_distance(current_pos, target_pos)) > config.point_radius_meters:
         current_pos = gps.get_gps_coords()
         current_heading = gps.gps_heading()
         # Use heading from GPS to determine a target_heading to destination coordinates
