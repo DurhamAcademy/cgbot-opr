@@ -142,6 +142,7 @@ def rotate_to_heading(current_heading, target_heading):
 
 
 def simple_check(ultra):
+    print(ultra)
     directions = [1, -1]  # 1 is right, -1 is left
     turn_dir = directions[ultra.index(max(ultra))]  # pick left direction if left ultra is greater, vice versa
     orig_angle = gps.get_heading()
