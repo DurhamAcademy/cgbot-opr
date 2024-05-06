@@ -190,6 +190,7 @@ def check_stuck():
     """
     return False
 
+
 def reroute(trigger, distance):
     closer = "right"  # pos will make it turn right, neg will make it turn left
     if trigger[0] < trigger[1]:
@@ -207,6 +208,8 @@ def reroute(trigger, distance):
     elif checkUltra[2:] == 0:
         drive.drive_reverse()
     else:
+        print("is there an else here")
+
 
 def check_perimeter():
     """
