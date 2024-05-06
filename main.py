@@ -146,12 +146,13 @@ def simple_check(ultra):
     directions = [1, -1]  # 1 is right, -1 is left
     turn_dir = directions[ultra.index(max(ultra))]  # pick left direction if left ultra is greater, vice versa
     orig_angle = gps.get_heading()
+    forward_time = 2
     for i in range(2):
         for j in range(2):
             # check two times if you can get around obstacle
             rotate_to_heading(orig_angle, (orig_angle + (90 * turn_dir)) % 360)  # turn in chosen direction
             drive.drive_forward()
-            time.sleep(1)
+            time.sleep(forward_time)
             angle = gps.get_heading()
             rotate_to_heading(angle, orig_angle)  # turn back to check ultras
             check = ar.get_ultrasonic()
@@ -161,7 +162,7 @@ def simple_check(ultra):
         angle = gps.get_heading()
         rotate_to_heading(angle, (orig_angle + (90 * turn_dir)) % 360)  # turn in new chosen direction in order to move back
         drive.drive_forward()
-        time.sleep(2)  # drive back to where you started and repeat loop
+        time.sleep(forward_time * 2)  # drive back to where you started and repeat loop
     return False # return false if you can't get unstuck, give up
 
 
