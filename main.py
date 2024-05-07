@@ -236,11 +236,16 @@ def store_internal_enviro():
     """
     Store information about control box envirmoent in text file for frontend to read.
 
-    :return:
+    :return: None
     """
     threading.Timer(config.frontend_store_data_interval, store_internal_enviro).start()
-    with open('internal_temp_humidity.txt', 'w') as f:
-        f.write(str(str(ar.get_temperature()) + "|" + str(ar.get_humidity()) + "|" + str(ar.get_voltage())))
+    j = {
+        "temp": str(ar.get_temperature()),
+        "humidity": str(ar.get_humidity()),
+        "voltage": str(ar.get_voltage())
+    }
+    with open('internal_temp_humidity.json', 'w') as f:
+        f.write(json.dumps(j))
     f.close()
 
 
