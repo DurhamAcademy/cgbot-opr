@@ -101,6 +101,13 @@ void loop()
 
         message += String(distance) + "|";
 
+        // Add additional delay for ultrasonics per their documentation.
+        // So a reading doesn't occur more than every 50 microseconds.
+        // Perhaps helps with overlapping in sensors as well.
+        // https://wiki.dfrobot.com/Weatherproof_Ultrasonic_Sensor_With_Separate_Probe_SKU_SEN0208
+        // Double to be safe
+        delayMicroseconds(100);
+
       }
 
       // Return Temperature on top/high/hot side
@@ -114,5 +121,8 @@ void loop()
       message += String(voltage) + "|";
 
       Serial.println(message);
+
+      // Add additional delay for ultrasonics per their documentation.
+      // So a reading doesn't occur more than every 50 microseconds.
 }
 
