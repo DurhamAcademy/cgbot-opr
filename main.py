@@ -274,11 +274,6 @@ def main():
     # Threading has it running on a schedule. Do not put in loop.
     store_internal_enviro()
 
-    """
-    Check Battery Level
-    """
-    # if ar.get_voltage() <= config.voltage_min_threshold:
-    #    log("Battery Level Below Threshold at " + str(config.voltage_min_threshold))
 
     """ 
     
@@ -324,33 +319,49 @@ def main():
                 """
                 GPS Mode
                 """
-                route = get_routes()
-                for i in route['coordinates']:
-                    log("Going to location: {}.".format(i['label']))
-                    log("Coordinates: {}.".format(i['coordinates']))
 
-                    # convert to tuple
-                    coordinates = eval(i['coordinates'])
+                """
+                Check Battery Level
+                If the battery is low, then lets set that var to True. 
+                Later we will not stay at a location for "duration", and not continue on route.
+                """
+                if ar.get_voltage() <= config.voltage_min_threshold:
+                    log("Battery Level Below Threshold at " + str(config.voltage_min_threshold))
+                    battery_low = True
+                else:
+                    battery_low = False
 
-                    # disable recording on camera
-                    camera.disable_camera()
+                # beginning of the route. don't continue if the battery is low.
+                if not battery_low:
+                    route = get_routes()
+                    for i in route['coordinates']:
+                        log("Going to location: {}.".format(i['label']))
+                        log("Coordinates: {}.".format(i['coordinates']))
 
-                    # go to the spot
-                    go_to_position(coordinates)
-                    log("Destination reached.!!!")
+                        # convert to tuple
+                        coordinates = eval(i['coordinates'])
 
-                    # rotate to heading for recording
-                    current_heading = gps.gps_heading()
-                    log("Rotate to final heading {}.".format(i['final_heading']))
-                    rotate_to_heading(current_heading, i['final_heading'])
+                        # disable recording on camera
+                        camera.disable_camera()
 
-                    # enable camera for recording
-                    camera.enable_camera()
+                        # go to the spot
+                        go_to_position(coordinates)
+                        log("Destination reached.!!!")
 
-                    # wait for the duration specified
-                    log("Waiting here for {} seconds.".format(str(i['duration'])))
-                    time.sleep(i['duration'])
+                        # rotate to heading for recording
+                        current_heading = gps.gps_heading()
+                        log("Rotate to final heading {}.".format(i['final_heading']))
+                        rotate_to_heading(current_heading, i['final_heading'])
 
+                        # enable camera for recording
+                        camera.enable_camera()
+
+                        if not battery_low:
+                            # wait for the duration specified if battery not low.
+                            log("Waiting here for {} seconds.".format(str(i['duration'])))
+                            time.sleep(i['duration'])
+                        else:
+                            log("Battery is low, not waiting at this location.")
     finally:
         log("Main loop complete.")
         drive.cleanup()
