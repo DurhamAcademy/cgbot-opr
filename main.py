@@ -38,6 +38,9 @@ def log(text):
     :return: none
     """
     logging.debug(text)
+    with open('last_status.txt', 'w') as f:
+        f.write(str(text))
+    f.close()
     print(text)
 
 
