@@ -122,7 +122,5 @@ void loop()
 
       Serial.println(message);
 
-      // Add additional delay for ultrasonics per their documentation.
-      // So a reading doesn't occur more than every 50 microseconds.
 }
 
