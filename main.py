@@ -1,7 +1,6 @@
 import motor_driver
 import gps
 import arduino
-import time
 import nes
 from dotenv import load_dotenv
 import logging
