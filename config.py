@@ -29,4 +29,6 @@ frontend_store_data_interval = 8
 ultra_alert_distance = 25
 # accepted distance from desired point
 point_radius_meters = 3.5
+# how often to check the schedule in seconds
+schedule_check_interval = 60
 

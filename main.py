@@ -235,6 +235,30 @@ def check_light_timeout():
         log("checking light")
 
 
+def check_schedule():
+    """
+    Returns True if schedule permits robot to run GPS cycle,
+    :return: True or False
+    """
+    try:
+        with open("gps_schedule.json", "r") as j:
+            d = j.read()
+            d = json.loads(d)
+        j.close()
+        start_time = datetime.datetime.strptime(d['begin'], '%H:%M').time()
+        end_time = datetime.datetime.strptime(d['end'], '%H:%M').time()
+        now_time = datetime.datetime.now().time()
+
+        if d["enabled"] == 'on':
+            if start_time < end_time:
+                return now_time >= start_time and now_time <= end_time
+            else:
+                # Over midnight:
+                return now_time >= start_time or now_time <= end_time
+    except:
+        return False
+
+
 def store_internal_enviro():
     """
     Store information about control box envirmoent in text file for frontend to read.
@@ -333,35 +357,45 @@ def main():
 
                 # beginning of the route. don't continue if the battery is low.
                 if not battery_low:
-                    route = get_routes()
-                    for i in route['coordinates']:
-                        log("Going to location: {}.".format(i['label']))
-                        log("Coordinates: {}.".format(i['coordinates']))
+                    if check_schedule():
+                        route = get_routes()
+                        for i in route['coordinates']:
+                            log("Going to location: {}.".format(i['label']))
+                            log("Coordinates: {}.".format(i['coordinates']))
 
-                        # convert to tuple
-                        coordinates = eval(i['coordinates'])
+                            # convert to tuple
+                            coordinates = eval(i['coordinates'])
 
-                        # disable recording on camera
-                        camera.disable_camera()
+                            # disable recording on camera
+                            camera.disable_camera()
 
-                        # go to the spot
-                        go_to_position(coordinates)
-                        log("Destination reached.!!!")
+                            # go to the spot
+                            go_to_position(coordinates)
+                            log("Destination reached.!!!")
 
-                        # rotate to heading for recording
-                        current_heading = gps.gps_heading()
-                        log("Rotate to final heading {}.".format(i['final_heading']))
-                        rotate_to_heading(current_heading, i['final_heading'])
+                            # rotate to heading for recording
+                            current_heading = gps.gps_heading()
+                            log("Rotate to final heading {}.".format(i['final_heading']))
+                            rotate_to_heading(current_heading, i['final_heading'])
 
-                        # enable camera for recording
-                        camera.enable_camera()
+                            # enable camera for recording
+                            camera.enable_camera()
 
-                        if not battery_low:
-                            # wait for the duration specified if battery not low.
-                            log("Waiting here for {} seconds.".format(str(i['duration'])))
-                            time.sleep(i['duration'])
-                        else:
-                            log("Battery is low, not waiting at this location.")
+                            if not battery_low:
+                                # wait for the duration specified if battery not low.
+                                log("Waiting here for {} seconds.".format(str(i['duration'])))
+                                time.sleep(i['duration'])
+                            else:
+                                log("Battery is low, not waiting at this location.")
+                    # end check schedule
+                    else:
+                        log("Not currently scheduled for robot to run GPS routes.")
+                        # TODO
+                        # Add logic to only check schedule once a minute. So we don't tax processor.
+                        # something other than time.sleep so we can keep main loop running.
+                # end check battery
+                else:
+                    log("Battery too weak to run scheduled GPS route.")
     finally:
         log("Main loop complete.")
         drive.cleanup()
