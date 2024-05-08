@@ -31,4 +31,6 @@ ultra_alert_distance = 25
 point_radius_meters = 3.5
 # how often to check the schedule in seconds
 schedule_check_interval = 60
+# how often to check low battery in seconds
+battery_check_interval = 600
 
