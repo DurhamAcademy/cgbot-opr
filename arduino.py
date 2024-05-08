@@ -23,27 +23,24 @@ class Arduino:
         self.ultrasonic_last_check = 0.00
 
     def read_data(self, val):
-        # don't try more than 3 times
-        for i in range(0, 2, 1):
-            self.ser.reset_input_buffer()
+        # don't try more than 4 times
+        for i in range(0, 3, 1):
             try:
-                count = 0
-                data = None
-                while data is None and count <= 3:
-                    count = count + 1
-                    data = self.ser.readline()
-            except:
-                return None
-            d = data.decode()
-            if d[0] == "$":
-                d = d[1:]
-                dd = d.split("|")
-                if val == "ultrasonic":
-                    return [dd[0], dd[1], dd[2], dd[3]]
+                # is this needed?
+                self.ser.reset_input_buffer()
+                data = self.ser.readline()
+                d = data.decode()
+                if d[0] == "$":
+                    d = d[1:]
+                    dd = d.split("|")
+                    if val == 0:
+                        return [dd[0], dd[1], dd[2], dd[3]]
+                    else:
+                        return dd[int(val)]
                 else:
-                    return dd[int(val)]
-            else:
-                # not a new line from arduino, try again
+                    # not a new line from arduino, try again
+                    continue
+            except:
                 continue
         return "error"
 
@@ -73,9 +70,6 @@ class Arduino:
         Reads the ultrasonic sensors from the Arduino. Returns the ultrasonic as
         :return: list
         """
-        try:
-            self.ultrasonic_last_check = time.time()
-            ints = [int(x) for x in self.read_data("ultrasonic")]
-            return ints
-        except:
-            return [0, 0, 0, 0]
+        self.ultrasonic_last_check = time.time()
+        ints = [int(x) for x in self.read_data(0)]
+        return ints
