@@ -157,6 +157,7 @@ def simple_check(ultra):
             drive.drive_forward()
             time.sleep(forward_time)
             angle = gps.get_heading()
+            print("back", orig_angle)
             rotate_to_heading(angle, orig_angle)  # turn back to check ultras
             check = ar.get_ultrasonic()
             print(check[:2])
@@ -304,7 +305,7 @@ def main():
     try:
         # last_print = 0
         ultras = ar.get_ultrasonic()
-        simple_check(ultras)
+        # simple_check(ultras)
         print("done")
         while True:
             """
