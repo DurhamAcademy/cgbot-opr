@@ -257,6 +257,20 @@ def check_schedule():
         return False
 
 
+def check_battery():
+    if ar.get_voltage() <= config.voltage_min_threshold:
+        return True
+    else:
+        return False
+
+
+def check_temp():
+    if ar.get_temperature() <= config.max_temperature:
+        return True
+    else:
+        return False
+
+
 def store_internal_enviro():
     """
     Store information about control box envirmoent in text file for frontend to read.
@@ -296,7 +310,7 @@ def main():
     # Threading has it running on a schedule. Do not put in loop.
     store_internal_enviro()
 
-    ## some variable defaults ##
+    ### some default vars ###
     # next battery check time in epoch
     next_battery_check = time.time()
     # next schedule check time in epoch
@@ -352,55 +366,55 @@ def main():
                 If the battery is low, then lets set that var to True. 
                 Later we will not stay at a location for "duration", and not continue on route.
                 """
+
+
+                # don't run route if the battery is low.
                 if time.time() > next_battery_check:
                     next_battery_check = time.time() + config.battery_check_interval
-                    if ar.get_voltage() <= config.voltage_min_threshold:
-                        log("Battery level below threshold at " + str(config.voltage_min_threshold))
-                        battery_low = True
-                    else:
-                        battery_low = False
+                    if not check_battery():
+                        log("Battery too weak to begin new GPS route")
+                        continue
 
-                # beginning of the route. don't continue if the battery is low.
-                if not battery_low and ar.get_temperature() < config.max_temperature:
-                    if time.time() > next_schedule_check:
-                        next_schedule_check = time.time() + config.schedule_check_interval
-                        if check_schedule():
-                            route = get_routes()
-                            for i in route['coordinates']:
-                                log("Going to location: {}.".format(i['label']))
-                                log("Coordinates: {}.".format(i['coordinates']))
+                # check schedule
+                if time.time() > next_schedule_check:
+                    next_schedule_check = time.time() + config.schedule_check_interval
+                    if not check_schedule():
+                        log("Not scheduled for GPS")
+                        continue
 
-                                # convert to tuple
-                                coordinates = eval(i['coordinates'])
+                # beginning of the route.
+                if check_schedule():
+                    route = get_routes()
+                    for i in route['coordinates']:
+                        log("Going to location: {}.".format(i['label']))
+                        log("Coordinates: {}.".format(i['coordinates']))
 
-                                # disable recording on camera
-                                camera.disable_camera()
+                        # convert to tuple
+                        coordinates = eval(i['coordinates'])
 
-                                # go to the spot
-                                go_to_position(coordinates)
-                                log("Destination reached.!!!")
+                        # disable recording on camera
+                        camera.disable_camera()
 
-                                # rotate to heading for recording
-                                current_heading = gps.gps_heading()
-                                log("Rotate to final heading {}.".format(i['final_heading']))
-                                rotate_to_heading(current_heading, i['final_heading'])
+                        # go to the spot
+                        go_to_position(coordinates)
+                        log("Destination reached.!!!")
 
-                                # enable camera for recording
-                                camera.enable_camera()
+                        # rotate to heading for recording
+                        current_heading = gps.gps_heading()
+                        log("Rotate to final heading {}.".format(i['final_heading']))
+                        rotate_to_heading(current_heading, i['final_heading'])
 
-                                if not battery_low and ar.get_temperature() < config.max_temperature:
-                                    # wait for the duration specified if battery not low.
-                                    log("Waiting here for {} seconds.".format(str(i['duration'])))
-                                    time.sleep(i['duration'])
-                                else:
-                                    log("Battery is low, not waiting at this location.")
-                        # end check schedule
+                        # enable camera for recording
+                        camera.enable_camera()
+
+                        if not check_battery() and not check_temp():
+                            # wait for the duration specified if battery not low.
+                            log("Waiting here for {} seconds.".format(str(i['duration'])))
+                            time.sleep(i['duration'])
                         else:
-                            log("Not scheduled for GPS")
+                            log("Battery is low or temp exceeded, not waiting at this location.")
 
-                # end check battery
-                else:
-                    log("Battery too weak to run GPS")
+
     finally:
         log("Main loop complete.")
         drive.cleanup()
