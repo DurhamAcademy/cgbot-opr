@@ -304,7 +304,7 @@ def main():
     try:
         # last_print = 0
         ultras = ar.get_ultrasonic()
-        simple_check(ultras)
+        # simple_check(ultras)
         while True:
             print(ar.get_ultrasonic())
         print("done")
