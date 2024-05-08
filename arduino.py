@@ -26,7 +26,14 @@ class Arduino:
         # don't try more than 3 times
         for i in range(0, 2, 1):
             self.ser.reset_input_buffer()
-            data = self.ser.readline()
+            try:
+                count = 0
+                data = None
+                while data is None and count <= 3:
+                    count = count + 1
+                    data = self.ser.readline()
+            except:
+
             d = data.decode()
             if d[0] == "$":
                 d = d[1:]
