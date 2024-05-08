@@ -148,12 +148,15 @@ def simple_check(ultra):
     print(ultra)
     directions = [1, -1]  # 1 is right, -1 is left
     turn_dir = directions[ultra.index(max(ultra[:2]))]  # pick left direction if left ultra is greater, vice versa
-    orig_angle = gps.get_heading()
     forward_time = 2
+    orig_angle = gps.get_heading()
     for i in range(2):
         for j in range(2):
             # check two times if you can get around obstacle
-            rotate_to_heading(orig_angle, orig_angle + (90 * turn_dir))  # turn in chosen direction
+            if turn_dir == 1:
+                rotate_to_heading(orig_angle, orig_angle + 80)  # turn in chosen direction
+            else:
+                rotate_to_heading(orig_angle, orig_angle - 100)  # turn in chosen direction
             drive.drive_forward()
             time.sleep(forward_time)
             angle = gps.get_heading()
@@ -168,7 +171,7 @@ def simple_check(ultra):
         rotate_to_heading(angle, orig_angle + (90 * turn_dir))  # turn in new chosen direction in order to move back
         drive.drive_forward()
         time.sleep(forward_time * 2)  # drive back to where you started and repeat loop
-    return False # return false if you can't get unstuck, give up
+    return False  # return false if you can't get unstuck, give up
 
 
 def go_to_position(target_pos: tuple):
