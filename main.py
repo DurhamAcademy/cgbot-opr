@@ -156,7 +156,7 @@ def simple_check(ultra):
             if turn_dir == 1:
                 rotate_to_heading(orig_angle, orig_angle + 70)  # turn in chosen direction
             else:
-                rotate_to_heading(orig_angle, orig_angle - 100)  # turn in chosen direction
+                rotate_to_heading(orig_angle, orig_angle - 90)  # turn in chosen direction
             drive.drive_forward()
             time.sleep(forward_time)
             angle = gps.get_heading()
