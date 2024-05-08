@@ -58,11 +58,11 @@ class Nes(object):
                 left_speed = 0
                 right_speed = 0
             elif control_input == "up":
-                left_speed = -config.drive_speed
-                right_speed = -config.drive_speed
+                left_speed = -config.drive_speed_turning
+                right_speed = -config.drive_speed_turning
             elif control_input == "down":
-                left_speed = config.drive_speed
-                right_speed = config.drive_speed
+                left_speed = config.drive_speed_turning
+                right_speed = config.drive_speed_turning
             elif control_input == "left":
                 left_speed = config.drive_speed_turning
                 right_speed = -config.drive_speed_turning
