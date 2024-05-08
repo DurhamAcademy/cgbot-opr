@@ -305,6 +305,8 @@ def main():
         # last_print = 0
         ultras = ar.get_ultrasonic()
         simple_check(ultras)
+        while True:
+            print(ar.get_ultrasonic())
         print("done")
         while True:
             """
@@ -357,7 +359,7 @@ def main():
                         battery_low = False
 
                 # beginning of the route. don't continue if the battery is low.
-                if not battery_low:
+                if not battery_low and ar.get_temperature() < config.max_temperature:
                     if time.time() > next_schedule_check:
                         next_schedule_check = time.time() + config.schedule_check_interval
                         if check_schedule():
@@ -384,7 +386,7 @@ def main():
                                 # enable camera for recording
                                 camera.enable_camera()
 
-                                if not battery_low:
+                                if not battery_low and ar.get_temperature() < config.max_temperature:
                                     # wait for the duration specified if battery not low.
                                     log("Waiting here for {} seconds.".format(str(i['duration'])))
                                     time.sleep(i['duration'])
