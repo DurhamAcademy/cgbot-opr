@@ -73,6 +73,9 @@ class Arduino:
         Reads the ultrasonic sensors from the Arduino. Returns the ultrasonic as
         :return: list
         """
-        self.ultrasonic_last_check = time.time()
-        ints = [int(x) for x in self.read_data("ultrasonic")]
-        return ints
+        try:
+            self.ultrasonic_last_check = time.time()
+            ints = [int(x) for x in self.read_data("ultrasonic")]
+            return ints
+        except:
+            return [0, 0, 0, 0]
