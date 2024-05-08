@@ -305,6 +305,7 @@ def main():
         # last_print = 0
         ultras = ar.get_ultrasonic()
         # simple_check(ultras)
+        print(ar.get_temperature())
         while True:
             print(ar.get_ultrasonic())
         print("done")
