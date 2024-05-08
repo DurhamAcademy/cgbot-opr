@@ -24,7 +24,7 @@ Logging
 TODO: Setup logrotate on this directory.
 """
 if not os.path.isdir("/var/log/cgbot-opr"):
-    os.makedirs("/var/log/cgbot")
+    os.makedirs("/var/log/cgbot-opr")
 
 logfile = "/var/log/cgbot-opr/log_" + str(datetime.date.today()) + ".txt"
 logging.basicConfig(filename=logfile)
