@@ -154,7 +154,7 @@ def simple_check(ultra):
         for j in range(2):
             # check two times if you can get around obstacle
             if turn_dir == 1:
-                rotate_to_heading(orig_angle, orig_angle + 80)  # turn in chosen direction
+                rotate_to_heading(orig_angle, orig_angle + 70)  # turn in chosen direction
             else:
                 rotate_to_heading(orig_angle, orig_angle - 100)  # turn in chosen direction
             drive.drive_forward()
