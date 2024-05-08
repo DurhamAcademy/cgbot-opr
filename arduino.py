@@ -33,7 +33,7 @@ class Arduino:
                     count = count + 1
                     data = self.ser.readline()
             except:
-
+                return None
             d = data.decode()
             if d[0] == "$":
                 d = d[1:]
